@@ -22,7 +22,7 @@ export function NoticeListPage() {
       <div className="px-4 pb-20">
         {notices &&
           notices.map((notice) => (
-            <Link key={notice.id} href={`/notices/${notice.id}`}>
+            <Link key={notice.id} href={`/notices/${notice.id}`} data-testid="notice-item">
               <NoticeListItem notice={notice} />
             </Link>
           ))}

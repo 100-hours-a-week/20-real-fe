@@ -48,7 +48,9 @@ export function NoticeDetailPage() {
         <PostSummary summary={notice.summary} />
 
         <div className="px-4 pb-3">
-          <MarkdownViewer text={notice.content} />
+          <div data-testid="notice-content">
+            <MarkdownViewer text={notice.content} />
+          </div>
 
           {notice.images.length > 0 && <ImageCarousel images={notice.images} />}
 

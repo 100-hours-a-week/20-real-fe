@@ -12,7 +12,7 @@ interface PostCommentItemProps {
 
 export function PostCommentItem({ comment, onDelete }: PostCommentItemProps) {
   return (
-    <div className="px-4 py-3 flex items-start">
+    <div className="px-4 py-3 flex items-start" data-testid="post-comment-item">
       <div className="w-8 h-8 rounded-full overflow-hidden">
         <SafeImage src={comment.profileUrl} alt={comment.nickname} width={32} height={32} />
       </div>
@@ -24,7 +24,7 @@ export function PostCommentItem({ comment, onDelete }: PostCommentItemProps) {
       </div>
 
       {comment.isAuthor && (
-        <Button variant="ghost" size="icon" className="flex items-center" onClick={() => onDelete(comment.id)}>
+        <Button variant="ghost" size="icon" data-testid='post-comment-delete-button' className="flex items-center" onClick={() => onDelete(comment.id)}>
           <Trash size={14} className="text-gray-400" />
         </Button>
       )}

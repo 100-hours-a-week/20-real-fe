@@ -37,7 +37,10 @@ export function NewsDetailPage() {
         <PostSummary summary={news.summary} />
 
         <div className="px-4 pb-3">
-          <MarkdownViewer text={news.content} />
+          <div data-testid='news-content'>
+            <MarkdownViewer text={news.content}/>
+          </div>
+
 
           <ImageViewer imageUrl={news.imageUrl} />
         </div>

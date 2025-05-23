@@ -43,7 +43,7 @@ function BotMessage({ text }: { text: string }) {
 
 function BotLoading() {
   return (
-    <div className="flex items-start animate-fadeIn">
+    <div className="flex items-start animate-fadeIn" data-testid="chat-loading">
       <div className="mr-2">
         <BotProfile />
       </div>

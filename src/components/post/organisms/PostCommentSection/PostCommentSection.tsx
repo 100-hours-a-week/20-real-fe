@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 
 import { PostCommentForm } from '@/components/post/molecules/PostCommentForm';
 import { PostCommentList } from '@/components/post/organisms/PostCommentList';
@@ -8,6 +8,7 @@ import { EventName } from '@/lib/firebase/eventNames';
 import { firebaseLogging } from '@/lib/firebase/logEvent';
 import { useCreateNewsCommentMutation } from '@/queries/news/useCreateNewsCommentMutation';
 import { useCreateNoticeCommentMutation } from '@/queries/post/useCreateNoticeCommentMutation';
+import { useToastStore } from '@/stores/toastStore';
 import { PostTypes } from '@/types/post/postType';
 
 interface PostCommentSectionProps {
@@ -22,6 +23,19 @@ export function PostCommentSection({ type, postId, commentCount: initialCommentC
 
   const [comment, setComment] = useState('');
   const [commentCount, setCommentCount] = useState(initialCommentCount);
+
+  const { showToast } = useToastStore();
+
+  const handleCommentChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    if (value.length > 500) {
+      showToast('메시지는 최대 500자까지 입력 가능합니다.', 'error');
+      return;
+    }
+
+    setComment(value);
+  };
 
   const handleSubmitComment = (e: FormEvent) => {
     e.preventDefault();
@@ -49,7 +63,7 @@ export function PostCommentSection({ type, postId, commentCount: initialCommentC
     <div>
       <PostCommentForm
         comment={comment}
-        setComment={setComment}
+        setComment={handleCommentChange}
         commentCount={commentCount}
         onSubmitComment={handleSubmitComment}
       />

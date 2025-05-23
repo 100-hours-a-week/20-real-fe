@@ -8,7 +8,10 @@ interface HotNewsItemProps {
 
 export function HotNewsItem({ news, userRead }: HotNewsItemProps) {
   return (
-    <div className="bg-white rounded-xl shadow-sm overflow-hidden mt-1 transition-transform hover:-translate-y-1 hover:shadow-md">
+    <div
+      className="bg-white rounded-xl shadow-sm overflow-hidden mt-1 transition-transform hover:-translate-y-1 hover:shadow-md"
+      data-testid="hot-news-item"
+    >
       <div className="relative w-full aspect-[3/2]">
         <SafeImage src={news.imageUrl ?? ''} alt={news.title} className="object-cover rounded-t-xl" fill />
       </div>

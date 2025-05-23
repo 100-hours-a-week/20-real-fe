@@ -6,7 +6,7 @@ interface PostSummaryProps {
 
 export function PostSummary({ summary }: PostSummaryProps) {
   return (
-    <div className="mx-4 mb-4 bg-gray-50 rounded-xl p-4">
+    <div className="mx-4 mb-4 bg-gray-50 rounded-xl p-4" data-testid='post-summary'>
       <div className="flex items-start">
         <div className="mr-3 text-amber-500 mt-1">
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">

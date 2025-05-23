@@ -90,6 +90,7 @@ export function Modal({ isOpen, onClose, title, children, actions = [], showClos
                   if (onClick) onClick();
                   if (autoClose) onClose();
                 }}
+                data-testid={`modal-button-${idx}`}
               >
                 {label}
               </Button>
