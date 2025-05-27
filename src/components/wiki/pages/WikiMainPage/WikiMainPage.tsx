@@ -26,7 +26,7 @@ export function WikiMainPage() {
   };
 
   const goToWikiPage = (title: string) => {
-    router.push(`/wiki/${encodeURIComponent(title)}`);
+    router.push(`/wiki/search?keyword=${encodeURIComponent(title)}`);
   };
 
   return (
