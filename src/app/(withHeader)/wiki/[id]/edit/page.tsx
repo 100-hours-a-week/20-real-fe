@@ -1,11 +1,11 @@
 import { WikiEditPage } from '@/components/wiki/pages/WikiEditPage';
 
 interface PageParams {
-  params: Promise<{ title: string }>;
+  params: Promise<{ id: string }>;
 }
 
 export default async function Page({ params }: PageParams) {
-  const { title } = await params;
+  const { id } = await params;
 
-  return <WikiEditPage title={title} />;
+  return <WikiEditPage id={id} />;
 }

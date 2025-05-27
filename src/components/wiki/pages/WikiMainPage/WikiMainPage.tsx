@@ -14,10 +14,10 @@ export function WikiMainPage() {
   const [searchTerm, setSearchTerm] = useState('');
 
   const popularPages = [
-    { title: 'river.park(박창수)/클라우드', lastEdit: '2시간 전' },
-    { title: 'river.park(박창수)/클라우드2', lastEdit: '5시간 전' },
-    { title: 'river.park(박창수)/클라우드3', lastEdit: '1일 전' },
-    { title: 'river.park(박창수)/클라우드4', lastEdit: '3일 전' },
+    { id: 1, title: 'river.park(박창수)/클라우드', lastEdit: '2시간 전' },
+    { id: 2, title: 'river.park(박창수)/클라우드2', lastEdit: '5시간 전' },
+    { id: 3, title: 'river.park(박창수)/클라우드3', lastEdit: '1일 전' },
+    { id: 4, title: 'river.park(박창수)/클라우드4', lastEdit: '3일 전' },
   ];
 
   const handleSearch = (e: FormEvent) => {
@@ -25,8 +25,8 @@ export function WikiMainPage() {
     goToWikiPage(searchTerm);
   };
 
-  const goToWikiPage = (title: string) => {
-    router.push(`/wiki/search?keyword=${encodeURIComponent(title)}`);
+  const goToWikiPage = (id: string) => {
+    router.push(`/wiki/search?keyword=${id}`);
   };
 
   return (
@@ -67,7 +67,7 @@ export function WikiMainPage() {
           <div className="grid gap-4">
             {popularPages.map((page) => (
               <Link
-                href={`/wiki/${encodeURIComponent(page.title)}`}
+                href={`/wiki/${page.id}`}
                 key={page.title}
                 className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm"
               >
