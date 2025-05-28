@@ -7,13 +7,22 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
 import { Button } from '@/components/common/atoms/Button';
+import { LoadingIndicator } from '@/components/common/atoms/LoadingIndicator';
 import { Input } from '@/components/common/molecules/Input';
+import { useInfiniteScrollObserver } from '@/hooks/useInfiniteScrollObserver';
+import { useWikiSearchListInfinityQuery } from '@/queries/wiki/useWikiSearchListInfinityQuery';
 
 export function WikiSearchPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const searchedKeyword = searchParams.get('keyword') ?? '';
   const [searchTerm, setSearchTerm] = useState(searchedKeyword);
+  const {
+    data: searchResults,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useWikiSearchListInfinityQuery('TITLE', searchedKeyword);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault(); // 폼 기본 동작 방지
@@ -22,20 +31,11 @@ export function WikiSearchPage() {
     router.push(`?${params.toString()}`);
   };
 
-  const searchResult = [
-    {
-      id: 1,
-      title: 'river.park(박창수)/클라우드',
-    },
-    {
-      id: 2,
-      title: 'river.kim(김창수)/클라우드2',
-    },
-    {
-      id: 3,
-      title: 'river.lee(이창수)/클라우드3',
-    },
-  ];
+  const loadingRef = useInfiniteScrollObserver({
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  });
 
   return (
     <div className="min-h-app bg-gray-50">
@@ -67,20 +67,22 @@ export function WikiSearchPage() {
 
         {/* 검색 결과 */}
         <div className="space-y-3">
-          {searchResult.map((item, index) => (
-            <Link
-              href={`/wiki/${item.id}`}
-              key={index}
-              onClick={() => {}}
-              className="inline-block w-full text-left p-4 bg-white rounded-xl transition-shadow duration-300 shadow-sm hover:shadow-md"
-            >
-              <div className="flex items-center justify-between">
-                <span className=" font-medium text-gray-800 transition-colors">{item.title}</span>
-                <ArrowRight className="w-4 h-4 text-gray-800 transition-all duration-300 transform translate-x-1" />
-              </div>
-            </Link>
-          ))}
+          {searchResults &&
+            searchResults.map((item, index) => (
+              <Link
+                href={`/wiki/${item.id}`}
+                key={index}
+                onClick={() => {}}
+                className="inline-block w-full text-left p-4 bg-white rounded-xl transition-shadow duration-300 shadow-sm hover:shadow-md"
+              >
+                <div className="flex items-center justify-between">
+                  <span className=" font-medium text-gray-800 transition-colors">{item.title}</span>
+                  <ArrowRight className="w-4 h-4 text-gray-800 transition-all duration-300 transform translate-x-1" />
+                </div>
+              </Link>
+            ))}
         </div>
+        <LoadingIndicator loadingRef={loadingRef} hasNextPage={hasNextPage} isFetchingNextPage={isFetchingNextPage} />
       </div>
     </div>
   );

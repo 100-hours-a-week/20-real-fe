@@ -16,7 +16,7 @@ export const getWikiSearch = async ({
   limit = 10,
   sort = 'TITLE',
   keyword = null,
-}: getWikiSearchRequest) => {
+}: getWikiSearchRequest): Promise<CursorResponse<Wiki>> => {
   const params = new URLSearchParams({
     ...(cursorId && { cursorId: cursorId.toString() }),
     ...(cursorStandard && { cursorStandard }),
@@ -35,6 +35,8 @@ export const getWikiSearch = async ({
       nextCursorId: null,
     };
   }
+
+  return res.data;
 };
 
 // 위키 상세 조회
