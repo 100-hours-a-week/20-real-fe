@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { WikiEditor } from '@/components/wiki/organisms/WikiEditor';
 
 interface WikiDetailPageProps {
   id: string;
@@ -6,9 +6,10 @@ interface WikiDetailPageProps {
 
 export function WikiDetailPage({ id }: WikiDetailPageProps) {
   return (
-    <>
-      <div>{decodeURIComponent(id)} 위키 문서</div>
-      <Link href={`/wiki/${id}/edit`}>문서 편집</Link>
-    </>
+    <div>
+      <h2 className="text-2xl font-bold mx-4 mt-8 mb-3">{id}번 위키</h2>
+      <hr className="text-neutral-300" />
+      <WikiEditor title={'test'} />
+    </div>
   );
 }

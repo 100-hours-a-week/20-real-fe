@@ -32,7 +32,7 @@ export function WikiEditor({ title }: { title: string }) {
   const toolbarRef = React.useRef<HTMLDivElement>(null);
 
   const doc = useMemo(() => new Y.Doc(), []);
-  useMemo(() => new WebsocketProvider('ws://localhost:1234', title, doc), [doc, title]);
+  useMemo(() => new WebsocketProvider('ws://localhost:3002', title, doc), [doc, title]);
 
   const editor = useEditor({
     immediatelyRender: false,
