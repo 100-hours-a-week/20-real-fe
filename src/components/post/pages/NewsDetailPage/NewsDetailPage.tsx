@@ -22,9 +22,12 @@ export function NewsDetailPage() {
   if (isLoading) return null;
   if (isError) {
     switch (error?.code) {
-      case 'UNAUTHORIZED': return <RedirectWithLoginModalPage/>
-      case 'NOT_FOUND': return <NotFoundPage/>
-      default: return <ErrorPage/>
+      case 'UNAUTHORIZED':
+        return <RedirectWithLoginModalPage />;
+      case 'NOT_FOUND':
+        return <NotFoundPage />;
+      default:
+        return <ErrorPage />;
     }
   }
   if (!news) return <ErrorPage />;
@@ -39,7 +42,7 @@ export function NewsDetailPage() {
         <div className="px-4 pb-3">
           <MarkdownViewer text={news.content} />
 
-          <ImageViewer imageUrl={news.imageUrl} />
+          {news.imageUrl && <ImageViewer imageUrl={news.imageUrl} />}
         </div>
 
         <PostReaction type={PostTypes.News} postId={news.id} userLike={news.userLike} likeCount={news.likeCount} />

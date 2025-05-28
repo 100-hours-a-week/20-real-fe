@@ -1,6 +1,6 @@
 'use client';
 
-import { Bell, ChevronRight, LogOut, MessageCircle, Newspaper, X } from 'lucide-react';
+import { Bell, ChevronRight, LogOut, MessageCircle, Newspaper, NotebookPen, X } from 'lucide-react';
 import Link from 'next/link';
 
 import { useEffect } from 'react';
@@ -24,6 +24,7 @@ export function Sidebar() {
     { label: '춘비서', href: '/chatbot', icon: <MessageCircle size={18} /> },
     { label: '공지사항', href: '/notices', icon: <Bell size={18} /> },
     { label: '카테부 뉴스', href: '/news', icon: <Newspaper size={18} /> },
+    { label: '위키', href: '/wiki', icon: <NotebookPen size={18} /> },
   ];
 
   // open 상태라면 overflow hidden하여 스크롤 차단

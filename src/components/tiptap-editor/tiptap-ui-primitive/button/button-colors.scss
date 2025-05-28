@@ -1,0 +1,224 @@
+.tiptap-button {
+  /**************************************************
+      Default button background color
+  **************************************************/
+
+  --tt-button-default-bg-color: var(--color-neutral-100);
+  --tt-button-hover-bg-color: var(--color-neutral-200);
+  --tt-button-active-bg-color: var(--color-neutral-200);
+  --tt-button-active-bg-color-emphasized: var(
+    --color-primary-100
+  ); //more important active state
+  --tt-button-active-bg-color-subdued: var(
+    --color-neutral-200
+  ); //less important active state
+  --tt-button-active-hover-bg-color: var(--color-neutral-300);
+  --tt-button-active-hover-bg-color-emphasized: var(
+    --color-primary-200
+  ); //more important active state hover
+  --tt-button-active-hover-bg-color-subdued: var(
+    --color-neutral-300
+  ); //less important active state hover
+  --tt-button-disabled-bg-color: var(--color-neutral-50);
+
+
+  /**************************************************
+      Default button text color
+  **************************************************/
+
+  --tt-button-default-text-color: var(--color-neutral-600);
+  --tt-button-hover-text-color: var(--color-neutral-900);
+  --tt-button-active-text-color: var(--color-neutral-900);
+  --tt-button-active-text-color-emphasized: var(--color-neutral-900);
+  --tt-button-active-text-color-subdued: var(--color-neutral-900);
+  --tt-button-disabled-text-color: var(--color-neutral-400);
+
+  /**************************************************
+      Default button icon color
+  **************************************************/
+
+  --tt-button-default-icon-color: var(--color-neutral-600);
+  --tt-button-hover-icon-color: var(--color-neutral-900);
+  --tt-button-active-icon-color: var(--color-primary-500);
+  --tt-button-active-icon-color-emphasized: var(--color-primary-600);
+  --tt-button-active-icon-color-subdued: var(--color-neutral-900);
+  --tt-button-disabled-icon-color: var(--color-neutral-400);
+
+
+  /**************************************************
+      Default button subicon color
+  **************************************************/
+
+  --tt-button-default-icon-sub-color: var(--color-neutral-400);
+  --tt-button-hover-icon-sub-color: var(--color-neutral-500);
+  --tt-button-active-icon-sub-color: var(--color-neutral-400);
+  --tt-button-active-icon-sub-color-emphasized: var(--color-neutral-500);
+  --tt-button-active-icon-sub-color-subdued: var(--color-neutral-400);
+  --tt-button-disabled-icon-sub-color: var(--color-neutral-100);
+
+  /**************************************************
+      Default button dropdown / arrows color
+  **************************************************/
+
+  /* Light mode */
+  --tt-button-default-dropdown-arrows-color: var(--color-neutral-600);
+  --tt-button-hover-dropdown-arrows-color: var(--color-neutral-700);
+  --tt-button-active-dropdown-arrows-color: var(--color-neutral-600);
+  --tt-button-active-dropdown-arrows-color-emphasized: var(
+    --color-neutral-700
+  );
+  --tt-button-active-dropdown-arrows-color-subdued: var(--color-neutral-600);
+  --tt-button-disabled-dropdown-arrows-color: var(--color-neutral-400);
+
+  /* ----------------------------------------------------------------
+      --------------------------- GHOST BUTTON --------------------------
+      ---------------------------------------------------------------- */
+
+  &[data-style="ghost"] {
+    /**************************************************
+        Ghost button background color
+    **************************************************/
+
+    --tt-button-default-bg-color: var(--transparent);
+    --tt-button-hover-bg-color: var(--color-neutral-200);
+    --tt-button-active-bg-color: var(--color-neutral-100);
+    --tt-button-active-bg-color-emphasized: var(
+      --color-primary-100
+    ); //more important active state
+    --tt-button-active-bg-color-subdued: var(
+      --color-neutral-100
+    ); //less important active state
+    --tt-button-active-hover-bg-color: var(--color-neutral-200);
+    --tt-button-active-hover-bg-color-emphasized: var(
+      --color-primary-200
+    ); //more important active state hover
+    --tt-button-active-hover-bg-color-subdued: var(
+      --color-neutral-200
+    ); //less important active state hover
+    --tt-button-disabled-bg-color: var(--transparent);
+
+    /**************************************************
+        Ghost button text color
+    **************************************************/
+
+    --tt-button-default-text-color: var(--color-neutral-600);
+    --tt-button-hover-text-color: var(--color-neutral-900);
+    --tt-button-active-text-color: var(--color-neutral-900);
+    --tt-button-active-text-color-emphasized: var(--color-neutral-900);
+    --tt-button-active-text-color-subdued: var(--color-neutral-900);
+    --tt-button-disabled-text-color: var(--color-neutral-400);
+
+    /**************************************************
+        Ghost button icon color
+    **************************************************/
+
+    --tt-button-default-icon-color: var(--color-neutral-600);
+    --tt-button-hover-icon-color: var(--color-neutral-900);
+    --tt-button-active-icon-color: var(--color-primary-500);
+    --tt-button-active-icon-color-emphasized: var(--color-primary-600);
+    --tt-button-active-icon-color-subdued: var(--color-neutral-900);
+    --tt-button-disabled-icon-color: var(--color-neutral-400);
+
+    /**************************************************
+        Ghost button subicon color
+    **************************************************/
+
+    --tt-button-default-icon-sub-color: var(--color-neutral-400);
+    --tt-button-hover-icon-sub-color: var(--color-neutral-500);
+    --tt-button-active-icon-sub-color: var(--color-neutral-400);
+    --tt-button-active-icon-sub-color-emphasized: var(--color-neutral-500);
+    --tt-button-active-icon-sub-color-subdued: var(--color-neutral-400);
+    --tt-button-disabled-icon-sub-color: var(--color-neutral-100);
+
+    /**************************************************
+        Ghost button dropdown / arrows color
+    **************************************************/
+
+    --tt-button-default-dropdown-arrows-color: var(--color-neutral-600);
+    --tt-button-hover-dropdown-arrows-color: var(--color-neutral-700);
+    --tt-button-active-dropdown-arrows-color: var(--color-neutral-600);
+    --tt-button-active-dropdown-arrows-color-emphasized: var(
+      --color-neutral-700
+    );
+    --tt-button-active-dropdown-arrows-color-subdued: var(
+      --color-neutral-600
+    );
+    --tt-button-disabled-dropdown-arrows-color: var(--color-neutral-400);
+  }
+
+  /* ----------------------------------------------------------------
+      -------------------------- PRIMARY BUTTON -------------------------
+      ---------------------------------------------------------------- */
+
+  &[data-style="primary"] {
+    /**************************************************
+        Primary button background color
+    **************************************************/
+    --tt-button-default-bg-color: var(--color-primary-500);
+    --tt-button-hover-bg-color: var(--color-primary-600);
+    --tt-button-active-bg-color: var(--color-primary-100);
+    --tt-button-active-bg-color-emphasized: var(
+      --color-primary-100
+    ); //more important active state
+    --tt-button-active-bg-color-subdued: var(
+      --color-primary-100
+    ); //less important active state
+    --tt-button-active-hover-bg-color: var(--color-primary-200);
+    --tt-button-active-hover-bg-color-emphasized: var(
+      --color-primary-200
+    ); //more important active state hover
+    --tt-button-active-hover-bg-color-subdued: var(
+      --color-primary-200
+    ); //less important active state hover
+    --tt-button-disabled-bg-color: var(--color-neutral-100);
+
+    /**************************************************
+        Primary button text color
+    **************************************************/
+
+    --tt-button-default-text-color: var(--white);
+    --tt-button-hover-text-color: var(--white);
+    --tt-button-active-text-color: var(--color-neutral-900);
+    --tt-button-active-text-color-emphasized: var(--color-neutral-900);
+    --tt-button-active-text-color-subdued: var(--color-neutral-900);
+    --tt-button-disabled-text-color: var(--color-neutral-400);
+
+    /**************************************************
+        Primary button icon color
+    **************************************************/
+
+    --tt-button-default-icon-color: var(--white);
+    --tt-button-hover-icon-color: var(--white);
+    --tt-button-active-icon-color: var(--color-primary-600);
+    --tt-button-active-icon-color-emphasized: var(--color-primary-600);
+    --tt-button-active-icon-color-subdued: var(--color-primary-600);
+    --tt-button-disabled-icon-color: var(--color-neutral-400);
+
+    /**************************************************
+        Primary button subicon color
+    **************************************************/
+
+    --tt-button-default-icon-sub-color: var(--tt-gray-dark-a-500);
+    --tt-button-hover-icon-sub-color: var(--tt-gray-dark-a-500);
+    --tt-button-active-icon-sub-color: var(--color-neutral-500);
+    --tt-button-active-icon-sub-color-emphasized: var(--color-neutral-500);
+    --tt-button-active-icon-sub-color-subdued: var(--color-neutral-500);
+    --tt-button-disabled-icon-sub-color: var(--color-neutral-100);
+
+    /**************************************************
+        Primary button dropdown / arrows color
+    **************************************************/
+
+    --tt-button-default-dropdown-arrows-color: var(--white);
+    --tt-button-hover-dropdown-arrows-color: var(--white);
+    --tt-button-active-dropdown-arrows-color: var(--color-neutral-700);
+    --tt-button-active-dropdown-arrows-color-emphasized: var(
+      --color-neutral-700
+    );
+    --tt-button-active-dropdown-arrows-color-subdued: var(
+      --color-neutral-700
+    );
+    --tt-button-disabled-dropdown-arrows-color: var(--color-neutral-400);
+
+  }
+}

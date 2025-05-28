@@ -1,6 +1,7 @@
 'use client';
 
 import { ArrowLeft, Menu } from 'lucide-react';
+import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
 import { Button } from '@/components/common/atoms/Button';
@@ -11,7 +12,7 @@ export function Header() {
   const router = useRouter();
   const openSidebar = useSidebarStore((state) => state.open);
   const pathname = usePathname();
-  const hideBackButton = ['/chatbot', '/notices', '/news'].includes(pathname);
+  const hideBackButton = ['/chatbot', '/notices', '/news', '/wiki'].includes(pathname);
 
   return (
     <header
@@ -28,9 +29,9 @@ export function Header() {
       </div>
 
       {/* 가운데: 타이틀 */}
-      <div className="flex-1 flex justify-center">
+      <Link href="/" className="flex-1 flex justify-center items-center cursor-pointer">
         <h1 className="text-base font-bold text-gray-900">춘이네 비서실</h1>
-      </div>
+      </Link>
 
       {/* 오른쪽: 알림 + 메뉴 버튼 */}
       <div className="flex items-center gap-2 min-w-24 justify-end">
