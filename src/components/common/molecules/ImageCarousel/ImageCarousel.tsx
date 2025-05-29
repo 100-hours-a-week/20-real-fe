@@ -6,10 +6,15 @@ import { useState } from 'react';
 
 import { Button } from '@/components/common/atoms/Button';
 import { ImageViewer } from '@/components/common/molecules/ImageViewer';
-import { NoticeFile } from '@/types/post/noticeFile';
+
+export interface SingleImage {
+  id: number;
+  url: string;
+  name?: string;
+}
 
 interface ImageCarouselProps {
-  images: NoticeFile[];
+  images: SingleImage[];
 }
 
 export function ImageCarousel({ images }: ImageCarouselProps) {
@@ -32,8 +37,8 @@ export function ImageCarousel({ images }: ImageCarouselProps) {
           >
             <ImageViewer
               className="w-full h-full object-cover object-center cursor-pointer"
-              imageUrl={image.fileUrl}
-              imageName={image.fileName}
+              imageUrl={image.url}
+              imageName={image.name}
             />
           </div>
         ))}

@@ -12,7 +12,7 @@ export function Header() {
   const router = useRouter();
   const openSidebar = useSidebarStore((state) => state.open);
   const pathname = usePathname();
-  const hideBackButton = ['/chatbot', '/notices', '/news', '/wiki'].includes(pathname);
+  const hideBackButton = ['/chatbot', '/notices', '/news', '/wiki', '/home'].includes(pathname);
 
   return (
     <header
@@ -29,7 +29,7 @@ export function Header() {
       </div>
 
       {/* 가운데: 타이틀 */}
-      <Link href="/" className="flex-1 flex justify-center items-center cursor-pointer">
+      <Link href="/home" className="flex-1 flex justify-center items-center cursor-pointer">
         <h1 className="text-base font-bold text-gray-900">춘이네 비서실</h1>
       </Link>
 

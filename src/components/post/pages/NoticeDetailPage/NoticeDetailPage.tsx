@@ -50,7 +50,15 @@ export function NoticeDetailPage() {
         <div className="px-4 pb-3">
           <MarkdownViewer text={notice.content} />
 
-          {notice.images.length > 0 && <ImageCarousel images={notice.images} />}
+          {notice.images.length > 0 && (
+            <ImageCarousel
+              images={notice.images.map((image) => ({
+                id: image.id,
+                url: image.fileUrl,
+                name: image.fileName,
+              }))}
+            />
+          )}
 
           {notice.files.length > 0 &&
             notice.files.map((file) => (

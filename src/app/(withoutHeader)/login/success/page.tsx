@@ -18,7 +18,7 @@ export default function LoginSuccessPage() {
     if (isSuccess && data?.data) {
       setUser(data.data);
       setIsApproved(data.data.role === 'STAFF' || data.data.role === 'TRAINEE');
-      router.replace('/chatbot');
+      router.replace('/home');
     }
 
     if (isError) {

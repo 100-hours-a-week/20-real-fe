@@ -1,14 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { ImageCarousel } from '@/components/common/molecules/ImageCarousel/index';
-import { NoticeFile } from '@/types/post/noticeFile';
 
 import '@/app/globals.css';
 
-const mockImages: NoticeFile[] = [
-  { id: 1, fileName: '이미지1', fileUrl: 'https://placehold.co/900x300.png', fileType: 'png', fileSeqNo: 1 },
-  { id: 2, fileName: '이미지2', fileUrl: 'https://placehold.co/600x200.png', fileType: 'png', fileSeqNo: 1 },
-  { id: 3, fileName: '이미지3', fileUrl: 'https://placehold.co/300x100.png', fileType: 'png', fileSeqNo: 1 },
+const mockImages = [
+  { id: 1, name: '이미지1', url: 'https://placehold.co/900x300.png' },
+  { id: 2, name: '이미지2', url: 'https://placehold.co/600x200.png' },
+  { id: 3, name: '이미지3', url: 'https://placehold.co/300x100.png' },
 ];
 
 const meta: Meta<typeof ImageCarousel> = {
