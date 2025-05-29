@@ -19,8 +19,8 @@ export function ChatbotPage() {
 
   const messagesEndRef = useAutoScroll([chats]);
 
+  // 쿼리에서 질문이 들어왔을 때 처음 한 번만 실행하도록
   const hasRun = useRef(false);
-
   useEffect(() => {
     if (hasRun.current) return;
     const params = new URLSearchParams(window.location.search);
@@ -30,6 +30,7 @@ export function ChatbotPage() {
       loadAnswer(question);
       router.replace('/chatbot');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
