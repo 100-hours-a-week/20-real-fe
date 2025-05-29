@@ -4,7 +4,7 @@ import { ArrowRight, Search } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 
 import { Button } from '@/components/common/atoms/Button';
 import { Input } from '@/components/common/molecules/Input';
@@ -15,7 +15,7 @@ export function WikiSearchPage() {
   const searchedKeyword = searchParams.get('keyword') ?? '';
   const [searchTerm, setSearchTerm] = useState(searchedKeyword);
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = (e: FormEvent) => {
     e.preventDefault(); // 폼 기본 동작 방지
     const params = new URLSearchParams(searchParams.toString());
     params.set('keyword', searchTerm);
