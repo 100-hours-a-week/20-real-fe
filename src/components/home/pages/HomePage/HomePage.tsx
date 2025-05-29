@@ -12,14 +12,12 @@ import ChoonStudy from '@/assets/choon-study.png';
 import { Button } from '@/components/common/atoms/Button';
 import { Input } from '@/components/common/molecules/Input';
 import { NewsPanel } from '@/components/home/organisms/NewsPanel';
-import { useToastStore } from '@/stores/toastStore';
 
 import { NoticesPanel } from '../../organisms/NoticesPanel';
 
 export function HomePage() {
   const [searchQuery, setSearchQuery] = useState('');
 
-  const { showToast } = useToastStore();
   const router = useRouter();
 
   const handleAIQuestion = (e: FormEvent<HTMLFormElement>) => {
@@ -54,8 +52,8 @@ export function HomePage() {
 
         {/* 바로가기 - 퀴즈와 위키 */}
         <div className="mt-8 grid grid-cols-2 gap-4">
-          <div
-            onClick={() => showToast('준비 중인 기능이에요')}
+          <Link
+            href={'/quiz'}
             className="relative bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200 cursor-pointer group"
           >
             <h3 className="font-semibold text-xl text-gray-800">
@@ -68,7 +66,7 @@ export function HomePage() {
               alt={'오늘의 퀴즈'}
               className="absolute right-0 bottom-0 w-24 h-24 group-hover:scale-110 transition-transform duration-200"
             />
-          </div>
+          </Link>
 
           <Link
             href={'/wiki'}
