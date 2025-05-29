@@ -5,45 +5,27 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-import { FormEvent, useMemo, useState } from 'react';
+import { FormEvent, useState } from 'react';
 
 import ChoonQuiz from '@/assets/choon-quiz.png';
 import ChoonStudy from '@/assets/choon-study.png';
 import { Button } from '@/components/common/atoms/Button';
-import { ImageCarousel } from '@/components/common/molecules/ImageCarousel';
 import { Input } from '@/components/common/molecules/Input';
-import { useNewsListQuery } from '@/queries/news/useNewsListQuery';
+import { NewsPanel } from '@/components/home/organisms/NewsPanel';
 import { useToastStore } from '@/stores/toastStore';
 
 import { NoticesPanel } from '../../organisms/NoticesPanel';
 
 export function HomePage() {
   const [searchQuery, setSearchQuery] = useState('');
-  const { data: news } = useNewsListQuery('latest', 5);
 
   const { showToast } = useToastStore();
   const router = useRouter();
-
-  const newsImages = useMemo(() => {
-    return (
-      news?.map((item, index) => ({
-        id: index,
-        url: item.imageUrl ?? '',
-        fileName: item.imageUrl ?? '',
-        title: item.title,
-      })) ?? []
-    );
-  }, [news]);
 
   const handleAIQuestion = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!searchQuery.trim()) return;
     router.push(`/chatbot?q=${encodeURIComponent(searchQuery)}`);
-  };
-
-  const handleNewsImageClick = (index: number) => {
-    if (!news) return;
-    router.push(`/news/${news[index].id}`);
   };
 
   return (
@@ -102,29 +84,20 @@ export function HomePage() {
         </div>
 
         {/* 최신 뉴스 */}
-        {news && (
-          <div className="mt-10">
-            <div className="flex items-center justify-between mb-5">
-              <div className="flex flex-row gap-2 items-center">
-                <Newspaper size={20} />
-                <h2 className="text-lg font-bold text-gray-900">최신 뉴스</h2>
-              </div>
-              <Link href="/news" className="text-gray-500 text-sm flex items-center">
-                더보기
-                <ChevronRight className="w-4 h-4 ml-1" />
-              </Link>
+        <div className="mt-10">
+          <div className="flex items-center justify-between mb-5">
+            <div className="flex items-center gap-2">
+              <Newspaper size={20} />
+              <h2 className="text-lg font-bold text-gray-900">최신 뉴스</h2>
             </div>
-
-            <ImageCarousel.Root images={newsImages}>
-              <div className="relative">
-                <ImageCarousel.ImageList onImageClick={handleNewsImageClick} />
-                <ImageCarousel.Controls />
-                <ImageCarousel.ImageTitle />
-              </div>
-              <ImageCarousel.Indicators />
-            </ImageCarousel.Root>
+            <Link href="/news" className="text-gray-500 text-sm flex items-center">
+              더보기
+              <ChevronRight className="w-4 h-4 ml-1" />
+            </Link>
           </div>
-        )}
+
+          <NewsPanel />
+        </div>
 
         {/* 공지사항 */}
         <div className="mt-10">
