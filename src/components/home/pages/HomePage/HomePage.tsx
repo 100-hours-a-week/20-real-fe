@@ -13,14 +13,14 @@ import { Button } from '@/components/common/atoms/Button';
 import { ImageCarousel } from '@/components/common/molecules/ImageCarousel';
 import { Input } from '@/components/common/molecules/Input';
 import { useNewsListQuery } from '@/queries/news/useNewsListQuery';
-import { useNoticeListQuery } from '@/queries/post/useNoticeListQuery';
 import { useToastStore } from '@/stores/toastStore';
-import { formatTime } from '@/utils/times';
+
+import { NoticesPanel } from '../../organisms/NoticesPanel';
 
 export function HomePage() {
   const [searchQuery, setSearchQuery] = useState('');
   const { data: news } = useNewsListQuery('latest', 5);
-  const { data: notices } = useNoticeListQuery();
+
   const { showToast } = useToastStore();
   const router = useRouter();
 
@@ -139,29 +139,7 @@ export function HomePage() {
             </Link>
           </div>
 
-          <div className="space-y-3 bg-white rounded-xl">
-            {notices &&
-              notices.map((notice, index) => (
-                <div key={notice.id} className="px-2">
-                  <Link href={`/notices/${notice.id}`} className="p-4 w-full block">
-                    <h3
-                      className={`font-medium  mb-1 line-clamp-1 ${notice.userRead ? 'text-gray-400' : 'text-gray-900'}`}
-                    >
-                      {notice.title}
-                    </h3>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2 text-sm text-gray-500">
-                        <span>{formatTime(notice.createdAt)}</span>
-                        <span>•</span>
-                        <span>{notice.platform}</span>
-                      </div>
-                      <span className="text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded">{notice.author}</span>
-                    </div>
-                  </Link>
-                  {index !== notices.length - 1 && <hr className="border-t border-gray-200 mx-4" />}
-                </div>
-              ))}
-          </div>
+          <NoticesPanel />
         </div>
       </div>
     </div>
