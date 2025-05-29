@@ -10,9 +10,9 @@ const mockImages = [
   { id: 3, name: '이미지3', url: 'https://placehold.co/300x100.png' },
 ];
 
-const meta: Meta<typeof ImageCarousel> = {
+const meta: Meta<typeof ImageCarousel.Root> = {
   title: 'Common/ImageCarousel',
-  component: ImageCarousel,
+  component: ImageCarousel.Root,
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
@@ -29,12 +29,19 @@ const meta: Meta<typeof ImageCarousel> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof ImageCarousel>;
+type Story = StoryObj<typeof ImageCarousel.Root>;
 
 export const Default: Story = {
   render: () => (
     <div className="w-full max-w-2xl min-h-[400px] h-full p-4">
-      <ImageCarousel images={mockImages} />
+      <ImageCarousel.Root images={mockImages}>
+        <div className="relative">
+          <ImageCarousel.ImageList />
+          <ImageCarousel.Controls />
+          <ImageCarousel.ImageTitle />
+        </div>
+        <ImageCarousel.Indicators />
+      </ImageCarousel.Root>
     </div>
   ),
 };

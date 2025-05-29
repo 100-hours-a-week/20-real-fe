@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-import { FormEvent, useState } from 'react';
+import { FormEvent, useMemo, useState } from 'react';
 
 import ChoonQuiz from '@/assets/choon-quiz.png';
 import ChoonStudy from '@/assets/choon-study.png';
@@ -24,10 +24,26 @@ export function HomePage() {
   const { showToast } = useToastStore();
   const router = useRouter();
 
+  const newsImages = useMemo(() => {
+    return (
+      news?.map((item, index) => ({
+        id: index,
+        url: item.imageUrl ?? '',
+        fileName: item.imageUrl ?? '',
+        title: item.title,
+      })) ?? []
+    );
+  }, [news]);
+
   const handleAIQuestion = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!searchQuery.trim()) return;
     router.push(`/chatbot?q=${encodeURIComponent(searchQuery)}`);
+  };
+
+  const handleNewsImageClick = (index: number) => {
+    if (!news) return;
+    router.push(`/news/${news[index].id}`);
   };
 
   return (
@@ -99,15 +115,14 @@ export function HomePage() {
               </Link>
             </div>
 
-            <ImageCarousel
-              images={news
-                .filter((item) => item.imageUrl != null)
-                .map((item, index) => ({
-                  id: index,
-                  url: item.imageUrl!,
-                  name: item.imageUrl!,
-                }))}
-            />
+            <ImageCarousel.Root images={newsImages}>
+              <div className="relative">
+                <ImageCarousel.ImageList onImageClick={handleNewsImageClick} />
+                <ImageCarousel.Controls />
+                <ImageCarousel.ImageTitle />
+              </div>
+              <ImageCarousel.Indicators />
+            </ImageCarousel.Root>
           </div>
         )}
 

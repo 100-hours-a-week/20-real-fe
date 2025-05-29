@@ -51,13 +51,19 @@ export function NoticeDetailPage() {
           <MarkdownViewer text={notice.content} />
 
           {notice.images.length > 0 && (
-            <ImageCarousel
-              images={notice.images.map((image) => ({
-                id: image.id,
-                url: image.fileUrl,
-                name: image.fileName,
+            <ImageCarousel.Root
+              images={notice.images.map((item) => ({
+                id: item.id,
+                url: item.fileUrl,
+                name: item.fileName,
               }))}
-            />
+            >
+              <div className="relative">
+                <ImageCarousel.Controls />
+                <ImageCarousel.ImageList />
+              </div>
+              <ImageCarousel.Indicators />
+            </ImageCarousel.Root>
           )}
 
           {notice.files.length > 0 &&
