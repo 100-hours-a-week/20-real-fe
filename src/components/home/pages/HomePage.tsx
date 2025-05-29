@@ -144,7 +144,11 @@ export function HomePage() {
               notices.map((notice, index) => (
                 <div key={notice.id} className="px-2">
                   <Link href={`/notices/${notice.id}`} className="p-4 w-full block">
-                    <h3 className="font-medium text-gray-900 mb-1 line-clamp-1">{notice.title}</h3>
+                    <h3
+                      className={`font-medium  mb-1 line-clamp-1 ${notice.userRead ? 'text-gray-400' : 'text-gray-900'}`}
+                    >
+                      {notice.title}
+                    </h3>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2 text-sm text-gray-500">
                         <span>{formatTime(notice.createdAt)}</span>
