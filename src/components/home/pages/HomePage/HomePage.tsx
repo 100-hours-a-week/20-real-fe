@@ -1,53 +1,21 @@
-'use client';
-
 import { ChevronRight, Megaphone, Newspaper } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-
-import { FormEvent, useState } from 'react';
 
 import ChoonQuiz from '@/assets/choon-quiz.png';
 import ChoonStudy from '@/assets/choon-study.png';
-import { Button } from '@/components/common/atoms/Button';
-import { Input } from '@/components/common/molecules/Input';
+import { AiQuestionForm } from '@/components/home/organisms/HomeChatbotForm';
 import { NewsPanel } from '@/components/home/organisms/NewsPanel';
-
-import { NoticesPanel } from '../../organisms/NoticesPanel';
+import { NoticesPanel } from '@/components/home/organisms/NoticesPanel';
 
 export function HomePage() {
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const router = useRouter();
-
-  const handleAIQuestion = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!searchQuery.trim()) return;
-    router.push(`/chatbot?q=${encodeURIComponent(searchQuery)}`);
-  };
-
   return (
     <div className="min-h-screen bg-neutral-50">
       <div className="max-w-md mx-auto px-4 py-6">
         {/* 챗봇 */}
         <div className="bg-white rounded-3xl p-6 text-white relative overflow-hidden shadow-sm">
           <h1 className="text-xl font-bold text-black mb-2">춘비서에게 질문하기</h1>
-
-          <form className="mt-6 relative" onSubmit={handleAIQuestion}>
-            <Input
-              placeholder="휴가 신청하는 법을 알려줘"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-4 pr-12 py-4 rounded-2xl shadow-sm z-10"
-            />
-            <Button
-              type="submit"
-              size="icon"
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-purple-500 to-pink-500 text-white p-2 rounded-xl hover:shadow-lg transition-all duration-200"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </Button>
-          </form>
+          <AiQuestionForm />
         </div>
 
         {/* 바로가기 - 퀴즈와 위키 */}
