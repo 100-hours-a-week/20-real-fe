@@ -4,7 +4,7 @@ import { WebsocketProvider } from 'y-websocket';
 import * as Y from 'yjs';
 
 import * as React from 'react';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import Collaboration from '@tiptap/extension-collaboration';
 import { Image } from '@tiptap/extension-image';
 import { TaskItem } from '@tiptap/extension-task-item';
@@ -31,20 +31,14 @@ import '@/components/wiki/organisms/WikiEditor/WikiEditor.scss';
 
 interface WikiEditorProps {
   wikiId: number;
-  title: string;
   initialContent?: string;
 }
 
-export function WikiEditor({ wikiId, title, initialContent }: WikiEditorProps) {
-  const [shouldConnectSocket, setShouldConnectSocket] = useState(false);
+export function WikiEditor({ wikiId, initialContent }: WikiEditorProps) {
   const { mutate: updateWiki } = useUpdateWikiMutation();
   const toolbarRef = useRef<HTMLDivElement>(null);
 
   const doc = useMemo(() => new Y.Doc(), []);
-  const provider = useMemo(
-    () => new WebsocketProvider('ws://localhost:3002', title, doc, { connect: shouldConnectSocket }),
-    [title],
-  );
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -80,23 +74,26 @@ export function WikiEditor({ wikiId, title, initialContent }: WikiEditorProps) {
         openOnClick: true,
       }),
     ],
-    content: initialContent,
+    // content: initialContent,
   });
 
+  const providerRef = useRef<WebsocketProvider | null>(null);
+
+  // socket 연결
   useEffect(() => {
-    // mount 시 연결
-    setShouldConnectSocket(true);
+    const provider = new WebsocketProvider('ws://localhost:3002', wikiId.toString(), doc, { connect: false });
     provider.connect();
+    providerRef.current = provider;
 
     // unmount 시 연결 해제
     return () => {
-      setShouldConnectSocket(false);
-      provider.shouldConnect = false;
-      provider.disconnect();
-      provider.destroy();
+      providerRef.current?.disconnect();
+      providerRef.current?.destroy();
+      providerRef.current = null;
     };
   }, []);
 
+  // 위키 수정 배치 작업
   useEffect(() => {
     const interval = setInterval(() => {
       if (!editor) return;
@@ -109,6 +106,12 @@ export function WikiEditor({ wikiId, title, initialContent }: WikiEditorProps) {
     }, 10000);
 
     return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (initialContent) {
+      console.log(initialContent);
+    }
   }, []);
 
   return (

@@ -47,7 +47,7 @@ interface getWikiDetailRequest {
 
 export const getWikiDetail = async ({ title, method = 'NORMAL' }: getWikiDetailRequest) => {
   const params = new URLSearchParams({
-    ...(title && { title: encodeURIComponent(title) }),
+    ...(title && { title }),
     ...{ method },
   }).toString();
 
@@ -79,5 +79,5 @@ interface postWikiRequest {
 }
 
 export const postWiki = async ({ title }: postWikiRequest) => {
-  return await fetcher(`/v1/wikis`, { method: 'POST', body: JSON.stringify({ title: encodeURIComponent(title) }) });
+  return await fetcher(`/v1/wikis`, { method: 'POST', body: JSON.stringify({ title }) });
 };

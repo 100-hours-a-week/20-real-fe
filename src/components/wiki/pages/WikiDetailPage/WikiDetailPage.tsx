@@ -64,7 +64,7 @@ export function WikiDetailPage({ title }: WikiDetailPageProps) {
       );
     }
 
-    return <WikiEditor wikiId={wiki.id} title={title} initialContent={wiki.content} />;
+    return <WikiEditor wikiId={wiki.id} initialContent={wiki.content} />;
   };
 
   return (
