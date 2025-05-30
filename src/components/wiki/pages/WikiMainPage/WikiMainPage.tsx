@@ -8,8 +8,11 @@ import { FormEvent, useState } from 'react';
 
 import { Button } from '@/components/common/atoms/Button';
 import { Input } from '@/components/common/molecules/Input';
+import { useToastStore } from '@/stores/toastStore';
+import { validateWikiTitle } from '@/utils/validateWiki';
 
 export function WikiMainPage() {
+  const { showToast } = useToastStore();
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -22,6 +25,13 @@ export function WikiMainPage() {
 
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
+
+    const validateMsg = validateWikiTitle(searchTerm, 'search');
+    if (validateMsg) {
+      showToast(validateMsg, 'error');
+      return;
+    }
+
     goToWikiPage(searchTerm);
   };
 
@@ -67,8 +77,8 @@ export function WikiMainPage() {
           <div className="grid gap-4">
             {popularPages.map((page) => (
               <Link
-                href={`/wiki/${page.id}`}
-                key={page.title}
+                href={`/wiki/${encodeURIComponent(page.title)}`}
+                key={page.id}
                 className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm"
               >
                 <div className="flex items-center justify-between">

@@ -47,21 +47,30 @@ interface getWikiDetailRequest {
 
 export const getWikiDetail = async ({ title, method = 'NORMAL' }: getWikiDetailRequest) => {
   const params = new URLSearchParams({
-    ...(title && { title }),
+    ...(title && { title: encodeURIComponent(title) }),
     ...{ method },
   }).toString();
 
-  return await fetcher<WikiDetail>(`/v1/wikis/?${params}`, { method: 'GET' });
+  return await fetcher<WikiDetail>(`/v1/wikis?${params}`, { method: 'GET' });
 };
 
 // 위키 수정
 interface putWikiRequest {
   id: number;
   html: string;
+  ydoc: Uint8Array;
 }
 
-export const putWiki = async ({ id, html }: putWikiRequest) => {
-  return await fetcher(`/v1/wikis/${id}`, { method: 'PUT', body: JSON.stringify({ html }) });
+export const putWiki = async ({ id, html, ydoc }: putWikiRequest) => {
+  const formData = new FormData();
+
+  formData.append('html', html);
+  formData.append('ydoc', new Blob([ydoc], { type: 'application/octet-stream' }), 'ydoc.bin');
+
+  return await fetcher(`/v1/wikis/${id}`, {
+    method: 'PUT',
+    body: formData,
+  });
 };
 
 // 위키 생성
@@ -70,5 +79,5 @@ interface postWikiRequest {
 }
 
 export const postWiki = async ({ title }: postWikiRequest) => {
-  return await fetcher(`/v1/wikis`, { method: 'POST', body: JSON.stringify({ title }) });
+  return await fetcher(`/v1/wikis`, { method: 'POST', body: JSON.stringify({ title: encodeURIComponent(title) }) });
 };

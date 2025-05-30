@@ -84,6 +84,12 @@ async function handleError<T>(
     });
   }
 
+  if (res.status === 404) {
+    throw AppError.create({
+      code: 'NOT_FOUND',
+    });
+  }
+
   // 기타 에러
   toast.showToast(Errors.UNKNOWN.message, 'error');
   throw AppError.create({

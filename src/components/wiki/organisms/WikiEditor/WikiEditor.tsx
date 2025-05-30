@@ -4,7 +4,7 @@ import { WebsocketProvider } from 'y-websocket';
 import * as Y from 'yjs';
 
 import * as React from 'react';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import Collaboration from '@tiptap/extension-collaboration';
 import { Image } from '@tiptap/extension-image';
 import { TaskItem } from '@tiptap/extension-task-item';
@@ -28,11 +28,17 @@ import '@/components/tiptap-editor/tiptap-node/image-node/image-node.scss';
 import '@/components/tiptap-editor/tiptap-node/paragraph-node/paragraph-node.scss';
 import '@/components/wiki/organisms/WikiEditor/WikiEditor.scss';
 
-export function WikiEditor({ title }: { title: string }) {
+interface WikiEditorProps {
+  wikiId: number;
+  title: string;
+  initialContent?: string;
+}
+
+export function WikiEditor({ wikiId, title, initialContent }: WikiEditorProps) {
   const toolbarRef = React.useRef<HTMLDivElement>(null);
 
   const doc = useMemo(() => new Y.Doc(), []);
-  useMemo(() => new WebsocketProvider('ws://localhost:3002', title, doc), [doc, title]);
+  const provider = useMemo(() => new WebsocketProvider('ws://localhost:3002', wikiId, doc), [doc, title]);
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -68,7 +74,17 @@ export function WikiEditor({ title }: { title: string }) {
         openOnClick: true,
       }),
     ],
+    content: initialContent,
   });
+
+  useEffect(() => {
+    return () => {
+      provider.shouldConnect = false;
+      provider.awareness.destroy();
+      provider.disconnect();
+      provider.destroy();
+    };
+  }, []);
 
   return (
     <EditorContext.Provider value={{ editor }}>

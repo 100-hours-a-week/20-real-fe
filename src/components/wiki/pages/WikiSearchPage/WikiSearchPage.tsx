@@ -11,8 +11,11 @@ import { LoadingIndicator } from '@/components/common/atoms/LoadingIndicator';
 import { Input } from '@/components/common/molecules/Input';
 import { useInfiniteScrollObserver } from '@/hooks/useInfiniteScrollObserver';
 import { useWikiSearchListInfinityQuery } from '@/queries/wiki/useWikiSearchListInfinityQuery';
+import { useToastStore } from '@/stores/toastStore';
+import { validateWikiTitle } from '@/utils/validateWiki';
 
 export function WikiSearchPage() {
+  const { showToast } = useToastStore();
   const router = useRouter();
   const searchParams = useSearchParams();
   const searchedKeyword = searchParams.get('keyword') ?? '';
@@ -25,10 +28,25 @@ export function WikiSearchPage() {
   } = useWikiSearchListInfinityQuery('TITLE', searchedKeyword);
 
   const handleSearch = (e: FormEvent) => {
-    e.preventDefault(); // 폼 기본 동작 방지
+    e.preventDefault();
+    const validateMsg = validateWikiTitle(searchTerm, 'search');
+    if (validateMsg) {
+      showToast(validateMsg, 'error');
+      return;
+    }
+
     const params = new URLSearchParams(searchParams.toString());
     params.set('keyword', searchTerm);
     router.push(`?${params.toString()}`);
+  };
+
+  const handleDirectWikiPage = () => {
+    const validateMsg = validateWikiTitle(searchTerm);
+    if (validateMsg) {
+      showToast(validateMsg, 'error');
+      return;
+    }
+    router.push(`/wiki/${encodeURIComponent(searchedKeyword)}`);
   };
 
   const loadingRef = useInfiniteScrollObserver({
@@ -59,8 +77,12 @@ export function WikiSearchPage() {
         <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-4 mb-6 border border-gray-200">
           <div className="flex items-center justify-between">
             <span className="text-gray-700">찾는 문서가 없나요?</span>
-            <Button variant="outline" className="bg-white rounded-xl">
-              &#39;{searchedKeyword}&#39;문서로 가기
+            <Button
+              variant="outline"
+              onClick={handleDirectWikiPage}
+              className="h-fit bg-white rounded-xl max-w-[220px] whitespace-normal break-all"
+            >
+              &#39;{searchedKeyword}&#39; 문서로 가기
             </Button>
           </div>
         </div>
@@ -68,10 +90,10 @@ export function WikiSearchPage() {
         {/* 검색 결과 */}
         <div className="space-y-3">
           {searchResults &&
-            searchResults.map((item, index) => (
+            searchResults.map((item) => (
               <Link
-                href={`/wiki/${item.id}`}
-                key={index}
+                href={`/wiki/${encodeURIComponent(item.title)}`}
+                key={item.id}
                 onClick={() => {}}
                 className="inline-block w-full text-left p-4 bg-white rounded-xl transition-shadow duration-300 shadow-sm hover:shadow-md"
               >
