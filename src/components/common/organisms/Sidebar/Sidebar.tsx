@@ -76,9 +76,10 @@ export function Sidebar() {
             <Button
               onClick={close}
               variant="plain"
-              className="w-8 h-8 flex items-center justify-center rounded-full bg-white/20 backdrop-blur-sm border border-white/20 text-gray-700 hover:bg-black/5 transition-colors duration-200"
+              size="icon"
+              className="rounded-full bg-white backdrop-blur-sm border border-white hover:bg-black/5 transition-colors duration-200"
             >
-              <X size={16} />
+              <X size={16} className="text-black" />
             </Button>
           </div>
 

@@ -1,26 +1,43 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
+import { useEffect, useRef } from 'react';
+
 import logo from '@/assets/logo.png';
 import { ChatInput } from '@/components/chatbot/molecules/ChatInput';
 import { SuggestedQuestions } from '@/components/chatbot/molecules/SuggestQuestions';
 import { Chat } from '@/components/chatbot/organisms/ChatItem';
-import { HeadlineBanner, HeadlineBannerSkeleton } from '@/components/chatbot/organisms/HeadlineBanner';
 import { SafeImage } from '@/components/common/atoms/SafeImage';
 import useAutoScroll from '@/hooks/useAutoScroll';
 import { useChatController } from '@/hooks/useChatController';
-import { useHeadlineData } from '@/hooks/useGetHeadLine';
 
 export function ChatbotPage() {
-  const { headlines, isLoading: isHeadlineLoading } = useHeadlineData();
+  // const { headlines, isLoading: isHeadlineLoading } = useHeadlineData();
+  const router = useRouter();
   const { chats, currentInput, isPending, handleInputChange, loadAnswer } = useChatController();
 
   const messagesEndRef = useAutoScroll([chats]);
 
+  // 쿼리에서 질문이 들어왔을 때 처음 한 번만 실행하도록
+  const hasRun = useRef(false);
+  useEffect(() => {
+    if (hasRun.current) return;
+    const params = new URLSearchParams(window.location.search);
+    const question = params.get('q');
+    if (question) {
+      hasRun.current = true;
+      loadAnswer(question);
+      router.replace('/chatbot');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className="flex flex-col min-h-app bg-neutral-50">
-      {/* 헤드라인 */}
-      {isHeadlineLoading && chats.length === 0 && <HeadlineBannerSkeleton />}
-      {!isHeadlineLoading && chats.length === 0 && headlines.length > 0 && <HeadlineBanner items={headlines} />}
+      {/*/!* 헤드라인 *!/*/}
+      {/*{isHeadlineLoading && chats.length === 0 && <HeadlineBannerSkeleton />}*/}
+      {/*{!isHeadlineLoading && chats.length === 0 && headlines.length > 0 && <HeadlineBanner items={headlines} />}*/}
 
       <div className="flex-1 flex flex-col gap-4 p-4 pb-16 relative">
         {chats.length === 0 && (

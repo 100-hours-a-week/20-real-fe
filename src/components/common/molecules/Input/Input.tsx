@@ -26,10 +26,11 @@ export function Input({ className = '', type = 'text', label, error, icon, ref, 
             w-full border border-gray-300 bg-white px-3 py-2
             ${icon ? 'pl-10' : 'pl-3'}
             text-base shadow-sm
+            text-black
             placeholder:text-gray-400
             transition-all duration-200
             hover:border-gray-400
-            focus:border-gray-50 focus:outline-none focus:ring-1
+            focus:border-gray-400 focus:outline-none
             disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-gray-100
             ${error ? 'border-red-500 ring-2 ring-red-500/25' : ''}
             ${className}
