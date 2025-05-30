@@ -4,7 +4,7 @@ import { ArrowRight, Search } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 
 import { Button } from '@/components/common/atoms/Button';
 import { LoadingIndicator } from '@/components/common/atoms/LoadingIndicator';
@@ -24,7 +24,7 @@ export function WikiSearchPage() {
     isFetchingNextPage,
   } = useWikiSearchListInfinityQuery('TITLE', searchedKeyword);
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = (e: FormEvent) => {
     e.preventDefault(); // 폼 기본 동작 방지
     const params = new URLSearchParams(searchParams.toString());
     params.set('keyword', searchTerm);

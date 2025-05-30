@@ -1,19 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { ImageCarousel } from '@/components/common/molecules/ImageCarousel/index';
-import { NoticeFile } from '@/types/post/noticeFile';
 
 import '@/app/globals.css';
 
-const mockImages: NoticeFile[] = [
-  { id: 1, fileName: '이미지1', fileUrl: 'https://placehold.co/900x300.png', fileType: 'png', fileSeqNo: 1 },
-  { id: 2, fileName: '이미지2', fileUrl: 'https://placehold.co/600x200.png', fileType: 'png', fileSeqNo: 1 },
-  { id: 3, fileName: '이미지3', fileUrl: 'https://placehold.co/300x100.png', fileType: 'png', fileSeqNo: 1 },
+const mockImages = [
+  { id: 1, name: '이미지1', url: 'https://placehold.co/900x300.png' },
+  { id: 2, name: '이미지2', url: 'https://placehold.co/600x200.png' },
+  { id: 3, name: '이미지3', url: 'https://placehold.co/300x100.png' },
 ];
 
-const meta: Meta<typeof ImageCarousel> = {
+const meta: Meta<typeof ImageCarousel.Root> = {
   title: 'Common/ImageCarousel',
-  component: ImageCarousel,
+  component: ImageCarousel.Root,
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
@@ -30,12 +29,19 @@ const meta: Meta<typeof ImageCarousel> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof ImageCarousel>;
+type Story = StoryObj<typeof ImageCarousel.Root>;
 
 export const Default: Story = {
   render: () => (
     <div className="w-full max-w-2xl min-h-[400px] h-full p-4">
-      <ImageCarousel images={mockImages} />
+      <ImageCarousel.Root images={mockImages}>
+        <div className="relative">
+          <ImageCarousel.ImageList />
+          <ImageCarousel.Controls />
+          <ImageCarousel.ImageTitle />
+        </div>
+        <ImageCarousel.Indicators />
+      </ImageCarousel.Root>
     </div>
   ),
 };

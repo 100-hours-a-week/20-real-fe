@@ -33,32 +33,26 @@ async function handleTokenRefresh<T>(fetchFn: () => Promise<Response>): Promise<
   const toast = useToastStore.getState();
   const userStore = useUserPersistStore.getState();
 
-  try {
-    // refresh 요청
-    const refreshRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/refresh`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-    });
+  // refresh 요청
+  const refreshRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/refresh`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+  });
 
-    // 리프레시 실패 시 토큰 만료로 로그아웃 처리
-    if (!refreshRes.ok) {
-      userStore.cleanUser();
-      toast.showToast(Errors.TOKEN_EXPIRED.message, 'error');
-    }
-
-    // 리프레시 성공 시 원 요청 재호출
-    const retriedRes = await fetchFn();
-    return await parseJSON<T>(retriedRes);
-  } catch (err) {
-    toast.showToast(Errors.UNKNOWN.message, 'error');
+  // 리프레시 실패 시 토큰 만료로 로그아웃 처리
+  if (!refreshRes.ok) {
+    userStore.cleanUser();
+    toast.showToast(Errors.TOKEN_EXPIRED.message, 'error');
     throw AppError.create({
-      code: 'UNKNOWN',
+      code: 'TOKEN_EXPIRED',
       messageOverride: '토큰 리프레시 실패',
-      extra: { error: err },
-      capture: true,
     });
   }
+
+  // 리프레시 성공 시 원 요청 재호출
+  const retriedRes = await fetchFn();
+  return await parseJSON<T>(retriedRes);
 }
 
 async function handleError<T>(
