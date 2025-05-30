@@ -20,8 +20,7 @@ export function WikiDetailPage({ title }: WikiDetailPageProps) {
   const { showToast } = useToastStore();
 
   const handleCreateWiki = () => {
-    if (!wiki) return;
-    const validateMsg = validateWikiTitle(wiki.title);
+    const validateMsg = validateWikiTitle(title);
     if (validateMsg) {
       showToast(validateMsg, 'error');
       return;

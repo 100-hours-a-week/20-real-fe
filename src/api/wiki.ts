@@ -55,7 +55,7 @@ export const getWikiDetail = async ({ title, method = 'NORMAL' }: getWikiDetailR
 };
 
 // 위키 수정
-interface putWikiRequest {
+export interface putWikiRequest {
   id: number;
   html: string;
   ydoc: Uint8Array;

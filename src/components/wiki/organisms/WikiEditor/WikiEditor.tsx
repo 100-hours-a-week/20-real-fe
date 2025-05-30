@@ -4,7 +4,7 @@ import { WebsocketProvider } from 'y-websocket';
 import * as Y from 'yjs';
 
 import * as React from 'react';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Collaboration from '@tiptap/extension-collaboration';
 import { Image } from '@tiptap/extension-image';
 import { TaskItem } from '@tiptap/extension-task-item';
@@ -20,6 +20,7 @@ import { Selection } from '@/components/tiptap-editor/tiptap-extension/selection
 import { ImageUploadNode } from '@/components/tiptap-editor/tiptap-node/image-upload-node/image-upload-node-extension';
 import { Toolbar } from '@/components/tiptap-editor/tiptap-ui-primitive/toolbar';
 import { MainToolbarContent } from '@/components/wiki/organisms/WikiToolbar';
+import { useUpdateWikiMutation } from '@/queries/wiki/useUpdateWikiMutation';
 import { handleImageUpload, MAX_FILE_SIZE } from '@/utils/tiptap';
 
 import '@/components/tiptap-editor/tiptap-node/code-block-node/code-block-node.scss';
@@ -35,10 +36,15 @@ interface WikiEditorProps {
 }
 
 export function WikiEditor({ wikiId, title, initialContent }: WikiEditorProps) {
-  const toolbarRef = React.useRef<HTMLDivElement>(null);
+  const [shouldConnectSocket, setShouldConnectSocket] = useState(false);
+  const { mutate: updateWiki } = useUpdateWikiMutation();
+  const toolbarRef = useRef<HTMLDivElement>(null);
 
   const doc = useMemo(() => new Y.Doc(), []);
-  const provider = useMemo(() => new WebsocketProvider('ws://localhost:3002', wikiId, doc), [doc, title]);
+  const provider = useMemo(
+    () => new WebsocketProvider('ws://localhost:3002', title, doc, { connect: shouldConnectSocket }),
+    [title],
+  );
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -78,12 +84,31 @@ export function WikiEditor({ wikiId, title, initialContent }: WikiEditorProps) {
   });
 
   useEffect(() => {
+    // mount 시 연결
+    setShouldConnectSocket(true);
+    provider.connect();
+
+    // unmount 시 연결 해제
     return () => {
+      setShouldConnectSocket(false);
       provider.shouldConnect = false;
-      provider.awareness.destroy();
       provider.disconnect();
       provider.destroy();
     };
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!editor) return;
+
+      updateWiki({
+        id: wikiId,
+        html: editor.getHTML(),
+        ydoc: Y.encodeStateAsUpdate(doc),
+      });
+    }, 10000);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (

@@ -80,7 +80,7 @@ export function WikiSearchPage() {
             <Button
               variant="outline"
               onClick={handleDirectWikiPage}
-              className="h-fit bg-white rounded-xl max-w-[220px] whitespace-normal break-all"
+              className="h-fit py-2 bg-white rounded-xl max-w-[220px] whitespace-normal break-all"
             >
               &#39;{searchedKeyword}&#39; 문서로 가기
             </Button>

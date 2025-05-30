@@ -1,9 +1,9 @@
 import { useMutation } from '@tanstack/react-query';
 
-import { putWiki } from '@/api/wiki';
+import { putWiki, putWikiRequest } from '@/api/wiki';
 
-export const useUpdateWikiMutation = (id: number, html: string, ydoc: Uint8Array) => {
+export const useUpdateWikiMutation = () => {
   return useMutation({
-    mutationFn: () => putWiki({ id, html, ydoc }),
+    mutationFn: (params: putWikiRequest) => putWiki(params),
   });
 };
