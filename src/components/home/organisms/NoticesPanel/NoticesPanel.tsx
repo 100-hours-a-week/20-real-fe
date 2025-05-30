@@ -9,6 +9,7 @@ import { formatTime } from '@/utils/times';
 
 const errorMessages: Record<string, string> = {
   UNAUTHORIZED: '로그인 하고 전체 내용을 확인하세요',
+  TOKEN_EXPIRED: '로그인 하고 전체 내용을 확인하세요',
   FORBIDDEN: '관리자가 회원가입을 검토 중이에요',
   UNKNOWN: '현재 연결이 원활하지 않아요.\n잠시 후 다시 시도해주세요.',
 };
@@ -34,6 +35,7 @@ function SkeletonNotice() {
 export function NoticesPanel() {
   const { data: notices = [], isLoading, isError, error } = useNoticeListQuery(3);
   const message = error?.code ? errorMessages[error.code] : '';
+  console.log(error?.code);
 
   return (
     <div className="space-y-3 bg-white rounded-xl px-2 py-3">
