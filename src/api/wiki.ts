@@ -58,18 +58,13 @@ export const getWikiDetail = async ({ title, method = 'NORMAL' }: getWikiDetailR
 export interface putWikiRequest {
   id: number;
   html: string;
-  ydoc: Uint8Array;
+  ydoc: string;
 }
 
 export const putWiki = async ({ id, html, ydoc }: putWikiRequest) => {
-  const formData = new FormData();
-
-  formData.append('html', html);
-  formData.append('ydoc', new Blob([ydoc], { type: 'application/octet-stream' }), 'ydoc.bin');
-
   return await fetcher(`/v1/wikis/${id}`, {
     method: 'PUT',
-    body: formData,
+    body: JSON.stringify({ html, ydoc }),
   });
 };
 

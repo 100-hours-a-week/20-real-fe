@@ -101,12 +101,12 @@ export function WikiEditor({ wikiId, initialContent }: WikiEditorProps) {
       updateWiki({
         id: wikiId,
         html: editor.getHTML(),
-        ydoc: Y.encodeStateAsUpdate(doc),
+        ydoc: btoa(String.fromCharCode(...Y.encodeStateAsUpdate(doc))),
       });
     }, 10000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [editor, updateWiki, doc, wikiId]);
 
   useEffect(() => {
     if (initialContent) {
