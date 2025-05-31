@@ -21,6 +21,7 @@ import { ImageUploadNode } from '@/components/tiptap-editor/tiptap-node/image-up
 import { Toolbar } from '@/components/tiptap-editor/tiptap-ui-primitive/toolbar';
 import { MainToolbarContent } from '@/components/wiki/organisms/WikiToolbar';
 import { useUpdateWikiMutation } from '@/queries/wiki/useUpdateWikiMutation';
+import { WikiDetail } from '@/types/wiki/wikiDetail';
 import { handleImageUpload, MAX_FILE_SIZE } from '@/utils/tiptap';
 
 import '@/components/tiptap-editor/tiptap-node/code-block-node/code-block-node.scss';
@@ -30,11 +31,10 @@ import '@/components/tiptap-editor/tiptap-node/paragraph-node/paragraph-node.scs
 import '@/components/wiki/organisms/WikiEditor/WikiEditor.scss';
 
 interface WikiEditorProps {
-  wikiId: number;
-  initialContent?: string;
+  wiki: WikiDetail;
 }
 
-export function WikiEditor({ wikiId, initialContent }: WikiEditorProps) {
+export function WikiEditor({ wiki }: WikiEditorProps) {
   const { mutate: updateWiki } = useUpdateWikiMutation();
   const toolbarRef = useRef<HTMLDivElement>(null);
 
@@ -74,14 +74,30 @@ export function WikiEditor({ wikiId, initialContent }: WikiEditorProps) {
         openOnClick: true,
       }),
     ],
-    // content: initialContent,
   });
 
   const providerRef = useRef<WebsocketProvider | null>(null);
 
   // socket 연결
   useEffect(() => {
-    const provider = new WebsocketProvider('ws://localhost:3002', wikiId.toString(), doc, { connect: false });
+    if (!editor) return;
+    const provider = new WebsocketProvider('ws://localhost:3002', wiki.id.toString(), doc, { connect: false });
+
+    provider.on('sync', (isSynced: boolean) => {
+      if (!isSynced) return;
+
+      const isEmpty = editor?.getText().trim().length === 0;
+
+      if (isEmpty) {
+        // if (wiki.ydoc) {
+        //   Y.applyUpdate(doc, Uint8Array.from(atob(wiki.ydoc), c => c.charCodeAt(0)));
+        // }
+        if (wiki.html) {
+          editor?.commands.setContent(wiki.html);
+        }
+      }
+    });
+
     provider.connect();
     providerRef.current = provider;
 
@@ -91,7 +107,8 @@ export function WikiEditor({ wikiId, initialContent }: WikiEditorProps) {
       providerRef.current?.destroy();
       providerRef.current = null;
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editor]);
 
   // 위키 수정 배치 작업
   useEffect(() => {
@@ -99,20 +116,14 @@ export function WikiEditor({ wikiId, initialContent }: WikiEditorProps) {
       if (!editor) return;
 
       updateWiki({
-        id: wikiId,
+        id: wiki.id,
         html: editor.getHTML(),
         ydoc: btoa(String.fromCharCode(...Y.encodeStateAsUpdate(doc))),
       });
-    }, 10000);
+    }, 5000);
 
     return () => clearInterval(interval);
-  }, [editor, updateWiki, doc, wikiId]);
-
-  useEffect(() => {
-    if (initialContent) {
-      console.log(initialContent);
-    }
-  }, []);
+  }, [editor, updateWiki, doc, wiki.id]);
 
   return (
     <EditorContext.Provider value={{ editor }}>

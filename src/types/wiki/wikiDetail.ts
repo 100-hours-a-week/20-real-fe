@@ -1,6 +1,7 @@
 export interface WikiDetail {
   id: number;
   title: string;
-  content: string;
+  html: string;
+  ydoc: string;
   updatedAt: string;
 }
