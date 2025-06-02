@@ -3,7 +3,7 @@
 import { Bell, ChevronRight, LogOut, MessageCircle, Newspaper, NotebookPen, X } from 'lucide-react';
 import Link from 'next/link';
 
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 
 import { logout } from '@/api/auth';
 import { Button } from '@/components/common/atoms/Button';
@@ -99,13 +99,15 @@ export function Sidebar() {
           ) : (
             <div className="mx-6 p-4 rounded-2xl bg-white/40 backdrop-blur-md border border-white/20 shadow-sm">
               <p className="text-black/80 font-medium mb-3 text-sm">로그인이 필요합니다</p>
-              <LoginButton
-                href="/login"
-                className="inline-block text-center w-full bg-white/60 backdrop-blur-md text-black py-2.5 rounded-xl font-medium hover:bg-white/70 active:bg-white/50 transition-colors duration-200 border border-white/40"
-                onClick={close}
-              >
-                로그인
-              </LoginButton>
+              <Suspense>
+                <LoginButton
+                  href="/login"
+                  className="inline-block text-center w-full bg-white/60 backdrop-blur-md text-black py-2.5 rounded-xl font-medium hover:bg-white/70 active:bg-white/50 transition-colors duration-200 border border-white/40"
+                  onClick={close}
+                >
+                  로그인
+                </LoginButton>
+              </Suspense>
             </div>
           )}
 
