@@ -10,7 +10,7 @@ import { NoticesPanel } from '@/components/home/organisms/NoticesPanel';
 
 export function HomePage() {
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="min-h-app bg-neutral-50">
       <div className="max-w-md mx-auto px-4 py-6">
         {/* 챗봇 */}
         <div className="bg-white rounded-3xl p-6 text-white relative overflow-hidden shadow-sm">

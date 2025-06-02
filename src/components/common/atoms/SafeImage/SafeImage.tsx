@@ -49,6 +49,7 @@ export function SafeImage({ src, alt, className = '', fallbackSrc, fill, width, 
 
     return (
       <div
+        {...props}
         style={fill ? {} : { width, height }}
         className={`w-full h-full bg-gray-200 flex items-center justify-center text-gray-500 text-xs ${className}`}
       ></div>
