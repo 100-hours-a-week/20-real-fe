@@ -1,11 +1,11 @@
 import { WikiDetailPage } from '@/components/wiki/pages/WikiDetailPage';
 
 interface PageParams {
-  params: Promise<{ id: string }>;
+  params: Promise<{ title: string }>;
 }
 
 export default async function Page({ params }: PageParams) {
-  const { id } = await params;
+  const { title } = await params;
 
-  return <WikiDetailPage id={id} />;
+  return <WikiDetailPage title={decodeURIComponent(title)} />;
 }

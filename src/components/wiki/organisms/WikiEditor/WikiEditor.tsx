@@ -1,10 +1,11 @@
 'use client';
 
+import { CircleAlert } from 'lucide-react';
 import { WebsocketProvider } from 'y-websocket';
 import * as Y from 'yjs';
 
 import * as React from 'react';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import Collaboration from '@tiptap/extension-collaboration';
 import { Image } from '@tiptap/extension-image';
 import { TaskItem } from '@tiptap/extension-task-item';
@@ -15,11 +16,14 @@ import { Underline } from '@tiptap/extension-underline';
 import { EditorContent, EditorContext, useEditor } from '@tiptap/react';
 import { StarterKit } from '@tiptap/starter-kit';
 
+import { Button } from '@/components/common/atoms/Button';
 import { Link } from '@/components/tiptap-editor/tiptap-extension/link-extension';
 import { Selection } from '@/components/tiptap-editor/tiptap-extension/selection-extension';
 import { ImageUploadNode } from '@/components/tiptap-editor/tiptap-node/image-upload-node/image-upload-node-extension';
 import { Toolbar } from '@/components/tiptap-editor/tiptap-ui-primitive/toolbar';
 import { MainToolbarContent } from '@/components/wiki/organisms/WikiToolbar';
+import { useUpdateWikiMutation } from '@/queries/wiki/useUpdateWikiMutation';
+import { WikiDetail } from '@/types/wiki/wikiDetail';
 import { handleImageUpload, MAX_FILE_SIZE } from '@/utils/tiptap';
 
 import '@/components/tiptap-editor/tiptap-node/code-block-node/code-block-node.scss';
@@ -28,11 +32,15 @@ import '@/components/tiptap-editor/tiptap-node/image-node/image-node.scss';
 import '@/components/tiptap-editor/tiptap-node/paragraph-node/paragraph-node.scss';
 import '@/components/wiki/organisms/WikiEditor/WikiEditor.scss';
 
-export function WikiEditor({ title }: { title: string }) {
-  const toolbarRef = React.useRef<HTMLDivElement>(null);
+interface WikiEditorProps {
+  wiki: WikiDetail;
+}
+
+export function WikiEditor({ wiki }: WikiEditorProps) {
+  const { mutate: updateWiki, error } = useUpdateWikiMutation();
+  const toolbarRef = useRef<HTMLDivElement>(null);
 
   const doc = useMemo(() => new Y.Doc(), []);
-  useMemo(() => new WebsocketProvider('ws://localhost:3002', title, doc), [doc, title]);
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -69,6 +77,76 @@ export function WikiEditor({ title }: { title: string }) {
       }),
     ],
   });
+
+  const providerRef = useRef<WebsocketProvider | null>(null);
+
+  // socket 연결
+  useEffect(() => {
+    if (!editor) return;
+    const provider = new WebsocketProvider('ws://localhost:3002', wiki.id.toString(), doc, { connect: false });
+
+    provider.on('sync', (isSynced: boolean) => {
+      if (!isSynced) return;
+
+      const isEmpty = editor?.getText().trim().length === 0;
+
+      if (isEmpty) {
+        // if (wiki.ydoc) {
+        //   Y.applyUpdate(doc, Uint8Array.from(atob(wiki.ydoc), c => c.charCodeAt(0)));
+        // }
+        if (wiki.html) {
+          editor?.commands.setContent(wiki.html);
+        }
+      }
+    });
+
+    provider.connect();
+    providerRef.current = provider;
+
+    // unmount 시 연결 해제
+    return () => {
+      providerRef.current?.disconnect();
+      providerRef.current?.destroy();
+      providerRef.current = null;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editor]);
+
+  // 위키 수정 배치 작업
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!editor) return;
+
+      updateWiki({
+        id: wiki.id,
+        html: editor.getHTML(),
+        ydoc: btoa(String.fromCharCode(...Y.encodeStateAsUpdate(doc))),
+      });
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [editor, updateWiki, doc, wiki.id]);
+
+  if (error?.code === 'UNAUTHORIZED' || error?.code === 'TOKEN_EXPIRED') {
+    return (
+      <div className="p-6 text-center space-y-4">
+        <CircleAlert className="mx-auto text-gray-500" size={40} />
+        <p className="text-gray-700 font-medium">로그인 후 이용 가능해요.</p>
+        <Button variant="primary" onClick={() => (window.location.href = '/login')}>
+          로그인 하러 가기
+        </Button>
+      </div>
+    );
+  }
+
+  if (error?.code === 'FORBIDDEN') {
+    return (
+      <div className="p-6 text-center space-y-4">
+        <CircleAlert className="mx-auto text-gray-500" size={40} />
+        <p className="text-gray-700 font-medium">인증 받은 사용자만 확인할 수 있어요.</p>
+      </div>
+    );
+  }
 
   return (
     <EditorContext.Provider value={{ editor }}>
