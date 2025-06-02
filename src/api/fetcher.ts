@@ -70,6 +70,7 @@ async function handleError<T>(
       return await handleTokenRefresh<T>(retryFetch);
     }
     // 토큰이 아예 없는 경우
+    toast.showToast(Errors.UNAUTHORIZED.message, 'error');
     userStore.cleanUser();
     throw AppError.create({
       code: 'UNAUTHORIZED',
@@ -78,6 +79,7 @@ async function handleError<T>(
 
   if (res.status === 403) {
     // 인증받지 못한 유저의 경우
+    toast.showToast(Errors.FORBIDDEN.message, 'error');
     userStore.setIsApproved(false);
     throw AppError.create({
       code: 'FORBIDDEN',
