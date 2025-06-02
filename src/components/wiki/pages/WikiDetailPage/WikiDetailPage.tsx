@@ -4,6 +4,7 @@ import { BookText, CircleAlert } from 'lucide-react';
 
 import { Button } from '@/components/common/atoms/Button';
 import { SkeletonBox } from '@/components/common/atoms/SkeletonBox';
+import { LoginButton } from '@/components/common/organisms/LoginButton';
 import { WikiEditor } from '@/components/wiki/organisms/WikiEditor';
 import { useCreateWikiMutation } from '@/queries/wiki/useCreateWikiMutation';
 import { useWikiDetailQuery } from '@/queries/wiki/useWikiDetailQuery';
@@ -57,9 +58,9 @@ export function WikiDetailPage({ title }: WikiDetailPageProps) {
           <div className="p-6 text-center space-y-4">
             <CircleAlert className="mx-auto text-gray-500" size={40} />
             <p className="text-gray-700 font-medium">로그인 후 이용 가능해요.</p>
-            <Button variant="primary" onClick={() => (window.location.href = '/login')}>
+            <LoginButton className="h-9 px-4 text-sm inline-flex items-center justify-center gap-2 rounded cursor-pointer bg-primary-500 hover:bg-primary-600 text-white">
               로그인 하러 가기
-            </Button>
+            </LoginButton>
           </div>
         );
       }
