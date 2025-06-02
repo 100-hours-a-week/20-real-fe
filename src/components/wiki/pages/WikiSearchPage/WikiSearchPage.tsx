@@ -25,7 +25,7 @@ export function WikiSearchPage() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useWikiSearchListInfinityQuery('TITLE', searchedKeyword);
+  } = useWikiSearchListInfinityQuery({ sort: 'TITLE', keyword: searchedKeyword });
 
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
