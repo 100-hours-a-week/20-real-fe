@@ -44,10 +44,31 @@ export function WikiDetailPage({ title }: WikiDetailPageProps) {
         return (
           <div className="p-6 text-center space-y-4">
             <BookText className="mx-auto text-gray-500" size={40} />
-            <p className="text-gray-700 font-medium">해당 문서를 찾을 수 없습니다.</p>
+            <p className="text-gray-700 font-medium">해당 문서를 찾을 수 없어요.</p>
             <Button variant="primary" onClick={handleCreateWiki}>
               문서 생성하기
             </Button>
+          </div>
+        );
+      }
+
+      if (error?.code === 'UNAUTHORIZED' || error?.code === 'TOKEN_EXPIRED') {
+        return (
+          <div className="p-6 text-center space-y-4">
+            <CircleAlert className="mx-auto text-gray-500" size={40} />
+            <p className="text-gray-700 font-medium">로그인 후 이용 가능해요.</p>
+            <Button variant="primary" onClick={() => (window.location.href = '/login')}>
+              로그인 하러 가기
+            </Button>
+          </div>
+        );
+      }
+
+      if (error?.code === 'FORBIDDEN') {
+        return (
+          <div className="p-6 text-center space-y-4">
+            <CircleAlert className="mx-auto text-gray-500" size={40} />
+            <p className="text-gray-700 font-medium">인증 받은 사용자만 확인할 수 있어요.</p>
           </div>
         );
       }
@@ -56,7 +77,7 @@ export function WikiDetailPage({ title }: WikiDetailPageProps) {
         <div className="p-6 text-center space-y-4">
           <CircleAlert className="mx-auto text-gray-500" size={40} />
           <p className="text-gray-700 font-medium">
-            문서를 불러오는 중 문제가 발생했습니다.
+            문서를 불러오는 중 문제가 발생했어요.
             <br />
             잠시 후 다시 시도해주세요.
           </p>

@@ -1,5 +1,6 @@
 'use client';
 
+import { CircleAlert } from 'lucide-react';
 import { WebsocketProvider } from 'y-websocket';
 import * as Y from 'yjs';
 
@@ -15,6 +16,7 @@ import { Underline } from '@tiptap/extension-underline';
 import { EditorContent, EditorContext, useEditor } from '@tiptap/react';
 import { StarterKit } from '@tiptap/starter-kit';
 
+import { Button } from '@/components/common/atoms/Button';
 import { Link } from '@/components/tiptap-editor/tiptap-extension/link-extension';
 import { Selection } from '@/components/tiptap-editor/tiptap-extension/selection-extension';
 import { ImageUploadNode } from '@/components/tiptap-editor/tiptap-node/image-upload-node/image-upload-node-extension';
@@ -35,7 +37,7 @@ interface WikiEditorProps {
 }
 
 export function WikiEditor({ wiki }: WikiEditorProps) {
-  const { mutate: updateWiki } = useUpdateWikiMutation();
+  const { mutate: updateWiki, error } = useUpdateWikiMutation();
   const toolbarRef = useRef<HTMLDivElement>(null);
 
   const doc = useMemo(() => new Y.Doc(), []);
@@ -124,6 +126,27 @@ export function WikiEditor({ wiki }: WikiEditorProps) {
 
     return () => clearInterval(interval);
   }, [editor, updateWiki, doc, wiki.id]);
+
+  if (error?.code === 'UNAUTHORIZED' || error?.code === 'TOKEN_EXPIRED') {
+    return (
+      <div className="p-6 text-center space-y-4">
+        <CircleAlert className="mx-auto text-gray-500" size={40} />
+        <p className="text-gray-700 font-medium">로그인 후 이용 가능해요.</p>
+        <Button variant="primary" onClick={() => (window.location.href = '/login')}>
+          로그인 하러 가기
+        </Button>
+      </div>
+    );
+  }
+
+  if (error?.code === 'FORBIDDEN') {
+    return (
+      <div className="p-6 text-center space-y-4">
+        <CircleAlert className="mx-auto text-gray-500" size={40} />
+        <p className="text-gray-700 font-medium">인증 받은 사용자만 확인할 수 있어요.</p>
+      </div>
+    );
+  }
 
   return (
     <EditorContext.Provider value={{ editor }}>
