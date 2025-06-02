@@ -83,7 +83,9 @@ export function WikiEditor({ wiki }: WikiEditorProps) {
   // socket 연결
   useEffect(() => {
     if (!editor) return;
-    const provider = new WebsocketProvider('ws://localhost:3002', wiki.id.toString(), doc, { connect: false });
+    const provider = new WebsocketProvider(`${process.env.NEXT_PUBLIC_WS_ADDRESS}`, wiki.id.toString(), doc, {
+      connect: false,
+    });
 
     provider.on('sync', (isSynced: boolean) => {
       if (!isSynced) return;
