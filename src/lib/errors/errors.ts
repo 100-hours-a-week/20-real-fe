@@ -22,6 +22,16 @@ export const Errors = {
     level: ErrorLevels.INFO,
     tags: [ErrorTags.API],
   },
+  AI_NOT_OPERATION_TIME: {
+    message: '춘비서의 운영 시간이 아니에요.',
+    level: ErrorLevels.INFO,
+    tags: [],
+  },
+  AI_ERROR: {
+    message: '춘비서가 응답을 생성하는 중 오류가 발생했어요.',
+    level: ErrorLevels.ERROR,
+    tags: [ErrorTags.API, ErrorTags.AI],
+  },
   UNKNOWN: {
     message: '문제가 생겼어요. 잠시 후 다시 시도해 주세요.',
     level: ErrorLevels.ERROR,

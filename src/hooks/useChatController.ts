@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { useState } from 'react';
 
+import { AppError } from '@/lib/errors/appError';
 import { useToastStore } from '@/stores/toastStore';
 import { ChatMessage } from '@/types/chatbot/chatMessage';
 
@@ -10,12 +11,26 @@ export function useChatController() {
   const [currentInput, setCurrentInput] = useState('');
   const [isWaitingFirstResponse, setIsWaitingFirstResponse] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
-  const [isError, setIsError] = useState(false);
   // const { mutateAsync: postQuestion, isPending } = usePostChatbotQuestion();
   const { showToast } = useToastStore();
 
   const loadAnswer = (question: string) => {
     const id = uuidv4();
+    const answerId = `${id}-answer`;
+
+    // 운영시간이 아니면 에러 리턴
+    if (!checkOperationHour()) {
+      const error = AppError.create('AI_NOT_OPERATION_TIME');
+
+      setChats((prev) => [
+        ...prev,
+        { id, text: question, type: 'question' },
+        { id: answerId, text: '', type: 'answer', error },
+      ]);
+      setCurrentInput('');
+      return;
+    }
+
     setChats((prev) => [...prev, { id, text: question, type: 'question' }]);
     setCurrentInput('');
 
@@ -31,11 +46,12 @@ export function useChatController() {
 
     eventSource.onmessage = (event) => {
       if (!receivedFirstMessage) {
-        setChats((prev) => [...prev, { id: `${id}-answer`, text: '', type: 'answer' }]);
+        setChats((prev) => [...prev, { id: answerId, text: '', type: 'answer' }]);
         // 첫 응답 오면 로딩 종료
         setIsWaitingFirstResponse(false);
         receivedFirstMessage = true;
       }
+
       const text = event.data;
       appendAnswer(text);
     };
@@ -44,10 +60,34 @@ export function useChatController() {
       console.error('SSE connection error:', err);
       eventSource.close();
 
-      setIsError(true);
+      const error = AppError.create('AI_ERROR');
+
+      // 마지막 answer 메시지에 error 주입
+      setChats((prev) => {
+        const updated = [...prev];
+        for (let i = updated.length - 1; i >= 0; i--) {
+          if (updated[i].type === 'answer') {
+            updated[i] = { ...updated[i], error };
+            break;
+          }
+        }
+        return updated;
+      });
+
       setIsWaitingFirstResponse(false);
       setIsStreaming(false);
     };
+  };
+
+  const checkOperationHour = (): boolean => {
+    const now = new Date();
+    const day = now.getDay(); // 0 = 일요일, 1 = 월요일, ..., 6 = 토요일
+    const hour = now.getHours(); // 0~23
+
+    const isWeekday = day >= 1 && day <= 5;
+    const isInBusinessHours = hour >= 9 && hour < 18;
+
+    return isWeekday && isInBusinessHours;
   };
 
   const appendAnswer = (chunk: string) => {
@@ -80,7 +120,6 @@ export function useChatController() {
     currentInput,
     isWaitingFirstResponse,
     isStreaming,
-    isError,
     handleInputChange,
     setCurrentInput,
     loadAnswer,

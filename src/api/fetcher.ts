@@ -20,8 +20,7 @@ async function parseJSON<T>(res: Response): Promise<BaseResponse<T>> {
   try {
     return await res.json();
   } catch (err) {
-    throw AppError.create({
-      code: 'UNKNOWN',
+    throw AppError.create('UNKNOWN', {
       messageOverride: 'JSON 파싱 실패',
       extra: { status: res.status, url: res.url, originalError: err },
       capture: true,
@@ -44,8 +43,7 @@ async function handleTokenRefresh<T>(fetchFn: () => Promise<Response>): Promise<
   if (!refreshRes.ok) {
     userStore.cleanUser();
     toast.showToast(Errors.TOKEN_EXPIRED.message, 'error');
-    throw AppError.create({
-      code: 'TOKEN_EXPIRED',
+    throw AppError.create('TOKEN_EXPIRED', {
       messageOverride: '토큰 리프레시 실패',
     });
   }
@@ -72,30 +70,23 @@ async function handleError<T>(
     // 토큰이 아예 없는 경우
     toast.showToast(Errors.UNAUTHORIZED.message, 'error');
     userStore.cleanUser();
-    throw AppError.create({
-      code: 'UNAUTHORIZED',
-    });
+    throw AppError.create('UNAUTHORIZED');
   }
 
   if (res.status === 403) {
     // 인증받지 못한 유저의 경우
     toast.showToast(Errors.FORBIDDEN.message, 'error');
     userStore.setIsApproved(false);
-    throw AppError.create({
-      code: 'FORBIDDEN',
-    });
+    throw AppError.create('FORBIDDEN');
   }
 
   if (res.status === 404) {
-    throw AppError.create({
-      code: 'NOT_FOUND',
-    });
+    throw AppError.create('NOT_FOUND');
   }
 
   // 기타 에러
   toast.showToast(Errors.UNKNOWN.message, 'error');
-  throw AppError.create({
-    code: 'UNKNOWN',
+  throw AppError.create('UNKNOWN', {
     messageOverride: 'Unhandled API Error: ${res.status}',
     extra: { status: res.status, url: res.url, responseBody },
     capture: true,
