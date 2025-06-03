@@ -15,7 +15,8 @@ import { useChatController } from '@/hooks/useChatController';
 export function ChatbotPage() {
   // const { headlines, isLoading: isHeadlineLoading } = useHeadlineData();
   const router = useRouter();
-  const { chats, currentInput, isPending, handleInputChange, loadAnswer } = useChatController();
+  const { chats, currentInput, isWaitingFirstResponse, isStreaming, handleInputChange, loadAnswer } =
+    useChatController();
 
   const messagesEndRef = useAutoScroll([chats]);
 
@@ -60,7 +61,7 @@ export function ChatbotPage() {
                 <Chat.BotMessage key={chat.id} text={chat.text} />
               ),
             )}
-            {isPending && <Chat.BotLoading />}
+            {isWaitingFirstResponse && <Chat.BotLoading />}
           </Chat>
         </div>
 
@@ -71,7 +72,7 @@ export function ChatbotPage() {
       <div className="fixed w-full bottom-0">
         <ChatInput
           value={currentInput}
-          isLoading={isPending}
+          isLoading={isStreaming}
           onChange={handleInputChange}
           onSend={() => loadAnswer(currentInput)}
         />
