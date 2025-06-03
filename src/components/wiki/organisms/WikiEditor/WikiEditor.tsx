@@ -24,7 +24,7 @@ import { Toolbar } from '@/components/tiptap-editor/tiptap-ui-primitive/toolbar'
 import { MainToolbarContent } from '@/components/wiki/organisms/WikiToolbar';
 import { useUpdateWikiMutation } from '@/queries/wiki/useUpdateWikiMutation';
 import { WikiDetail } from '@/types/wiki/wikiDetail';
-import { handleImageUpload, MAX_FILE_SIZE } from '@/utils/tiptap';
+import { MAX_FILE_SIZE, uploadImageToS3 } from '@/utils/s3';
 
 import '@/components/tiptap-editor/tiptap-node/code-block-node/code-block-node.scss';
 import '@/components/tiptap-editor/tiptap-node/list-node/list-node.scss';
@@ -69,7 +69,7 @@ export function WikiEditor({ wiki }: WikiEditorProps) {
         accept: 'image/*',
         maxSize: MAX_FILE_SIZE,
         limit: 3,
-        upload: handleImageUpload,
+        upload: uploadImageToS3,
         onError: (error) => console.error('Upload failed:', error),
       }),
       Link.configure({
