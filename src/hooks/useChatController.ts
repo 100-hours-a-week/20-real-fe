@@ -14,6 +14,7 @@ export function useChatController() {
   // const { mutateAsync: postQuestion, isPending } = usePostChatbotQuestion();
   const { showToast } = useToastStore();
 
+  // 답변 로드
   const loadAnswer = (question: string) => {
     const id = uuidv4();
     const answerId = `${id}-answer`;
@@ -37,6 +38,7 @@ export function useChatController() {
     setIsWaitingFirstResponse(true);
     setIsStreaming(true);
 
+    // SSE 이벤트 수신
     const eventSource = new EventSource(
       `${process.env.NEXT_PUBLIC_API_URL}/v1/chatbots?question=${encodeURIComponent(question)}`,
       { withCredentials: true },
@@ -45,9 +47,9 @@ export function useChatController() {
     let receivedFirstMessage = false;
 
     eventSource.onmessage = (event) => {
+      // 첫 응답 오면 로딩 종료
       if (!receivedFirstMessage) {
         setChats((prev) => [...prev, { id: answerId, text: '', type: 'answer' }]);
-        // 첫 응답 오면 로딩 종료
         setIsWaitingFirstResponse(false);
         receivedFirstMessage = true;
       }
@@ -79,6 +81,8 @@ export function useChatController() {
     };
   };
 
+  // 운영시간 확인
+  // 평일 9시 ~ 18시
   const checkOperationHour = (): boolean => {
     const now = new Date();
     const day = now.getDay(); // 0 = 일요일, 1 = 월요일, ..., 6 = 토요일
@@ -90,6 +94,7 @@ export function useChatController() {
     return isWeekday && isInBusinessHours;
   };
 
+  // 현재 마지막 Answer에 chunk 추가
   const appendAnswer = (chunk: string) => {
     setChats((prev) => {
       for (let i = prev.length - 1; i >= 0; i--) {
@@ -107,6 +112,7 @@ export function useChatController() {
     });
   };
 
+  // 채팅 Input 변경 핸들러
   const handleInputChange = (value: string) => {
     if (value.length > 500) {
       showToast('메시지는 최대 500자까지 입력 가능합니다.', 'error', 'top');
