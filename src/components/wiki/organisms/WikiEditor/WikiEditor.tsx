@@ -23,6 +23,7 @@ import { ImageUploadNode } from '@/components/tiptap-editor/tiptap-node/image-up
 import { Toolbar } from '@/components/tiptap-editor/tiptap-ui-primitive/toolbar';
 import { MainToolbarContent } from '@/components/wiki/organisms/WikiToolbar';
 import { useUpdateWikiMutation } from '@/queries/wiki/useUpdateWikiMutation';
+import { useToastStore } from '@/stores/toastStore';
 import { WikiDetail } from '@/types/wiki/wikiDetail';
 import { MAX_FILE_SIZE, uploadImageToS3 } from '@/utils/s3';
 
@@ -39,8 +40,13 @@ interface WikiEditorProps {
 export function WikiEditor({ wiki }: WikiEditorProps) {
   const { mutate: updateWiki, error } = useUpdateWikiMutation();
   const toolbarRef = useRef<HTMLDivElement>(null);
+  const { showToast } = useToastStore();
 
   const doc = useMemo(() => new Y.Doc(), []);
+
+  const handleImageUploadError = () => {
+    showToast('이미지 업로드에 실패했습니다.', 'error');
+  };
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -70,7 +76,7 @@ export function WikiEditor({ wiki }: WikiEditorProps) {
         maxSize: MAX_FILE_SIZE,
         limit: 3,
         upload: uploadImageToS3,
-        onError: (error) => console.error('Upload failed:', error),
+        onError: handleImageUploadError,
       }),
       Link.configure({
         openOnClick: true,
