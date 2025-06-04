@@ -108,7 +108,7 @@ jobs:
 
       - name: Inject variables into deploy.sh
         run: |
-          API_URL=$(aws ssm get-parameter --name "/prod/next/API_URL" --with-decryption --region ${{ secrets.AWS_REGION }} --query "Parameter.Value" --output text)
+          API_URL=$(aws ssm get-parameter --name "/next/dev/NEXT_PUBLIC_API_URL" --with-decryption --region ${{ secrets.AWS_REGION }} --query "Parameter.Value" --output text)
           sed -i "s|<IMAGE_TAG>|$IMAGE_TAG|g" scripts/deploy.sh
           sed -i "s|<ENV>|$ENV|g" scripts/deploy.sh
           sed -i "s|<API_URL>|$API_URL|g" scripts/deploy.sh
