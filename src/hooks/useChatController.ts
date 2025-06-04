@@ -116,14 +116,28 @@ export function useChatController() {
 
   // 현재 마지막 Answer에 chunk 추가
   const appendAnswer = (chunk: string) => {
+    const text = chunk.length === 0 ? ' ' : chunk;
+
     setChats((prev) => {
       for (let i = prev.length - 1; i >= 0; i--) {
-        // 마지막 답변에 chunk 추가
         if (prev[i].type === 'answer') {
+          const prevText = prev[i].text;
+
+          // 직전 값이 공백이고 지금 chunk도 공백이면 줄바꿈으로 교체
+          if (prevText.endsWith(' ') && text === ' ') {
+            const updated = [...prev];
+            updated[i] = {
+              ...updated[i],
+              text: prevText.slice(0, -1) + '\n',
+            };
+            return updated;
+          }
+
+          // 공백이 아닌 경우 이어붙이기
           const updated = [...prev];
           updated[i] = {
             ...updated[i],
-            text: prev[i].text + chunk,
+            text: prevText + text,
           };
           return updated;
         }
