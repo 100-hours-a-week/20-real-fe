@@ -48,7 +48,7 @@ export function NoticeDetailPage() {
         <PostSummary summary={notice.summary} />
 
         <div className="px-4 pb-3">
-          <MarkdownViewer text={notice.content} />
+          <MarkdownViewer text={notice.content} useHtml={true} useSyntaxHighlight={true} />
 
           {notice.images.length > 0 && (
             <ImageCarousel.Root

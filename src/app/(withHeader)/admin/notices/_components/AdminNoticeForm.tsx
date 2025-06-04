@@ -195,7 +195,7 @@ export default function AdminNoticeForm({ type }: AdminNoticeFormProps) {
         </button>
       </div>
 
-      {isPreview && <MarkdownViewer text={content} />}
+      {isPreview && <MarkdownViewer text={content} useHtml={true} useSyntaxHighlight={true} />}
 
       {!isPreview && (
         <textarea
