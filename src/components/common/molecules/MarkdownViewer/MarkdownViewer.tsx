@@ -1,36 +1,83 @@
-import rehypeRaw from 'rehype-raw';
-import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
+'use client';
+
+import dynamic from 'next/dynamic';
 import remarkBreaks from 'remark-breaks';
 import remarkGfm from 'remark-gfm';
+import type { PluggableList } from 'unified';
 
+import { useEffect, useState } from 'react';
 import Markdown from 'react-markdown';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 
 import { cn } from '@/utils/cn';
 import { normalizeMarkdown } from '@/utils/normalizeMarkdown';
 
+const PrismLight = dynamic(async () => {
+  const res = await import('react-syntax-highlighter/dist/esm/prism-light');
+
+  const [tsx, typescript, jsx, javascript, json, bash, python, java, sql] = await Promise.all([
+    import('react-syntax-highlighter/dist/esm/languages/prism/tsx'),
+    import('react-syntax-highlighter/dist/esm/languages/prism/typescript'),
+    import('react-syntax-highlighter/dist/esm/languages/prism/jsx'),
+    import('react-syntax-highlighter/dist/esm/languages/prism/javascript'),
+    import('react-syntax-highlighter/dist/esm/languages/prism/json'),
+    import('react-syntax-highlighter/dist/esm/languages/prism/bash'),
+    import('react-syntax-highlighter/dist/esm/languages/prism/python'),
+    import('react-syntax-highlighter/dist/esm/languages/prism/java'),
+    import('react-syntax-highlighter/dist/esm/languages/prism/sql'),
+  ]);
+
+  res.default.registerLanguage('tsx', tsx.default);
+  res.default.registerLanguage('ts', typescript.default);
+  res.default.registerLanguage('jsx', jsx.default);
+  res.default.registerLanguage('js', javascript.default);
+  res.default.registerLanguage('json', json.default);
+  res.default.registerLanguage('bash', bash.default);
+  res.default.registerLanguage('python', python.default);
+  res.default.registerLanguage('java', java.default);
+  res.default.registerLanguage('sql', sql.default);
+
+  return res;
+});
+
 interface MarkdownViewerProps {
   text: string;
   className?: string;
+  useHtml?: boolean;
+  useSyntaxHighlight?: boolean;
 }
 
-export function MarkdownViewer({ text, className }: MarkdownViewerProps) {
+export function MarkdownViewer({ text, className, useHtml = false, useSyntaxHighlight = false }: MarkdownViewerProps) {
+  const [rehypePlugins, setRehypePlugins] = useState<PluggableList>([]);
+
+  useEffect(() => {
+    if (!useHtml) return;
+    const loadPlugins = async () => {
+      const [{ default: rehypeRaw }, { default: rehypeSanitize, defaultSchema }] = await Promise.all([
+        import('rehype-raw'),
+        import('rehype-sanitize'),
+      ]);
+
+      setRehypePlugins([
+        rehypeRaw,
+        [
+          rehypeSanitize,
+          {
+            ...defaultSchema,
+            tagNames: defaultSchema.tagNames?.filter(
+              (tag) => !['script', 'style', 'iframe', 'object', 'embed', 'form'].includes(tag),
+            ),
+          },
+        ],
+      ]);
+    };
+
+    loadPlugins();
+  }, []);
   return (
     <div className={cn(`text-black text-sm/6 break-all`, className)}>
       <Markdown
         remarkPlugins={[remarkGfm, remarkBreaks]}
-        rehypePlugins={[
-          rehypeRaw,
-          [
-            rehypeSanitize,
-            {
-              ...defaultSchema,
-              tagNames: defaultSchema.tagNames?.filter(
-                (tag) => !['script', 'style', 'iframe', 'object', 'embed', 'form'].includes(tag),
-              ),
-            },
-          ],
-        ]}
+        rehypePlugins={rehypePlugins}
         components={{
           h1: (props) => <h1 className="text-2xl font-bold mt-6 pb-2 mb-2 border-b-1 border-gray-300" {...props} />,
           h2: (props) => <h2 className="text-xl font-bold mt-5 pb-2 mb-2 border-b-1 border-gray-300" {...props} />,
@@ -64,11 +111,11 @@ export function MarkdownViewer({ text, className }: MarkdownViewerProps) {
             const match = /language-(\w+)/.exec(className || '');
             const codeString = String(children).replace(/\n$/, '');
 
-            if (match) {
+            if (match && useSyntaxHighlight) {
               return (
-                <SyntaxHighlighter language={match[1]} PreTag="div">
+                <PrismLight language={match[1]} PreTag="div">
                   {codeString}
-                </SyntaxHighlighter>
+                </PrismLight>
               );
             }
 

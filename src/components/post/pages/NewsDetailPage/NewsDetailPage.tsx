@@ -40,7 +40,7 @@ export function NewsDetailPage() {
         <PostSummary summary={news.summary} />
 
         <div className="px-4 pb-3">
-          <MarkdownViewer text={news.content} />
+          <MarkdownViewer text={news.content} useHtml={true} useSyntaxHighlight={true} />
 
           {news.imageUrl && <ImageViewer imageUrl={news.imageUrl} />}
         </div>

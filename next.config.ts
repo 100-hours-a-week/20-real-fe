@@ -1,5 +1,7 @@
-import { withSentryConfig } from '@sentry/nextjs';
 import type { NextConfig } from 'next';
+
+import generated from '@next/bundle-analyzer';
+import { withSentryConfig } from '@sentry/nextjs';
 
 const nextConfig: NextConfig = {
   images: {
@@ -48,3 +50,11 @@ export default withSentryConfig(nextConfig, {
   // https://vercel.com/docs/cron-jobs
   automaticVercelMonitors: true,
 });
+
+const withBundleAnalyzer = generated({
+  enabled: process.env.ANALYZE === 'true',  // 환경변수 ANALYZE가 true일 때 실행
+  openAnalyzer: false,  // 브라우저에 자동으로 분석결과를 새 탭으로 Open하는 것을 방지
+});
+
+
+module.exports = withBundleAnalyzer(nextConfig);

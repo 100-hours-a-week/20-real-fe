@@ -48,6 +48,7 @@
     "remark-gfm": "^4.0.1",
     "require-in-the-middle": "^7.5.2",
     "tailwind-merge": "^3.2.0",
+    "unified": "^11.0.5",
     "uuid": "^11.1.0",
     "y-websocket": "^3.0.0",
     "yjs": "^13.6.27",
@@ -56,6 +57,7 @@
   "devDependencies": {
     "@chromatic-com/storybook": "^3",
     "@eslint/eslintrc": "^3",
+    "@next/bundle-analyzer": "^15.3.3",
     "@next/eslint-plugin-next": "^15.3.1",
     "@storybook/addon-essentials": "^8.6.12",
     "@storybook/addon-onboarding": "^8.6.12",
