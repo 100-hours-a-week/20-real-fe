@@ -115,16 +115,6 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }} 
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
-    
-      - name: Fetch NEXT_PUBLIC_API_URL from SSM
-        run: |
-          PARAM=$(aws ssm get-parameter \
-          --name "/next/prod/NEXT_PUBLIC_API_URL" \
-          --with-decryption \
-          --region ${{ secrets.AWS_REGION }} \
-          --query "Parameter.Value" \
-          --output text)
-          echo "API_URL=$PARAM" >> $GITHUB_ENV
              
       - name: Login to Amazon ECR
         id: login-ecr
@@ -166,6 +156,7 @@ jobs:
 
       - name: Inject variables into deploy.sh
         run: |
+          API_URL=$(aws ssm get-parameter --name "/prod/next/API_URL" --with-decryption --region ${{ secrets.AWS_REGION }} --query "Parameter.Value" --output text)
           sed -i "s|<IMAGE_TAG>|$IMAGE_TAG|g" scripts/deploy.sh
           sed -i "s|<ENV>|$ENV|g" scripts/deploy.sh
           sed -i "s|<API_URL>|$API_URL|g" scripts/deploy.sh
