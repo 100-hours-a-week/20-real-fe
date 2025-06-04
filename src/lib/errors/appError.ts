@@ -34,8 +34,8 @@ export class AppError extends Error {
     }
   }
 
-  static create(options: AppErrorOptions): AppError {
-    return new AppError(options);
+  static create(code: ErrorCode, options?: Partial<Omit<AppErrorOptions, 'code'>>): AppError {
+    return new AppError({ code, ...options });
   }
 
   capture(): this {

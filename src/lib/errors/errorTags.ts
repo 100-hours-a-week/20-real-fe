@@ -1,6 +1,7 @@
 export const ErrorTags = {
   AUTH: 'auth',
   API: 'api',
+  AI: 'ai',
 } as const;
 
 export type ErrorTag = (typeof ErrorTags)[keyof typeof ErrorTags];
