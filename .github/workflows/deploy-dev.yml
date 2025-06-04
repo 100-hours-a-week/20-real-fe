@@ -3,7 +3,7 @@ name: dev Frontend CI/CD Pipeline
 on:
     push:
         branches:
-            main
+            dev
 env:
     ENV: development
 
