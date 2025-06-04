@@ -60,6 +60,8 @@ export function useChatController() {
 
     eventSource.addEventListener('done', () => {
       eventSource.close();
+
+      setIsStreaming(false);
     });
 
     eventSource.onerror = (err) => {
