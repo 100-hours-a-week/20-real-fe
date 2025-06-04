@@ -1,123 +1,108 @@
 name: Auto Version Tagging
 
 on:
-  pull_request:
-    types:
-      - closed
+  push:
     branches:
       - main
       - dev
+      - hotfix/*
+
 
 jobs:
-  tagging:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    tagging:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
 
-    steps:
-      # 1. 코드 체크아웃
-      - name: Checkout code
-        uses: actions/checkout@v3
+        steps:
+            # 1. 코드 체크아웃
+            - name: Checkout code
+              uses: actions/checkout@v3
 
-      # 2. 병합된 PR인지 확인
-      - name: Check if Merged
-        if: github.event.pull_request.merged == true
-        run: echo "PR is merged, continuing..."
+            # 3. 병합된 커밋 ID 가져오기
+            - name: Get Merged Commit SHA
+              id: merged_commit
+              run: |
+                  MERGE_COMMIT=$(git rev-parse HEAD)
+                  echo "MERGE_COMMIT=${MERGE_COMMIT}" >> $GITHUB_ENV
 
-      # 3. 태그 전용 브랜치 체크아웃
-      - name: Checkout Tags Branch
-        run: |
-          # 태그 전용 브랜치가 이미 존재하는지 확인
-          git fetch origin
-          if git ls-remote --heads origin tags | grep -q "refs/heads/tags"; then
-            echo "Tags branch exists. Checking out..."
-            git checkout tags
-            git pull origin tags
-          else
-            echo "Creating tags branch..."
-            git checkout --orphan tags
-            git commit --allow-empty -m "Initialize tags branch"
-            git push origin tags
-          fi
+            # 4. 버전 태그 생성
+            - name: Generate Version Tag
+              id: tag
+              env:
+                  TAG_PREFIX: "v"
+              run: |
+                  # 최신 태그 가져오기
+                  LATEST_TAG=$(git tag --list "v*" | sort -V | tail -n 1 || echo "${TAG_PREFIX}0.0.0")
+                  echo "Latest Tag: ${LATEST_TAG}"
 
-      # 4. 버전 태그 생성
-      - name: Generate Version Tag
-        id: tag
-        env:
-          TAG_PREFIX: "v"
-        run: |
-          BRANCH_NAME=$(echo "${GITHUB_REF}" | awk -F/ '{print $3}')
-          echo "Branch Name: ${BRANCH_NAME}"
-          
-          # 최신 태그 가져오기 (tags 브랜치에서만)
-          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "${TAG_PREFIX}0.0.0")
-          echo "Latest Tag (tags branch): ${LATEST_TAG}"
-          
-          # 메인 브랜치의 최신 태그 확인
-          MAIN_LATEST_TAG=$(git ls-remote --tags origin | grep -o "v[0-9]\+\.[0-9]\+\.[0-9]\+" | sort -V | tail -n 1 || echo "v0.0.0")
-          echo "Latest Main Tag: ${MAIN_LATEST_TAG}"
-          
-          # 최신 태그가 메인 태그보다 낮을 때 동기화
-          LATEST_VERSION=${LATEST_TAG#$TAG_PREFIX}
-          MAIN_VERSION=${MAIN_LATEST_TAG#$TAG_PREFIX}
-          IFS='.' read -ra MAIN_PARTS <<< "$MAIN_VERSION"
-          MAIN_MAJOR=${MAIN_PARTS[0]}
-          MAIN_MINOR=${MAIN_PARTS[1]}
-          MAIN_PATCH=${MAIN_PARTS[2]}
-          
-          # 버전 파싱
-          IFS='.' read -ra PARTS <<< "$LATEST_VERSION"
-          MAJOR=${PARTS[0]}
-          MINOR=${PARTS[1]}
-          PATCH=${PARTS[2]}
-          
-          # 버전 증가 로직
-          if [[ "${BRANCH_NAME}" == "main" ]]; then
-            # Main: Patch 증가
-            if [[ "${MAJOR}" == "${MAIN_MAJOR}" && "${MINOR}" == "${MAIN_MINOR}" ]]; then
-              PATCH=$((PATCH+1))
-            else
-              MAJOR=$((MAIN_MAJOR+1))
-              MINOR=0
-              PATCH=0
-            fi
-            ENV="prod"
-          elif [[ "${BRANCH_NAME}" == "dev" ]]; then
-            # 메이저 동기화 (dev가 main보다 낮으면 메인 기준으로 동기화)
-            if [[ "${MAJOR}" -lt "${MAIN_MAJOR}" || ( "${MAJOR}" == "${MAIN_MAJOR}" && "${MINOR}" -lt "${MAIN_MINOR}" ) ]]; then
-              MAJOR="${MAIN_MAJOR}"
-              MINOR=$((MAIN_MINOR+1))
-              PATCH=0
-            else
-              MINOR=$((MINOR+1))
-              PATCH=0
-            fi
-            ENV="dev"
-          else
-            echo "Unsupported branch, skipping tag."
-            exit 0
-          fi
+                  # 메인 브랜치의 최신 태그 확인
+                  MAIN_LATEST_TAG=$(git ls-remote --tags origin | grep -o "v[0-9]\+\.[0-9]\+\.[0-9]\+" | sort -V | tail -n 1 || echo "v0.0.0")
+                  echo "Latest Main Tag: ${MAIN_LATEST_TAG}"
 
-          # 최종 버전
-          NEW_VERSION="${MAJOR}.${MINOR}.${PATCH}"
-          NEW_TAG="${TAG_PREFIX}${NEW_VERSION}"
-          echo "New Tag: ${NEW_TAG}"
-          
-          # 중복 태그 검사
-          if git ls-remote --tags origin | grep -q "refs/tags/${NEW_TAG}"; then
-            echo "Tag ${NEW_TAG} already exists. Skipping push."
-            exit 0
-          fi
-          
-          # 태그 생성 및 푸시
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          
-          # 태그 전용 브랜치로 푸시
-          git tag "${NEW_TAG}"
-          git push origin "refs/heads/tags"
-          git push origin "refs/tags/${NEW_TAG}"
-          
-          # 태그 정보 저장
-          echo "NEW_TAG=${NEW_TAG}" >> $GITHUB_ENV
-          echo "ENV=${ENV}" >> $GITHUB_ENV
+                  # 버전 파싱
+                  LATEST_VERSION=${LATEST_TAG#$TAG_PREFIX}
+                  MAIN_VERSION=${MAIN_LATEST_TAG#$TAG_PREFIX}
+                  IFS='.' read -ra MAIN_PARTS <<< "$MAIN_VERSION"
+                  MAIN_MAJOR=${MAIN_PARTS[0]}
+                  MAIN_MINOR=${MAIN_PARTS[1]}
+                  MAIN_PATCH=${MAIN_PARTS[2]}
+
+                  IFS='.' read -ra PARTS <<< "$LATEST_VERSION"
+                  MAJOR=${PARTS[0]}
+                  MINOR=${PARTS[1]}
+                  PATCH=${PARTS[2]}
+
+                  # 브랜치 확인
+                  if [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
+                    # Main: 메이저 버전 증가
+                    MAJOR=$((MAIN_MAJOR+1))
+                    MINOR=0
+                    PATCH=0
+                    ENV="prod"
+                  elif [[ "${GITHUB_REF}" == "refs/heads/dev" ]]; then
+                    # 메이저 동기화 (dev가 main보다 낮으면 메인 기준으로 동기화)
+                    if [[ "${MAJOR}" -lt "${MAIN_MAJOR}" || ( "${MAJOR}" == "${MAIN_MAJOR}" && "${MINOR}" -lt "${MAIN_MINOR}" ) ]]; then
+                      MAJOR="${MAIN_MAJOR}"
+                      MINOR=$((MAIN_MINOR+1))
+                      PATCH=0
+                    else
+                      MINOR=$((MINOR+1))
+                      PATCH=0
+                    fi
+                    ENV="dev"
+                  elif [[ "${GITHUB_REF}" =~ ^refs/heads/hotfix/ ]]; then
+                    # Hotfix: Patch만 증가
+                    MAJOR="${MAIN_MAJOR}"
+                    MINOR="${MAIN_MINOR}"
+                    PATCH=$((MAIN_PATCH+1))
+                    ENV="hotfix"
+                  else
+                    echo "Unsupported branch, skipping tag."
+                    exit 0
+                  fi
+
+                  # 최종 버전
+                  NEW_VERSION="${MAJOR}.${MINOR}.${PATCH}"
+                  NEW_TAG="${TAG_PREFIX}${NEW_VERSION}"
+                  echo "New Tag: ${NEW_TAG}"
+
+                  # 중복 태그 검사
+                  if git ls-remote --tags origin | grep -q "refs/tags/${NEW_TAG}"; then
+                    echo "Tag ${NEW_TAG} already exists. Skipping push."
+                    exit 0
+                  fi
+
+                  # 병합된 커밋에 태그 추가
+                  MERGE_COMMIT=${MERGE_COMMIT}
+                  echo "Tagging commit: ${MERGE_COMMIT}"
+
+                  git config user.name "github-actions"
+                  git config user.email "github-actions@github.com"
+
+                  git tag "${NEW_TAG}" "${MERGE_COMMIT}"
+                  git push origin "refs/tags/${NEW_TAG}"
+
+                  # 태그 정보 저장
+                  echo "NEW_TAG=${NEW_TAG}" >> $GITHUB_ENV
+                  echo "ENV=${ENV}" >> $GITHUB_ENV
