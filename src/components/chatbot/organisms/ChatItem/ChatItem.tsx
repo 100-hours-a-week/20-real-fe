@@ -37,7 +37,7 @@ function BotMessage({ text }: { text: string }) {
       <div className="mr-2">
         <BotProfile />
       </div>
-      <div className="w-fit max-w-[85%] text-gray-800 pt-2.5 px-3 text-sm break-words">
+      <div className="w-fit max-w-[85%] text-gray-800 text-sm break-words">
         <MarkdownViewer text={text} />
       </div>
     </div>
