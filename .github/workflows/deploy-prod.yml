@@ -119,7 +119,7 @@ jobs:
       - name: Fetch NEXT_PUBLIC_API_URL from SSM
         run: |
           PARAM=$(aws ssm get-parameter \
-          --name "next/prod/NEXT_PUBLIC_API_URL" \
+          --name "/next/prod/NEXT_PUBLIC_API_URL" \
           --with-decryption \
           --region ${{ secrets.AWS_REGION }} \
           --query "Parameter.Value" \
