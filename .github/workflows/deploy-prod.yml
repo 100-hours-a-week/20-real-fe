@@ -114,7 +114,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }} 
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: ${{ secrets.AWS_REGION }}
     
       - name: Fetch NEXT_PUBLIC_API_URL from SSM
         run: |
@@ -178,7 +178,7 @@ jobs:
         run: zip -r $S3_KEY appspec.yml scripts/
 
       - name: Upload to S3
-        run: aws s3 cp --region ${{ env.AWS_REGION }} --acl private $S3_KEY s3://${{ secrets.S3_BUCKET }}/$S3_KEY
+        run: aws s3 cp --region ${{ secrets.AWS_REGION }} --acl private $S3_KEY s3://${{ secrets.S3_BUCKET }}/$S3_KEY
 
       - name: Trigger CodeDeploy
         run: |
