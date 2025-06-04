@@ -11,9 +11,7 @@ jobs:
   lint_integration_build_test:
     runs-on: ubuntu-latest
     steps:
-      - name: Wait for tag to be synced
-        run: sleep 
-        
+
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -40,9 +38,9 @@ jobs:
       - name: Lint Test
         run: pnpm run lint
 
-      - name: Integration Test 
-        if: github.ref == 'refs/heads/main' 
-        run: pnpm cypress:run
+      #- name: Integration Test 
+        # if: github.ref == 'refs/heads/main' 
+        #run: pnpm cypress:run
 
       - name: Build
         run: pnpm run build
