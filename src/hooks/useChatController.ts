@@ -40,7 +40,7 @@ export function useChatController() {
 
     // SSE 이벤트 수신
     const eventSource = new EventSource(
-      `${process.env.NEXT_PUBLIC_API_URL}/v1/chatbots?question=${encodeURIComponent(question)}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/v2/chatbots?question=${encodeURIComponent(question)}`,
       { withCredentials: true },
     );
 
@@ -58,6 +58,10 @@ export function useChatController() {
       appendAnswer(text);
     };
 
+    eventSource.addEventListener('done', () => {
+      eventSource.close();
+    });
+
     eventSource.onerror = (err) => {
       console.error('SSE connection error:', err);
       eventSource.close();
@@ -67,12 +71,26 @@ export function useChatController() {
       // 마지막 answer 메시지에 error 주입
       setChats((prev) => {
         const updated = [...prev];
-        for (let i = updated.length - 1; i >= 0; i--) {
-          if (updated[i].type === 'answer') {
-            updated[i] = { ...updated[i], error };
-            break;
-          }
+        const last = updated[updated.length - 1];
+
+        if (!last) return updated;
+
+        if (last.type === 'answer') {
+          // 마지막이 answer인 경우 → 여기에 error 주입
+          updated[updated.length - 1] = {
+            ...last,
+            error,
+          };
+        } else if (last.type === 'question') {
+          // 마지막이 question인 경우 → 새 answer 추가
+          updated.push({
+            id: uuidv4(),
+            type: 'answer',
+            text: '',
+            error,
+          });
         }
+
         return updated;
       });
 

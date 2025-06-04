@@ -58,7 +58,7 @@ export function ChatbotPage() {
               chat.type === 'question' ? (
                 <Chat.UserMessage key={chat.id} text={chat.text} />
               ) : chat.error ? (
-                <Chat.ChatError error={chat.error} />
+                <Chat.ChatError key={chat.id} error={chat.error} />
               ) : (
                 <Chat.BotMessage key={chat.id} text={chat.text} />
               ),
