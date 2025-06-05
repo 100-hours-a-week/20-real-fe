@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
       }
     ]
   },
-  allowedDevOrigins: ['http://test.kakaotech.com'],
+  allowedDevOrigins: ['https://cadev.kakaotech.com'],
 };
 
 export default nextConfig;
