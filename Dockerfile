@@ -26,4 +26,5 @@ USER node
 
 EXPOSE 3000
 
-CMD ["pnpm", "start"]  
+# 환경변수로 prod/dev 분기
+CMD ["sh", "-c", "if [ \"$ENV\" = \"production\" ]; then pnpm start; else pnpm dev; fi"]
