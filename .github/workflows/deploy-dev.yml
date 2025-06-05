@@ -41,8 +41,8 @@ jobs:
         #if: github.ref == 'refs/heads/main' 
         #run: pnpm cypress:run
 
-      #- name: Build
-        #run: pnpm run build
+      - name: Build
+        run: pnpm run build
 
   deploy:
     runs-on: ubuntu-latest
