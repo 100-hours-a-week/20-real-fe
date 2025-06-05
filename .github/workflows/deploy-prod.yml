@@ -156,14 +156,26 @@ jobs:
 
       - name: Inject variables into deploy.sh
         run: |
-          API_URL=$(aws ssm get-parameter --name "/next/prod/NEXT_PUBLIC_API_URL" --with-decryption --region ${{ secrets.AWS_REGION }} --query "Parameter.Value" --output text)
           sed -i "s|<IMAGE_TAG>|$IMAGE_TAG|g" scripts/deploy.sh
           sed -i "s|<ENV>|$ENV|g" scripts/deploy.sh
-          sed -i "s|<API_URL>|$API_URL|g" scripts/deploy.sh
           sed -i "s|<AWS_ACCOUNT_ID>|${{ secrets.AWS_ACCOUNT_ID }}|g" scripts/deploy.sh
           sed -i "s|<AWS_REGION>|${{ secrets.AWS_REGION }}|g" scripts/deploy.sh
           sed -i "s|<ECR_REPOSITORY>|${{ secrets.ECR_REPOSITORY }}|g" scripts/deploy.sh
           chmod +x scripts/deploy.sh
+
+      - name: Inject variables into env.development
+        run: |
+          API_URL=$(aws ssm get-parameter --name "/next/prod/NEXT_PUBLIC_API_URL" --with-decryption --region ${{ secrets.AWS_REGION }} --query "Parameter.Value" --output text)
+          NEXT_PUBLIC_SENTRY_DSN=$(aws ssm get-parameter --name "/next/prod/NEXT_PUBLIC_SENTRY_DSN" --with-decryption --region ${{ secrets.AWS_REGION }} --query "Parameter.Value" --output text)
+          SENTRY_DSN=$(aws ssm get-parameter --name "/next/prod/SENTRY_DSN" --with-decryption --region ${{ secrets.AWS_REGION }} --query "Parameter.Value" --output text)
+          NEXT_PUBLIC_WS_ADDRESS=$(aws ssm get-parameter --name "/next/prod/NEXT_PUBLIC_WS_ADDRESS" --with-decryption --region ${{ secrets.AWS_REGION }} --query "Parameter.Value" --output text)
+          SENTRY_AUTH_TOKEN=$(aws ssm get-parameter --name "/next/prod/SENTRY_AUTH_TOKEN" --with-decryption --region ${{ secrets.AWS_REGION }} --query "Parameter.Value" --output text)
+
+          sed -i "s|<API_URL>|$API_URL|g" env.prod
+          sed -i "s|<NEXT_PUBLIC_SENTRY_DSN>|$NEXT_PUBLIC_SENTRY_DSN|g" env.prod
+          sed -i "s|<SENTRY_DSN>|$SENTRY_DSN|g" env.prod
+          sed -i "s|<NEXT_PUBLIC_WS_ADDRESS>|$NEXT_PUBLIC_WS_ADDRESS|g" env.prod
+          sed -i "s|<SENTRY_AUTH_TOKEN>|$SENTRY_AUTH_TOKEN|g" env.prod
 
       - name: Zip files
         run: zip -r $S3_KEY appspec.yml scripts/

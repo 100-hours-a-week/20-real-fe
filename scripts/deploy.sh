@@ -8,6 +8,5 @@ docker login --username AWS --password-stdin <AWS_ACCOUNT_ID>.dkr.ecr.ap-northea
 docker pull <AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/<ECR_REPOSITORY>:<IMAGE_TAG>
 
 docker run -d --name next-app -p 3000:3000 \
-  -e NODE_ENV=<ENV> \
-  -e NEXT_PUBLIC_API_URL=<API_URL> \
+  -e ENV=<ENV> \
   <AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/<ECR_REPOSITORY>:<IMAGE_TAG>
