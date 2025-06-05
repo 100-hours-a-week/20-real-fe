@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  allowedDevOrigins: ['https://cadev.kakaotech.com'],
+  allowedDevOrigins: ['https://www.kakaotech.com'],
 };
 
 export default withSentryConfig(nextConfig, {
