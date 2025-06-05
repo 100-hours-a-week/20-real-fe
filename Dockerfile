@@ -17,6 +17,7 @@ WORKDIR /app
 RUN npm install -g pnpm
 
 # 의존성 및 빌드 결과 복사
+COPY --chown=node:node .env.production ./.env.production
 COPY --from=builder --chown=node:node /app/node_modules ./node_modules
 COPY --from=builder --chown=node:node /app/.next ./.next
 COPY --from=builder --chown=node:node /app/public ./public
