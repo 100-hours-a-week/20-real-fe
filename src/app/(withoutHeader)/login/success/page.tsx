@@ -4,10 +4,10 @@ import { useRouter } from 'next/navigation';
 
 import { useEffect } from 'react';
 
-import { useUserInfo } from '@/queries/useUserInfoQuery';
-import { useAuthRedirectStore } from '@/stores/authRedirectStore';
-import { useToastStore } from '@/stores/toastStore';
-import { useUserPersistStore } from '@/stores/userPersistStore';
+import { useUserInfo } from '@/features/user/model/useUserInfoQuery';
+import { useAuthRedirectStore } from '@/shared/model/authRedirectStore';
+import { useToastStore } from '@/shared/model/toastStore';
+import { useUserPersistStore } from '@/shared/model/userPersistStore';
 
 export default function LoginSuccessPage() {
   const router = useRouter();

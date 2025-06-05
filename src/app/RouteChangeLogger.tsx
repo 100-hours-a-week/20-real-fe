@@ -4,8 +4,8 @@ import { usePathname } from 'next/navigation';
 
 import { useEffect } from 'react';
 
-import { EventName } from '@/lib/firebase/eventNames';
-import { firebaseLogging } from '@/lib/firebase/logEvent';
+import { EventName } from '@/shared/lib/firebase/eventNames';
+import { firebaseLogging } from '@/shared/lib/firebase/logEvent';
 
 export function RouteChangeLogger() {
   const pathname = usePathname();
