@@ -170,12 +170,12 @@ jobs:
           SENTRY_DSN=$(aws ssm get-parameter --name "/next/prod/SENTRY_DSN" --with-decryption --region ${{ secrets.AWS_REGION }} --query "Parameter.Value" --output text)
           NEXT_PUBLIC_WS_ADDRESS=$(aws ssm get-parameter --name "/next/prod/NEXT_PUBLIC_WS_ADDRESS" --with-decryption --region ${{ secrets.AWS_REGION }} --query "Parameter.Value" --output text)
           SENTRY_AUTH_TOKEN=$(aws ssm get-parameter --name "/next/prod/SENTRY_AUTH_TOKEN" --with-decryption --region ${{ secrets.AWS_REGION }} --query "Parameter.Value" --output text)
-
-          sed -i "s|<API_URL>|$API_URL|g" env.prod
-          sed -i "s|<NEXT_PUBLIC_SENTRY_DSN>|$NEXT_PUBLIC_SENTRY_DSN|g" env.prod
-          sed -i "s|<SENTRY_DSN>|$SENTRY_DSN|g" env.prod
-          sed -i "s|<NEXT_PUBLIC_WS_ADDRESS>|$NEXT_PUBLIC_WS_ADDRESS|g" env.prod
-          sed -i "s|<SENTRY_AUTH_TOKEN>|$SENTRY_AUTH_TOKEN|g" env.prod
+          
+          sed -i "s|<API_URL>|$API_URL|g" .env.production
+          sed -i "s|<NEXT_PUBLIC_SENTRY_DSN>|$NEXT_PUBLIC_SENTRY_DSN|g" .env.production
+          sed -i "s|<SENTRY_DSN>|$SENTRY_DSN|g" .env.production
+          sed -i "s|<NEXT_PUBLIC_WS_ADDRESS>|$NEXT_PUBLIC_WS_ADDRESS|g" .env.production
+          sed -i "s|<SENTRY_AUTH_TOKEN>|$SENTRY_AUTH_TOKEN|g" .env.production
 
       - name: Zip files
         run: zip -r $S3_KEY appspec.yml scripts/
