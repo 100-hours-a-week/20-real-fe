@@ -4,8 +4,9 @@ import { useParams, useRouter } from 'next/navigation';
 
 import { useEffect, useState } from 'react';
 
-import { getNoticeDetail } from '@/api/post';
-import { MarkdownViewer } from '@/components/common/molecules/MarkdownViewer';
+import { getNoticeDetail } from '@/features/post/api/notices';
+
+import { MarkdownViewer } from '../../../../../shared/ui/section/MarkdownViewer';
 
 const userNames = [
   { value: 'helper.ryan(헬퍼라이언)' },

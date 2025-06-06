@@ -1,11 +1,11 @@
 import { Suspense } from 'react';
 
-import { WikiSearchPage } from '@/components/wiki/pages/WikiSearchPage/WikiSearchPage';
+import { WikiSearchPage } from '@/widgets/wiki/sections/WikiSearchPage';
 
 export default function Page() {
   return (
     <Suspense>
       <WikiSearchPage />
     </Suspense>
-  )
+  );
 }

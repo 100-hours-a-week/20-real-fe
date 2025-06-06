@@ -1,4 +1,4 @@
-import { NotFoundPage } from '@/components/common/pages/NotFoundPage';
+import { NotFoundPage } from '../shared/ui/component/NotFoundPage';
 
 export default function Page() {
   return (

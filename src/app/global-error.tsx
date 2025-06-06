@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import * as Sentry from '@sentry/nextjs';
 
-import { ErrorPage } from '@/components/common/pages/ErrorPage';
+import { ErrorPage } from '../shared/ui/component/ErrorPage';
 
 export default function GlobalError({ error }: { error: Error & { digest?: string } }) {
   useEffect(() => {
