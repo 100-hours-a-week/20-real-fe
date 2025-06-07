@@ -14,7 +14,7 @@ RUN rm -rf node_modules/.cache .next/cache
 FROM node:18-alpine AS runner
 WORKDIR /app
 
-EXPOSE NODE_ENV = production
+EXPOSE NODE_ENV=production
 
 RUN npm install -g pnpm
 
