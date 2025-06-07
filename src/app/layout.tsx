@@ -5,9 +5,9 @@ import { ReactNode } from 'react';
 
 import Providers from '@/app/providers';
 import { RouteChangeLogger } from '@/app/RouteChangeLogger';
-import { ToastContainer } from '@/components/common/organisms/ToastContainer';
 
 import './globals.css';
+import { ToastContainer } from '../shared/ui/section/ToastContainer';
 
 const pretendard = localFont({
   src: '../../public/fonts/PretendardVariable.woff2',
