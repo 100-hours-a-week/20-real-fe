@@ -10,15 +10,27 @@ import { validateWikiTitle } from '@/features/wiki/lib/validateWiki';
 import { useWikiSearchListInfinityQuery } from '@/features/wiki/model/useWikiSearchListInfinityQuery';
 import { formatTime } from '@/shared/lib/times';
 import { useToastStore } from '@/shared/model/toastStore';
+import { useInfiniteScrollObserver } from '@/shared/model/useInfiniteScrollObserver';
 import { Button } from '@/shared/ui/component/Button';
 import { Input } from '@/shared/ui/component/Input';
+import { LoadingIndicator } from '@/shared/ui/component/LoadingIndicator';
 
 export default function WikiMainPage() {
   const { showToast } = useToastStore();
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
 
-  const { data: recentWikis } = useWikiSearchListInfinityQuery({ sort: 'LATEST', limit: 4 });
+  const {
+    data: recentWikis,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useWikiSearchListInfinityQuery({ sort: 'LATEST', limit: 10 });
+  const loadingRef = useInfiniteScrollObserver({
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  });
 
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
@@ -38,7 +50,7 @@ export default function WikiMainPage() {
 
   return (
     <div className="min-h-app bg-gray-50">
-      <div className="max-w-app px-4 pt-8">
+      <div className="max-w-app px-4 py-8">
         {/* 검색 */}
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-gray-800 mb-8">위키</h2>
@@ -91,6 +103,8 @@ export default function WikiMainPage() {
             ))}
           </div>
         </div>
+
+        <LoadingIndicator loadingRef={loadingRef} hasNextPage={hasNextPage} isFetchingNextPage={isFetchingNextPage} />
       </div>
     </div>
   );
