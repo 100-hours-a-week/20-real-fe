@@ -1,7 +1,7 @@
-import { NewsDetail } from '@/types/post/newsDetail';
+import { NewsDetail } from '@/entities/post/newsDetail';
 
 import { format } from 'date-fns';
-import { PostComment } from '@/types/post/postComment';
+import { PostComment } from '@/entities/post/postComment';
 
 export const dummyNewsDetail: NewsDetail = {
   id: 1,

@@ -1,6 +1,6 @@
 import {format} from 'date-fns'
 
-import { Notice } from '@/types/post/notice';
+import { Notice } from '@/entities/post/notice';
 
 export function generateDummyNoticeList(count: number): Notice[] {
   const now = Date.now();

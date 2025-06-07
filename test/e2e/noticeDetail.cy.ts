@@ -1,4 +1,4 @@
-import { formatTime } from '../../src/utils/times';
+import { formatTime } from '../../src/shared/lib/times';
 import { mockLogin } from '../mocks/loign';
 import {
   mockDeleteNoticeComment,
