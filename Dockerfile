@@ -14,11 +14,15 @@ RUN rm -rf node_modules/.cache .next/cache
 FROM node:18-alpine AS runner
 WORKDIR /app
 
+EXPOSE NODE_ENV = production
+
 RUN npm install -g pnpm
 
 # 의존성 및 빌드 결과 복사
 COPY --from=builder --chown=node:node /app/.env.production ./.env.production
-COPY --from=builder --chown=node:node /app/next.config.ts ./next.config.ts
+COPY --from=builder --chown=node:node /app/next.config.ts ./
+COPY --from=builder --chown=node:node /app/sentry.*.config.ts ./
+COPY --from=builder --chown=node:node /app/cypress.config.*.ts ./
 COPY --from=builder --chown=node:node /app/node_modules ./node_modules
 COPY --from=builder --chown=node:node /app/.next ./.next
 COPY --from=builder --chown=node:node /app/public ./public
