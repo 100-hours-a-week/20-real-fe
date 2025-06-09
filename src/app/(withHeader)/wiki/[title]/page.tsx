@@ -14,7 +14,7 @@ import { WikiEditor } from '@/widgets/wiki/sections/WikiEditor';
 
 export default function WikiDetailPage() {
   const params = useParams();
-  const title: string = params?.title as string;
+  const title: string = decodeURIComponent(params?.title as string);
   const { data: wiki, isLoading, isError, error } = useWikiDetailQuery(title);
   const { mutate: createWiki } = useCreateWikiMutation(title);
   const { showToast } = useToastStore();
