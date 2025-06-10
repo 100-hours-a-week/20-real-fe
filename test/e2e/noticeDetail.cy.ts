@@ -1,6 +1,7 @@
+import { NoticeDetail } from '@/entities/post/noticeDetail';
+
 import { formatTime } from '../../src/shared/lib/times';
 import { loginWithFallbackSignup } from '../support/utils/auth';
-import { NoticeDetail } from '@/entities/post/noticeDetail';
 
 describe('notices 상세 유저 플로우 E2E', () => {
   beforeEach(() => {
