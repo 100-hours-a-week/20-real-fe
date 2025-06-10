@@ -1,46 +1,37 @@
-import { cookies } from 'next/headers';
+'use client';
 
-import { fetcher } from '@/api/fetcher';
-import ImageCarousel from '@/components/common/ImageCarousel';
-import MarkdownViewer from '@/components/common/MarkdownViewer';
-import NotFound from '@/components/common/NotFound';
-import RedirectWithModal from '@/components/common/RedirectWithModal';
-import PostCommentForm from '@/components/post/PostCommentForm';
-import PostCommentList from '@/components/post/PostCommentList';
-import PostFileItem from '@/components/post/PostFileItem';
-import PostHeader from '@/components/post/PostHeader';
-import PostLikeButton from '@/components/post/PostLikeButton';
-import PostSummary from '@/components/post/PostSummary';
-import { NoticeDetail } from '@/types/post/noticeDetail';
-import { PostTypes } from '@/types/post/postType';
+import { useParams } from 'next/navigation';
 
-interface NoticeDetailPageProps {
-  params: Promise<{ id: string }>;
-}
+import { PostTypes } from '@/entities/post/postType';
+import { useNoticeDetailQuery } from '@/features/post/model/notices/useNoticeDetailQuery';
+import { ErrorPage } from '@/shared/ui/component/ErrorPage';
+import { NotFoundPage } from '@/shared/ui/component/NotFoundPage';
+import { ImageCarousel } from '@/shared/ui/section/ImageCarousel';
+import { MarkdownViewer } from '@/shared/ui/section/MarkdownViewer';
+import { RedirectWithLoginModalPage } from '@/shared/ui/section/RedirectWithLoginModalPage';
+import { PostFileItem } from '@/widgets/post/components/PostFileItem';
+import { PostHeader } from '@/widgets/post/components/PostHeader';
+import { PostSummary } from '@/widgets/post/components/PostSummary';
+import { PostCommentSection } from '@/widgets/post/sections/PostCommentSection';
+import { PostReaction } from '@/widgets/post/sections/PostReaction/PostReaction';
 
-export default async function NoticeDetailPage({ params }: NoticeDetailPageProps) {
-  const cookie = (await cookies()).toString();
-  const { id } = await params;
-  let notice: NoticeDetail | null = null;
+export default function NoticeDetailPage() {
+  const params = useParams();
+  const id: string = params?.id as string;
+  const { data: notice, isLoading, isError, error } = useNoticeDetailQuery(id);
 
-  try {
-    const res = await fetcher<NoticeDetail>(`/v1/notices/${id}`, {
-      method: 'GET',
-      headers: {
-        Cookie: cookie,
-      },
-    });
-
-    if (res?.code === 401 || res?.code === 403) {
-      return <RedirectWithModal />;
+  if (isLoading) return null;
+  if (isError) {
+    switch (error?.code) {
+      case 'UNAUTHORIZED':
+        return <RedirectWithLoginModalPage />;
+      case 'NOT_FOUND':
+        return <NotFoundPage />;
+      default:
+        return <ErrorPage />;
     }
-
-    if (res) notice = res.data;
-  } catch (e) {
-    console.error('fetch failed:', e);
   }
-
-  if (!notice) return <NotFound />;
+  if (!notice) return <ErrorPage />;
 
   return (
     <div className="flex justify-center items-center w-full">
@@ -57,30 +48,40 @@ export default async function NoticeDetailPage({ params }: NoticeDetailPageProps
         <PostSummary summary={notice.summary} />
 
         <div className="px-4 pb-3">
-          <MarkdownViewer text={notice.content} />
+          <MarkdownViewer text={notice.content} useHtml={true} useSyntaxHighlight={true} />
 
-          {notice.images.length > 0 && <ImageCarousel images={notice.images} />}
+          {notice.images.length > 0 && (
+            <ImageCarousel.Root
+              images={notice.images.map((item) => ({
+                id: item.id,
+                url: item.fileUrl,
+                name: item.fileName,
+              }))}
+            >
+              <div className="relative">
+                <ImageCarousel.Controls />
+                <ImageCarousel.ImageList />
+              </div>
+              <ImageCarousel.Indicators />
+            </ImageCarousel.Root>
+          )}
 
           {notice.files.length > 0 &&
             notice.files.map((file) => (
               <div key={file.id}>
-                <a href={file.fileUrl} download target="_blank" rel="noopener noreferrer">
-                  <PostFileItem file={file} />
-                </a>
+                <PostFileItem file={file} />
               </div>
             ))}
         </div>
 
-        <PostLikeButton
+        <PostReaction
           type={PostTypes.Notice}
           postId={notice.id}
           userLike={notice.userLike}
           likeCount={notice.likeCount}
         />
 
-        <PostCommentForm type={PostTypes.Notice} postId={notice.id} commentCount={notice.commentCount} />
-
-        <PostCommentList type={PostTypes.Notice} postId={notice.id} />
+        <PostCommentSection type={PostTypes.Notice} postId={notice.id} commentCount={notice.commentCount} />
       </div>
     </div>
   );

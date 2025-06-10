@@ -4,9 +4,10 @@ import localFont from 'next/font/local';
 import { ReactNode } from 'react';
 
 import Providers from '@/app/providers';
-import ToastContainer from '@/components/common/ToastContainer';
+import { RouteChangeLogger } from '@/app/RouteChangeLogger';
 
 import './globals.css';
+import { ToastContainer } from '../shared/ui/section/ToastContainer';
 
 const pretendard = localFont({
   src: '../../public/fonts/PretendardVariable.woff2',
@@ -31,6 +32,7 @@ export default function RootLayout({
   return (
     <html lang="ko" className={`${pretendard.className}`}>
       <body className="flex justify-center bg-gradient-to-br min-h-screen">
+        <RouteChangeLogger />
         <Background>
           <Providers>
             <div className="relative bg-white/80  shadow-soft min-h-screen max-w-app w-full">

@@ -2,12 +2,12 @@
 
 import Link from 'next/link';
 
-import LoadingIndicator from '@/components/common/LoadingIndicator';
-import NoticeListItem from '@/components/post/NoticeListItem';
-import { useInfiniteScrollObserver } from '@/hooks/useInfiniteScrollObserver';
-import { useNoticeListInfinityQuery } from '@/queries/post/useNoticeListInfinityQuery';
+import { useNoticeListInfinityQuery } from '@/features/post/model/notices/useNoticeListInfinityQuery';
+import { useInfiniteScrollObserver } from '@/shared/model/useInfiniteScrollObserver';
+import { LoadingIndicator } from '@/shared/ui/component/LoadingIndicator';
+import { NoticeListItem } from '@/widgets/post/components/NoticeListItem';
 
-export default function NoticesPage() {
+export default function NoticeListPage() {
   const { data: notices, fetchNextPage, hasNextPage, isFetchingNextPage } = useNoticeListInfinityQuery();
   const loadingRef = useInfiniteScrollObserver({
     fetchNextPage,

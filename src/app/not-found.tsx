@@ -1,9 +1,9 @@
-import NotFound from '@/components/common/NotFound';
+import { NotFoundPage } from '../shared/ui/component/NotFoundPage';
 
-export default function NotFoundPage() {
+export default function Page() {
   return (
     <>
-      <NotFound />
+      <NotFoundPage />
     </>
   );
 }

@@ -1,0 +1,58 @@
+body {
+  --tt-toolbar-height: 44px;
+  --tt-theme-text: var(--color-neutral-900);
+}
+
+body {
+  font-family: "Pretendard", sans-serif;
+  color: var(--tt-theme-text);
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  padding: 0;
+}
+
+.tiptap.ProseMirror {
+  font-family: "Pretendard", sans-serif;
+}
+
+.content-wrapper {
+  height: calc(100% - var(--tt-toolbar-height));
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    display: block;
+    width: 0.5rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--tt-scrollbar-color);
+    border-radius: 4px;
+  }
+
+  /* Firefox scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: var(--tt-scrollbar-color) transparent;
+}
+
+.simple-editor-content {
+  max-width: 640px;
+  width: 100%;
+  margin: 0 auto;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+}
+
+.simple-editor-content .tiptap.ProseMirror {
+  padding: 3rem 3rem;
+}
+
+@media screen and (max-width: 480px) {
+  .simple-editor-content .tiptap.ProseMirror {
+    padding: 1rem 1.5rem;
+  }
+}

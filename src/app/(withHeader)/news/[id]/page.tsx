@@ -1,45 +1,36 @@
-import { cookies } from 'next/headers';
+'use client';
 
-import { fetcher } from '@/api/fetcher';
-import MarkdownViewer from '@/components/common/MarkdownViewer';
-import NotFound from '@/components/common/NotFound';
-import RedirectWithModal from '@/components/common/RedirectWithModal';
-import SingleImage from '@/components/common/SingleImage';
-import PostCommentForm from '@/components/post/PostCommentForm';
-import PostCommentList from '@/components/post/PostCommentList';
-import PostHeader from '@/components/post/PostHeader';
-import PostLikeButton from '@/components/post/PostLikeButton';
-import PostSummary from '@/components/post/PostSummary';
-import { NewsDetail } from '@/types/post/newsDetail';
-import { PostTypes } from '@/types/post/postType';
+import { useParams } from 'next/navigation';
 
-interface NewsDetailPageProps {
-  params: Promise<{ id: string }>;
-}
+import { PostTypes } from '@/entities/post/postType';
+import { useNewsDetailQuery } from '@/features/post/model/news/useNewsDetailQuery';
+import { ErrorPage } from '@/shared/ui/component/ErrorPage';
+import { NotFoundPage } from '@/shared/ui/component/NotFoundPage';
+import { ImageViewer } from '@/shared/ui/section/ImageViewer';
+import { MarkdownViewer } from '@/shared/ui/section/MarkdownViewer';
+import { RedirectWithLoginModalPage } from '@/shared/ui/section/RedirectWithLoginModalPage';
+import { PostHeader } from '@/widgets/post/components/PostHeader';
+import { PostSummary } from '@/widgets/post/components/PostSummary';
+import { PostCommentSection } from '@/widgets/post/sections/PostCommentSection';
+import { PostReaction } from '@/widgets/post/sections/PostReaction/PostReaction';
 
-export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
-  const cookie = (await cookies()).toString();
-  const { id } = await params;
-  let news: NewsDetail | null = null;
+export default function NewsDetailPage() {
+  const params = useParams();
+  const id: string = params?.id as string;
+  const { data: news, isLoading, isError, error } = useNewsDetailQuery(id);
 
-  try {
-    const res = await fetcher<NewsDetail>(`/v1/news/${id}`, {
-      method: 'GET',
-      headers: {
-        Cookie: cookie,
-      },
-    });
-
-    if (res?.code === 401 || res?.code === 403) {
-      return <RedirectWithModal />;
+  if (isLoading) return null;
+  if (isError) {
+    switch (error?.code) {
+      case 'UNAUTHORIZED':
+        return <RedirectWithLoginModalPage />;
+      case 'NOT_FOUND':
+        return <NotFoundPage />;
+      default:
+        return <ErrorPage />;
     }
-
-    if (res) news = res.data;
-  } catch (e) {
-    console.error('fetch failed:', e);
   }
-
-  if (!news) return <NotFound />;
+  if (!news) return <ErrorPage />;
 
   return (
     <div className="flex justify-center items-center w-full">
@@ -49,16 +40,14 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
         <PostSummary summary={news.summary} />
 
         <div className="px-4 pb-3">
-          <MarkdownViewer text={news.content} />
+          <MarkdownViewer text={news.content} useHtml={true} useSyntaxHighlight={true} />
 
-          <SingleImage imageUrl={news.imageUrl} />
+          {news.imageUrl && <ImageViewer imageUrl={news.imageUrl} />}
         </div>
 
-        <PostLikeButton type={PostTypes.News} postId={news.id} userLike={news.userLike} likeCount={news.likeCount} />
+        <PostReaction type={PostTypes.News} postId={news.id} userLike={news.userLike} likeCount={news.likeCount} />
 
-        <PostCommentForm type={PostTypes.News} postId={news.id} commentCount={news.commentCount} />
-
-        <PostCommentList type={PostTypes.News} postId={news.id} />
+        <PostCommentSection type={PostTypes.News} postId={news.id} commentCount={news.commentCount} />
       </div>
     </div>
   );

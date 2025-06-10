@@ -3,13 +3,13 @@
 import { Clock, Flame } from 'lucide-react';
 import Link from 'next/link';
 
-import LoadingIndicator from '@/components/common/LoadingIndicator';
-import HotNewsItem from '@/components/post/HotNewsItem';
-import NewsListItem from '@/components/post/NewsListItem';
-import { useInfiniteScrollObserver } from '@/hooks/useInfiniteScrollObserver';
-import { useNewsListInfinityQuery } from '@/queries/news/useNewsListInfinityQuery';
-import { useNewsListQuery } from '@/queries/news/useNewsListQuery';
-import { useReadNewsPersistStore } from '@/stores/readNewsPersistStore';
+import { useNewsListInfinityQuery } from '@/features/post/model/news/useNewsListInfinityQuery';
+import { useNewsListQuery } from '@/features/post/model/news/useNewsListQuery';
+import { useReadNewsPersistStore } from '@/shared/model/readNewsPersistStore';
+import { useInfiniteScrollObserver } from '@/shared/model/useInfiniteScrollObserver';
+import { LoadingIndicator } from '@/shared/ui/component/LoadingIndicator';
+import { HotNewsItem } from '@/widgets/post/components/HotNewsItem';
+import { NewsListItem } from '@/widgets/post/components/NewsListItem';
 
 export default function NewsListPage() {
   const { data: hotNews } = useNewsListQuery('popular', 2);
