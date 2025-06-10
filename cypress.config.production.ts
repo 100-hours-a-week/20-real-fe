@@ -1,20 +1,21 @@
 import { defineConfig } from "cypress";
 import * as dotenv from "dotenv";
 
-dotenv.config();
+dotenv.config({ path: '.env.production' });
 
 export default defineConfig({
   e2e: {
-    baseUrl: 'https://cadev.kakaotech.com',
+    baseUrl: process.env.CYPRESS_BASE_URL,
     setupNodeEvents(on, config) {
+      return config;
     },
     specPattern: ['**/*.cy.ts', '**/*.cy.tsx'],
     supportFile: false,
     env: {
-      API_URL: "https://cadev.kakaotech.com/api",
+      API_URL: process.env.CYPRESS_API_URL,
       TEST_EMAIL: process.env.CYPRESS_TEST_EMAIL,
       TEST_PASSWORD: process.env.CYPRESS_PASSWORD,
-      TEST_API_KEY: process.env.CYPRESS_API_KEY,
+      API_KEY: process.env.CYPRESS_API_KEY,
     }
   },
 });
