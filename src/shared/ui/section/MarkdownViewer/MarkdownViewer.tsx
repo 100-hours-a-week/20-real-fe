@@ -74,7 +74,7 @@ export function MarkdownViewer({ text, className, useHtml = false, useSyntaxHigh
     loadPlugins();
   }, []);
   return (
-    <div className={cn(`text-black text-sm/6 break-all`, className)}>
+    <div className={cn(`text-black text-sm/6 break-all`, className)} data-testid="post-content">
       <Markdown
         remarkPlugins={[remarkGfm, remarkBreaks]}
         rehypePlugins={rehypePlugins}
