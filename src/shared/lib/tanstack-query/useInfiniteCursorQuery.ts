@@ -1,6 +1,7 @@
 import { useInfiniteQuery, UseInfiniteQueryOptions, UseInfiniteQueryResult } from '@tanstack/react-query';
 
 import { CursorParam, CursorResponse } from '@/entities/common/base';
+import { AppError } from '@/shared/errors/appError';
 
 interface UseInfiniteCursorQueryParams<TItem> {
   queryKey: string[];
@@ -8,7 +9,7 @@ interface UseInfiniteCursorQueryParams<TItem> {
   options?: Omit<
     UseInfiniteQueryOptions<
       CursorResponse<TItem>, // queryFn으로 가져오는 데이터
-      Error,
+      AppError,
       TItem[], // select 후 반환하는 데이터
       CursorResponse<TItem>, // getNextPageParam의 lastPage 타입
       string[], // query key 타입
@@ -22,8 +23,8 @@ export function useInfiniteCursorQuery<TItem>({
   queryKey,
   queryFn,
   options,
-}: UseInfiniteCursorQueryParams<TItem>): UseInfiniteQueryResult<TItem[], Error> {
-  return useInfiniteQuery<CursorResponse<TItem>, Error, TItem[], string[], CursorParam | null>({
+}: UseInfiniteCursorQueryParams<TItem>): UseInfiniteQueryResult<TItem[], AppError> {
+  return useInfiniteQuery<CursorResponse<TItem>, AppError, TItem[], string[], CursorParam | null>({
     queryKey,
     queryFn: ({ pageParam }) =>
       queryFn({
