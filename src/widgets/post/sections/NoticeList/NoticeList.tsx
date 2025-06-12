@@ -14,6 +14,7 @@ export function NoticeList() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    isLoading,
     error,
     isError,
   } = useNoticeListInfinityQuery();
@@ -22,6 +23,10 @@ export function NoticeList() {
     hasNextPage,
     isFetchingNextPage,
   });
+
+  if (isLoading) {
+    return <LoadingIndicator isLoading={isLoading} data-testId="loading-indicator" />;
+  }
 
   if (isError) {
     return <ErrorHandler error={error} />;
