@@ -1,0 +1,38 @@
+{
+  "data": {
+    "items": [
+      {
+        "id": 135,
+        "title": "\uD83C\uDF81 4단위기간 만족도조사 구름조각 지급 \uD83C\uDF81",
+        "author": "helper.ryan(헬퍼라이언)",
+        "tag": "공지",
+        "platform": "디스코드",
+        "userRead": false,
+        "createdAt": "2025.06.10 10:19:00"
+      },
+      {
+        "id": 134,
+        "title": "\uD83D\uDE08 공지봇 탄생 안내",
+        "author": "helper.ryan(헬퍼라이언)",
+        "tag": "공지",
+        "platform": "디스코드",
+        "userRead": false,
+        "createdAt": "2025.06.09 17:41:00"
+      },
+      {
+        "id": 126,
+        "title": "조간 상호 피드백",
+        "author": "강사",
+        "tag": "공지",
+        "platform": "노션",
+        "userRead": false,
+        "createdAt": "2025.06.02 10:10:44"
+      }
+    ],
+    "nextCursorStandard": null,
+    "nextCursorId": null,
+    "hasNext": false
+  },
+  "code": 200,
+  "message": "OK"
+}
