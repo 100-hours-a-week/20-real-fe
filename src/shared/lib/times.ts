@@ -26,3 +26,16 @@ export function formatTime(raw?: string): string {
 export function isRecent(createdAt: string): boolean {
   return differenceInHours(new Date(), parse(createdAt, 'yyyy.MM.dd HH:mm:ss', new Date())) < 24;
 }
+
+export function formatToDateString(date: Date): string {
+  const pad = (n: number) => n.toString().padStart(2, '0');
+
+  const year = date.getFullYear();
+  const month = pad(date.getMonth() + 1); // 0-based
+  const day = pad(date.getDate());
+  const hour = pad(date.getHours());
+  const minute = pad(date.getMinutes());
+  const second = pad(date.getSeconds());
+
+  return `${year}.${month}.${day} ${hour}:${minute}:${second}`;
+}

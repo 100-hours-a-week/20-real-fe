@@ -3,6 +3,7 @@ import { globalHandlers } from '@test/mocks/global/handlers/global.handlers';
 import { noticeListHandlers } from '@test/mocks/post/handlers/noticeList.handlers';
 import { Providers } from '@test/utils/renderWithProviders';
 
+import '@/app/globals.css';
 import { NoticeList } from './NoticeList';
 
 const meta: Meta<typeof NoticeList> = {
