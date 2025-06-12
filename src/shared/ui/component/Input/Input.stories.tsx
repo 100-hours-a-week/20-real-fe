@@ -1,6 +1,6 @@
 import { Lock, Mail } from 'lucide-react';
 
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs-vite';
 
 import { Input } from '@/shared/ui/component/Input/index';
 

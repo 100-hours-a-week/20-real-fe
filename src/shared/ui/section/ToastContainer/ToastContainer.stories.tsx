@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
 import { useToastStore } from '@/shared/model/toastStore';
 import { ToastContainer } from '@/shared/ui/section/ToastContainer/index';

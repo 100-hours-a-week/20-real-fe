@@ -18,7 +18,7 @@ export function ErrorHandler({ error, className = '' }: ErrorHandlerProps) {
     if (status === 'UNAUTHORIZED' || status === 'TOKEN_EXPIRED') {
       return {
         icon: <LogIn className="w-8 h-8 text-blue-500" />,
-        message: '로그인이 필요합니다.',
+        message: '로그인을 해야 이용할 수 있는 기능이에요.',
         bgColor: 'bg-blue-50',
         showLoginButton: true,
       };
@@ -27,7 +27,7 @@ export function ErrorHandler({ error, className = '' }: ErrorHandlerProps) {
     if (status === 'FORBIDDEN') {
       return {
         icon: <ShieldOff className="w-8 h-8 text-orange-500" />,
-        message: '접근 권한이 없습니다.',
+        message: '인증된 사용자만 사용할 수 있는 기능이에요.',
         bgColor: 'bg-orange-50',
         showLoginButton: false,
       };

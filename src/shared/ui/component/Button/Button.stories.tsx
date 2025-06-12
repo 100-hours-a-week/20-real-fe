@@ -1,8 +1,8 @@
 import { Menu } from 'lucide-react';
+import { fn } from 'storybook/test';
 
 import { useState } from 'react';
-import { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
+import { Meta, StoryObj } from '@storybook/nextjs-vite';
 
 import { Button } from '@/shared/ui/component/Button/index';
 

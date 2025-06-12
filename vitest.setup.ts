@@ -1,6 +1,7 @@
 import { afterAll, afterEach, beforeAll } from 'vitest';
 
-import { server } from '@/shared/lib/msw/server';
+import { server } from '@test/msw/server';
+
 
 beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())
