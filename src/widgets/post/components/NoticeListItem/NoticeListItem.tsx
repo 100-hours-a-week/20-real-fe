@@ -24,6 +24,7 @@ export function NoticeListItem({ notice }: NoticeItemProps) {
       className={`bg-white rounded-xl shadow-sm mb-4 overflow-hidden transition-all hover:shadow-md ${
         isRecent(notice.createdAt) ? 'border-l-4 border-primary-300' : ''
       }`}
+      data-testid="notice-list-item"
     >
       <div className="p-5">
         <div className="flex justify-between items-start mb-2">

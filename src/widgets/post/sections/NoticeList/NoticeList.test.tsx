@@ -1,20 +1,22 @@
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { globalHandlers } from '@test/mocks/global/handlers/global.handlers';
 import mockNoticeList from '@test/mocks/post/data/noticeList/success.json';
 import { noticeListHandlers } from '@test/mocks/post/handlers/noticeList.handlers';
 import { server } from '@test/msw/server';
+import { mockIntersectionObserver } from '@test/utils/mockIntersectionObserver';
+import { mockNextNavigation } from '@test/utils/mockNextNavigation';
 import { renderWithProviders } from '@test/utils/renderWithProviders';
 import { screen } from '@testing-library/dom';
 
 import { NoticeList } from '@/widgets/post/sections/NoticeList/NoticeList';
 
-vi.mock('next/navigation', () => ({
-  usePathname: () => '',
-  useSearchParams: () => new URLSearchParams(''),
-}));
-
 describe('공지 리스트', () => {
+  beforeEach(() => {
+    mockNextNavigation();
+    mockIntersectionObserver();
+  });
+
   it('정상적으로 공지사항 리스트가 렌더링된다.', async () => {
     server.use(...noticeListHandlers.success);
 
@@ -83,4 +85,17 @@ describe('공지 리스트', () => {
     const link = firstItem.closest('a');
     expect(link?.getAttribute('href')).toBe(`/notices/${targetItem.id}`);
   });
+
+  // TODO: 무한 스크롤 테스트 방법 고민 필요...
+  // it('스크롤 하면 다음 공지 페이지가 로드된다.', async () => {
+  //   server.use(...noticeListHandlers.paginated);
+  //
+  //   renderWithProviders(<NoticeList />);
+  //
+  //   const items = await screen.findAllByTestId('notice-list-item');
+  //   expect(items).toHaveLength(mockNoticeList.data.items.length);
+  //
+  //   const allItems = await screen.findAllByTestId('notice-list-item');
+  //   expect(allItems).toHaveLength(mockNoticeList.data.items.length + mockNoticeList_nextPage.data.items.length);
+  // });
 });

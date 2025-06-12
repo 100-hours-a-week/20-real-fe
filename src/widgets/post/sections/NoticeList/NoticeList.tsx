@@ -26,7 +26,7 @@ export function NoticeList() {
   });
 
   if (isLoading) {
-    return <LoadingIndicator isLoading={isLoading} data-testId="loading-indicator" />;
+    return <LoadingIndicator isLoading={isLoading} data-testid="loading-indicator" />;
   }
 
   if (isError) {
@@ -37,7 +37,7 @@ export function NoticeList() {
     <div>
       <div className="px-4 pb-20">
         {notices?.length === 0 && (
-          <EmptyItem message="아직 작성된 공지사항이 없어요." data-testId="notice-list-empty" />
+          <EmptyItem message="아직 작성된 공지사항이 없어요." data-testid="notice-list-empty" />
         )}
         {notices &&
           notices.map((notice) => (
@@ -47,7 +47,12 @@ export function NoticeList() {
           ))}
       </div>
 
-      <LoadingIndicator loadingRef={loadingRef} hasNextPage={hasNextPage} isFetchingNextPage={isFetchingNextPage} />
+      <LoadingIndicator
+        loadingRef={loadingRef}
+        hasNextPage={hasNextPage}
+        isFetchingNextPage={isFetchingNextPage}
+        data-testid="pagination-loading-indicator"
+      />
     </div>
   );
 }
