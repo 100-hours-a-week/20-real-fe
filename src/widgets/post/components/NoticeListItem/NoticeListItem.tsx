@@ -1,7 +1,7 @@
 import { ChevronRight } from 'lucide-react';
 
 import { Notice } from '@/entities/post/notice';
-import { formatTime, isRecent } from '@/shared/lib/times';
+import { formatTime, isRecent } from '@/shared/lib/utils/times';
 
 import helperRyan from '../../../../assets/helper-ryan.png';
 import { SafeImage } from '../../../../shared/ui/component/SafeImage';

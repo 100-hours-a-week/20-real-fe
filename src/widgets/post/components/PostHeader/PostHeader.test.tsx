@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { render, screen } from '@testing-library/react';
 
-import { formatToDateString } from '@/shared/lib/times';
+import { formatToDateString } from '@/shared/lib/utils/times';
 
 import { PostHeader } from './PostHeader';
 

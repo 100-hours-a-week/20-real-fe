@@ -3,7 +3,7 @@ import { News } from '@/entities/post/news';
 import { NewsDetail } from '@/entities/post/newsDetail';
 import { PostComment } from '@/entities/post/postComment';
 import { PostLike } from '@/entities/post/postLike';
-import { fetcher } from '@/shared/lib/fetcher';
+import { fetcher } from '@/shared/lib/utils/fetcher';
 
 // 뉴스 리스트 조회
 interface getNewsListRequest extends CursorParam {

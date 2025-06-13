@@ -4,7 +4,7 @@ import { CircleAlert } from 'lucide-react';
 import Link from 'next/link';
 
 import { useNoticeListQuery } from '@/features/post/model/notices/useNoticeListQuery';
-import { formatTime } from '@/shared/lib/times';
+import { formatTime } from '@/shared/lib/utils/times';
 
 import { SkeletonBox } from '../../../../shared/ui/component/SkeletonBox';
 

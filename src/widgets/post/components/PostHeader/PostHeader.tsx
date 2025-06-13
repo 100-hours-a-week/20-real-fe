@@ -1,5 +1,5 @@
 import { PostPlatform } from '@/entities/post/postPlatform';
-import { formatTime, isRecent } from '@/shared/lib/times';
+import { formatTime, isRecent } from '@/shared/lib/utils/times';
 
 import { Button } from '../../../../shared/ui/component/Button';
 

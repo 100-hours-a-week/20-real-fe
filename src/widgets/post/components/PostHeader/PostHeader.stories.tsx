@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/nextjs-vite';
 
-import { formatToDateString } from '@/shared/lib/times';
+import { formatToDateString } from '@/shared/lib/utils/times';
 
 import '@/app/globals.css';
 import { PostHeader } from './PostHeader';

@@ -1,5 +1,5 @@
 import { PresignedUrl } from '@/entities/common/presignedUrl';
-import { fetcher } from '@/shared/lib/fetcher';
+import { fetcher } from '@/shared/lib/utils/fetcher';
 
 interface getPresignedUrlRequest {
   fileName: string;

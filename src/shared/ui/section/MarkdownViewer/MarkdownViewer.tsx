@@ -8,8 +8,8 @@ import type { PluggableList } from 'unified';
 import { useEffect, useState } from 'react';
 import Markdown from 'react-markdown';
 
-import { cn } from '@/shared/lib/cn';
-import { normalizeMarkdown } from '@/shared/lib/normalizeMarkdown';
+import { cn } from '@/shared/lib/utils/cn';
+import { normalizeMarkdown } from '@/shared/lib/utils/normalizeMarkdown';
 
 const PrismLight = dynamic(async () => {
   const res = await import('react-syntax-highlighter/dist/esm/prism-light');

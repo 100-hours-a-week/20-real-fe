@@ -1,7 +1,7 @@
 import { Trash } from 'lucide-react';
 
 import { PostComment } from '@/entities/post/postComment';
-import { formatTime } from '@/shared/lib/times';
+import { formatTime } from '@/shared/lib/utils/times';
 
 import { Button } from '../../../../shared/ui/component/Button';
 import { SafeImage } from '../../../../shared/ui/component/SafeImage';
