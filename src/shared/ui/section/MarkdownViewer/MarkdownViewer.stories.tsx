@@ -6,7 +6,6 @@ import { MarkdownViewer } from '@/shared/ui/section/MarkdownViewer/index';
 import '@/app/globals.css';
 
 const meta: Meta<typeof MarkdownViewer> = {
-  title: 'Common/MarkdownViewer',
   component: MarkdownViewer,
   tags: ['autodocs'],
   parameters: {
