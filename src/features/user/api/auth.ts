@@ -1,5 +1,5 @@
 import { BaseResponse } from '@/entities/common/base';
-import { fetcher } from '@/shared/lib/fetcher';
+import { fetcher } from '@/shared/lib/utils/fetcher';
 
 const oauthLogin = async (provider: string) => {
   window.location.href = process.env.NEXT_PUBLIC_API_URL + `/v1/oauth/${provider}`;

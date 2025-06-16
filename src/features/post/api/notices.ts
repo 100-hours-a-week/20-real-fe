@@ -3,7 +3,7 @@ import { Notice } from '@/entities/post/notice';
 import { NoticeDetail } from '@/entities/post/noticeDetail';
 import { PostComment } from '@/entities/post/postComment';
 import { PostLike } from '@/entities/post/postLike';
-import { fetcher } from '@/shared/lib/fetcher';
+import { fetcher } from '@/shared/lib/utils/fetcher';
 
 // 공지 리스트 조회
 interface getNoticeListRequest extends CursorParam {

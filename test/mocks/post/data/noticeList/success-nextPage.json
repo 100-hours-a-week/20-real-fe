@@ -1,0 +1,101 @@
+{
+  "data": {
+    "items": [
+      {
+        "id": 125,
+        "title": "✅ 4단위기간 종료 안내",
+        "author": "helper.ryan(헬퍼라이언)",
+        "tag": "공지",
+        "platform": "디스코드",
+        "userRead": false,
+        "createdAt": "2025.05.30 16:53:17"
+      },
+      {
+        "id": 124,
+        "title": "\uD83D\uDC65 5월 동아리 활동비 지급 정보 제출 안내",
+        "author": "helper.ryan(헬퍼라이언)",
+        "tag": "공지",
+        "platform": "디스코드",
+        "userRead": false,
+        "createdAt": "2025.05.26 19:23:00"
+      },
+      {
+        "id": 123,
+        "title": "모의면접 방법 안내",
+        "author": "void.yeon(연시완)/강사",
+        "tag": "공지",
+        "platform": "노션",
+        "userRead": false,
+        "createdAt": "2025.05.20 19:37:00"
+      },
+      {
+        "id": 122,
+        "title": "업무시간 준수 및 자율적 문화 유지를 위한...",
+        "author": "void.yeon(연시완)/강사",
+        "tag": "공지",
+        "platform": "노션",
+        "userRead": false,
+        "createdAt": "2025.05.20 19:20:00"
+      },
+      {
+        "id": 121,
+        "title": "\uD83D\uDCF0 4단위기간 만족도 조사 \uD83D\uDCF0",
+        "author": "helper.ryan(헬퍼라이언)",
+        "tag": "공지",
+        "platform": "디스코드",
+        "userRead": false,
+        "createdAt": "2025.05.19 17:52:44"
+      },
+      {
+        "id": 120,
+        "title": "구름 EXP \"학습 계획\" 기능 삭제 예정",
+        "author": "helper.ryan(헬퍼라이언)",
+        "tag": "공지",
+        "platform": "디스코드",
+        "userRead": false,
+        "createdAt": "2025.05.19 17:52:13"
+      },
+      {
+        "id": 119,
+        "title": "디스코드 채널별 역할 안내",
+        "author": "helper.ryan(헬퍼라이언)",
+        "tag": "공지",
+        "platform": "디스코드",
+        "userRead": false,
+        "createdAt": "2025.05.19 09:56:35"
+      },
+      {
+        "id": 118,
+        "title": "PL미팅 채널 안내",
+        "author": "helper.ryan(헬퍼라이언)",
+        "tag": "공지",
+        "platform": "디스코드",
+        "userRead": false,
+        "createdAt": "2025.05.19 09:55:20"
+      },
+      {
+        "id": 117,
+        "title": "카카오 현직자 특강 만족도 조사 리마인드 안내",
+        "author": "helper.ryan(헬퍼라이언)",
+        "tag": "공지",
+        "platform": "디스코드",
+        "userRead": false,
+        "createdAt": "2025.05.19 09:52:37"
+      },
+      {
+        "id": 116,
+        "title": "\uD83D\uDCF0 카카오 현직자 특강 만족도 조사",
+        "author": "helper.ryan(헬퍼라이언)",
+        "tag": "공지",
+        "platform": "디스코드",
+        "userRead": false,
+        "createdAt": "2025.05.19 09:51:48"
+      }
+    ],
+    "nextCursorStandard": "2025-05-19T09:51:48.190324",
+    "nextCursorId": 116,
+    "hasNext": true
+  },
+  "code": 200,
+  "message": "OK"
+}

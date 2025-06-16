@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
 import { MarkdownViewer } from '@/shared/ui/section/MarkdownViewer/index';
 
 import '@/app/globals.css';
 
 const meta: Meta<typeof MarkdownViewer> = {
-  title: 'Common/MarkdownViewer',
   component: MarkdownViewer,
   tags: ['autodocs'],
   parameters: {

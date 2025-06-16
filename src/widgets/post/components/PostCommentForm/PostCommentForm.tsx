@@ -17,13 +17,26 @@ export function PostCommentForm({ comment, setComment, commentCount, onSubmitCom
     <div className="px-4 py-3 border-t border-gray-100 flex flex-col justify-between items-start gap-3">
       <div className="flex items-center text-gray-500">
         <MessageCircle size={16} className="mr-1" />
-        <span className="text-sm font-medium">댓글 {commentCount}</span>
+        <span className="text-sm font-medium" data-testid="post-comment-count">
+          댓글 {commentCount}
+        </span>
       </div>
 
       <form onSubmit={onSubmitComment} className="flex w-full gap-3 justify-center items-center">
-        <Input className="flex-1 rounded-xl" value={comment} onChange={(e) => setComment(e.target.value)} />
+        <Input
+          className="flex-1 rounded-xl"
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+          data-testid="post-comment-input"
+        />
 
-        <Button variant="outline" size="icon" className="shrink-0" type="submit">
+        <Button
+          variant="outline"
+          size="icon"
+          className="shrink-0"
+          type="submit"
+          data-testid="post-comment-submit-button"
+        >
           <ArrowUp size={18} />
         </Button>
       </form>
