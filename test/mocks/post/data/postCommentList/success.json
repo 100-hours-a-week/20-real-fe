@@ -1,0 +1,91 @@
+{
+  "data": {
+    "items": [
+      {
+        "id": 49,
+        "isAuthor": true,
+        "nickname": "kevin.joung(정현우)",
+        "content": "화이팅",
+        "createdAt": "2025.06.12 20:31:24",
+        "profileUrl": "https://www.kakaotech.com/static/images/default_profiles/muji.png"
+      },
+      {
+        "id": 48,
+        "isAuthor": false,
+        "nickname": "test.test",
+        "content": "아 뿌듯하다",
+        "createdAt": "2025.06.12 20:31:20",
+        "profileUrl": "https://www.kakaotech.com/static/images/default_profiles/muji.png"
+      },
+      {
+        "id": 47,
+        "isAuthor": true,
+        "nickname": "kevin.joung(정현우)",
+        "content": "잘생겼어요~",
+        "createdAt": "2025.06.12 17:31:30",
+        "profileUrl": "https://www.kakaotech.com/static/images/default_profiles/ryan.jpeg"
+      },
+      {
+        "id": 43,
+        "isAuthor": true,
+        "nickname": "kevin.joung(정현우)",
+        "content": "이런 서비스였어?",
+        "createdAt": "2025.06.12 15:27:28",
+        "profileUrl": "https://www.kakaotech.com/static/images/default_profiles/ryan.jpeg"
+      },
+      {
+        "id": 42,
+        "isAuthor": true,
+        "nickname": "kevin.joung(정현우)",
+        "content": "폭력적이다",
+        "createdAt": "2025.06.12 15:27:12",
+        "profileUrl": "https://www.kakaotech.com/static/images/default_profiles/ryan.jpeg"
+      },
+      {
+        "id": 41,
+        "isAuthor": true,
+        "nickname": "kevin.joung(정현우)",
+        "content": "웃기네요",
+        "createdAt": "2025.06.12 15:26:18",
+        "profileUrl": "https://www.kakaotech.com/static/images/default_profiles/apeach.jpeg"
+      },
+      {
+        "id": 40,
+        "isAuthor": true,
+        "nickname": "kevin.joung(정현우)",
+        "content": "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ",
+        "createdAt": "2025.06.12 15:26:15",
+        "profileUrl": "https://www.kakaotech.com/static/images/default_profiles/apeach.jpeg"
+      },
+      {
+        "id": 39,
+        "isAuthor": true,
+        "nickname": "kevin.joung(정현우)",
+        "content": "레전드",
+        "createdAt": "2025.06.12 15:25:52",
+        "profileUrl": "https://www.kakaotech.com/static/images/default_profiles/apeach.jpeg"
+      },
+      {
+        "id": 38,
+        "isAuthor": true,
+        "nickname": "kevin.joung(정현우)",
+        "content": "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ",
+        "createdAt": "2025.06.12 15:25:28",
+        "profileUrl": "https://www.kakaotech.com/static/images/default_profiles/ryan.jpeg"
+      },
+      {
+        "id": 37,
+        "isAuthor": true,
+        "nickname": "kevin.joung(정현우)",
+        "content": "ㅎㅎ",
+        "createdAt": "2025.06.12 15:23:54",
+        "profileUrl": "https://www.kakaotech.com/static/images/default_profiles/muji.png"
+      }
+    ],
+    "nextCursorStandard": "2025-06-12 15:23:54",
+    "nextCursorId": 37,
+    "hasNext": true
+  },
+  "code": 200,
+  "message": "OK"
+}
