@@ -26,7 +26,7 @@ export function ErrorHandler({ error, className = '' }: ErrorHandlerProps) {
 
     if (status === 'FORBIDDEN') {
       return {
-        icon: <ShieldOff className="w-8 h-8 text-orange-500" data-testid="forbidden-error-icon"  />,
+        icon: <ShieldOff className="w-8 h-8 text-orange-500" data-testid="forbidden-error-icon" />,
         message: '인증된 사용자만 사용할 수 있는 기능이에요.',
         bgColor: 'bg-orange-50',
         showLoginButton: false,
@@ -34,7 +34,7 @@ export function ErrorHandler({ error, className = '' }: ErrorHandlerProps) {
     }
 
     return {
-      icon: <AlertCircle className="w-8 h-8 text-red-500" data-testid="unknown-error-icon"  />,
+      icon: <AlertCircle className="w-8 h-8 text-red-500" data-testid="unknown-error-icon" />,
       message: '문제가 발생했어요. 잠시 후 다시 시도해주세요.',
       bgColor: 'bg-red-50',
       showLoginButton: false,
@@ -44,7 +44,7 @@ export function ErrorHandler({ error, className = '' }: ErrorHandlerProps) {
   const { icon, message, bgColor, showLoginButton } = renderContent();
 
   return (
-    <div className={`bg-white rounded-2xl border border-gray-100 ${className}`}>
+    <div className={`bg-transparent ${className}`}>
       <div className="px-6 py-8">
         <div className="flex flex-col items-center text-center space-y-4">
           {/* 아이콘 배경 */}

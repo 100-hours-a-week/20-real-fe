@@ -10,7 +10,7 @@ export default function NewsListPage() {
       <NewsListHeader title={'인기 뉴스'} icon={<Flame size={20} className="text-red-500 mr-2" />} />
       <HotNewsList />
 
-      <NewsListHeader title={'최신'} icon={<Clock size={20} className="text-primary-500 mr-2" />} />
+      <NewsListHeader title={'최신 뉴스'} icon={<Clock size={20} className="text-primary-500 mr-2" />} />
       <NewsList />
     </div>
   );
