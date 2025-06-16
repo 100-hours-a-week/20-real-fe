@@ -1,0 +1,10 @@
+{
+  "data": {
+    "items": [],
+    "nextCursorStandard": null,
+    "nextCursorId": null,
+    "hasNext": false
+  },
+  "code": 200,
+  "message": "OK"
+}
