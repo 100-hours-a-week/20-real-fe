@@ -85,7 +85,7 @@ function ChatError({ error }: { error: AppError }) {
 
 function BotLoading() {
   return (
-    <div className="flex items-start animate-fadeIn">
+    <div className="flex items-start animate-fadeIn" data-testid="chatbot-loading">
       <div className="mr-2">
         <BotProfile />
       </div>

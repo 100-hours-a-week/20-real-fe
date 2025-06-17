@@ -5,6 +5,8 @@ import { render, RenderOptions } from '@testing-library/react';
 import { useModal } from '@/shared/model/modalStore';
 import { Modal } from '@/shared/ui/section/Modal';
 import { ToastContainer } from '@/shared/ui/section/ToastContainer';
+import { AppRouterContext, AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import { vi } from 'vitest';
 
 const createTestQueryClient = () =>
   new QueryClient({
@@ -15,14 +17,25 @@ const createTestQueryClient = () =>
     },
   });
 
+const mockRouter: AppRouterInstance = {
+  back: vi.fn(),
+  forward: vi.fn(),
+  push: vi.fn(),
+  replace: vi.fn(),
+  refresh: vi.fn(),
+  prefetch: vi.fn(),
+}
+
 export function renderWithProviders(ui: React.ReactElement, options?: RenderOptions) {
   const queryClient = createTestQueryClient();
 
   return render(
-    <QueryClientProvider client={queryClient}>
-      <ToastContainer />
-      <Wrapper>{ui}</Wrapper>
-    </QueryClientProvider>,
+    <AppRouterContext.Provider value={mockRouter}>
+      <QueryClientProvider client={queryClient}>
+        <ToastContainer />
+        <Wrapper>{ui}</Wrapper>
+      </QueryClientProvider>,
+    </AppRouterContext.Provider>,
     options,
   );
 }
