@@ -7,6 +7,7 @@ import { useCreateNewsCommentMutation } from '@/features/post/model/news/useCrea
 import { useCreateNoticeCommentMutation } from '@/features/post/model/notices/useCreateNoticeCommentMutation';
 import { EventName } from '@/shared/lib/firebase/eventNames';
 import { firebaseLogging } from '@/shared/lib/firebase/logEvent';
+import { useToastStore } from '@/shared/model/toastStore';
 import { PostCommentForm } from '@/widgets/post/components/PostCommentForm';
 import { PostCommentList } from '@/widgets/post/sections/PostCommentList';
 
@@ -22,6 +23,16 @@ export function PostCommentSection({ type, postId, commentCount: initialCommentC
 
   const [comment, setComment] = useState('');
   const [commentCount, setCommentCount] = useState(initialCommentCount);
+
+  const { showToast } = useToastStore();
+
+  const handleSetComment = (newString: string) => {
+    if (newString.length > 500) {
+      showToast('댓글은 최대 500자까지 입력 가능합니다.', 'error');
+    } else {
+      setComment(newString);
+    }
+  };
 
   const handleSubmitComment = (e: FormEvent) => {
     e.preventDefault();
@@ -49,7 +60,7 @@ export function PostCommentSection({ type, postId, commentCount: initialCommentC
     <div>
       <PostCommentForm
         comment={comment}
-        setComment={setComment}
+        setComment={handleSetComment}
         commentCount={commentCount}
         onSubmitComment={handleSubmitComment}
       />

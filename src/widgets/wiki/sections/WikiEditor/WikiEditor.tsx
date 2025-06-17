@@ -5,7 +5,7 @@ import { WebsocketProvider } from 'y-websocket';
 import * as Y from 'yjs';
 
 import * as React from 'react';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Collaboration from '@tiptap/extension-collaboration';
 import { Image } from '@tiptap/extension-image';
 import { TaskItem } from '@tiptap/extension-task-item';
@@ -41,6 +41,8 @@ export function WikiEditor({ wiki }: WikiEditorProps) {
   const { mutate: updateWiki, error } = useUpdateWikiMutation();
   const toolbarRef = useRef<HTMLDivElement>(null);
   const { showToast } = useToastStore();
+  const [socketConnected, setSocketConnected] = useState(false);
+  const [hasUserEdited, setHasUserEdited] = useState(false);
 
   const doc = useMemo(() => new Y.Doc(), []);
 
@@ -94,6 +96,7 @@ export function WikiEditor({ wiki }: WikiEditorProps) {
     });
 
     provider.on('sync', (isSynced: boolean) => {
+      setSocketConnected(isSynced);
       if (!isSynced) return;
 
       const isEmpty = editor?.getText().trim().length === 0;
@@ -120,8 +123,27 @@ export function WikiEditor({ wiki }: WikiEditorProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editor]);
 
+  // 편집을 시작한 경우에만 서버로 업데이트 요청 전송
+  useEffect(() => {
+    if (!editor || hasUserEdited || !socketConnected) return;
+
+    const handler = () => {
+      if (!hasUserEdited && socketConnected) {
+        setHasUserEdited(true);
+      }
+    };
+
+    editor.on('update', handler);
+
+    return () => {
+      editor.off('update', handler);
+    };
+  }, [editor, hasUserEdited, socketConnected]);
+
   // 위키 수정 배치 작업
   useEffect(() => {
+    if (!socketConnected || !hasUserEdited) return;
+
     const interval = setInterval(() => {
       if (!editor) return;
 
@@ -133,7 +155,7 @@ export function WikiEditor({ wiki }: WikiEditorProps) {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [editor, updateWiki, doc, wiki.id]);
+  }, [socketConnected, hasUserEdited, editor, updateWiki, doc, wiki.id]);
 
   if (error?.code === 'UNAUTHORIZED' || error?.code === 'TOKEN_EXPIRED') {
     return (

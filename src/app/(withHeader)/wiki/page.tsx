@@ -8,7 +8,7 @@ import { FormEvent, useState } from 'react';
 
 import { validateWikiTitle } from '@/features/wiki/lib/validateWiki';
 import { useWikiSearchListInfinityQuery } from '@/features/wiki/model/useWikiSearchListInfinityQuery';
-import { formatTime } from '@/shared/lib/times';
+import { formatTime } from '@/shared/lib/utils/times';
 import { useToastStore } from '@/shared/model/toastStore';
 import { useInfiniteScrollObserver } from '@/shared/model/useInfiniteScrollObserver';
 import { Button } from '@/shared/ui/component/Button';

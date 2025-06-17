@@ -1,5 +1,5 @@
 import { PostPlatform } from '@/entities/post/postPlatform';
-import { formatTime, isRecent } from '@/shared/lib/times';
+import { formatTime, isRecent } from '@/shared/lib/utils/times';
 
 import { Button } from '../../../../shared/ui/component/Button';
 
@@ -20,10 +20,11 @@ export function PostHeader({ tags = [], title, author, viewCount, createdAt, ori
     <>
       {displayTags.length > 0 && (
         <div className="flex flex-row px-4 pt-4 pb-2 gap-2">
-          {displayTags.map((tag) => (
+          {displayTags?.slice(0, 6).map((tag) => (
             <div
               key={tag}
               className={`inline-block ${tag === '최신' ? 'bg-primary-50 text-primary-500' : 'bg-neutral-100 text-neutral-600'}  rounded-full px-3 py-1 text-xs font-semibold`}
+              data-testid={`post-header-tag`}
             >
               {tag}
             </div>

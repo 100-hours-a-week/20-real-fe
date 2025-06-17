@@ -28,12 +28,14 @@ export function ChatInput({ value, isLoading, onChange, onSend }: ChatInputProps
             onChange={(e) => onChange(e.target.value)}
             className="flex-1 text-gray-700 rounded-full"
             autoFocus
+            data-testid="chatbot-input"
           />
           <Button
             type="submit"
             size="icon"
             className={`text-white shrink-0 ${isLoading || value === '' ? 'opacity-50 cursor-not-allowed' : ''}`}
             disabled={isLoading || value === ''}
+            data-testid="chatbot-send-button"
           >
             <Send size={18} />
           </Button>

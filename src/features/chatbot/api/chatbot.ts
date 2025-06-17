@@ -1,5 +1,5 @@
 import { BaseResponse } from '@/entities/common/base';
-import { fetcher } from '@/shared/lib/fetcher';
+import { fetcher } from '@/shared/lib/utils/fetcher';
 
 interface ChatbotQuestionResponse {
   answer: string;

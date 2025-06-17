@@ -1,7 +1,7 @@
 import { CursorParam, CursorResponse } from '@/entities/common/base';
 import { Wiki } from '@/entities/wiki/wiki';
 import { WikiDetail } from '@/entities/wiki/wikiDetail';
-import { fetcher } from '@/shared/lib/fetcher';
+import { fetcher } from '@/shared/lib/utils/fetcher';
 
 // 위키 검색 목록
 interface getWikiSearchRequest extends CursorParam {

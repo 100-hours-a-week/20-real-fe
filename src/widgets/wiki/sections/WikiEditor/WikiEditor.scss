@@ -1,10 +1,6 @@
 body {
   --tt-toolbar-height: 44px;
   --tt-theme-text: var(--color-neutral-900);
-
-  .dark & {
-    --tt-theme-text: var(--tt-gray-dark-900);
-  }
 }
 
 body {
@@ -14,18 +10,6 @@ body {
   font-weight: 400;
   font-style: normal;
   padding: 0;
-}
-
-html,
-body,
-#root,
-#app {
-  height: 100%;
-  background-color: var(--tt-bg-color);
-}
-
-body {
-  overflow: hidden;
 }
 
 .tiptap.ProseMirror {

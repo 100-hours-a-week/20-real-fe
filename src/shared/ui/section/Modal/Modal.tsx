@@ -9,6 +9,7 @@ export interface ModalAction {
   variant: ButtonVariant;
   onClick?: () => void;
   autoClose?: boolean;
+  testid?: string;
 }
 
 interface ModalProps {
@@ -53,6 +54,7 @@ export function Modal({ isOpen, onClose, title, children, actions = [], showClos
     <div
       className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-all duration-300 backdrop-blur-sm ${isOpen ? 'bg-black/20' : 'bg-transparent pointer-events-none'}`}
       onClick={onClose}
+      data-testid="modal"
     >
       <div
         className={`overflow-hidden w-full max-w-sm bg-white/90 backdrop-blur-md rounded-xl 
@@ -82,7 +84,7 @@ export function Modal({ isOpen, onClose, title, children, actions = [], showClos
         {/* Actions */}
         {actions.length > 0 && (
           <div className="flex justify-end gap-2 px-6 pb-6">
-            {actions.map(({ label, variant = 'primary', onClick, autoClose = true }, idx) => (
+            {actions.map(({ label, variant = 'primary', onClick, autoClose = true, testid }, idx) => (
               <Button
                 key={idx}
                 variant={variant}
@@ -90,6 +92,7 @@ export function Modal({ isOpen, onClose, title, children, actions = [], showClos
                   if (onClick) onClick();
                   if (autoClose) onClose();
                 }}
+                data-testid={testid}
               >
                 {label}
               </Button>
