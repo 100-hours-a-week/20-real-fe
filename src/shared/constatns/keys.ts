@@ -5,6 +5,7 @@ const queryKeys = {
   comments: 'comments',
   wiki: 'wiki',
   search: 'search',
+  unread: 'unread',
 };
 
 export { queryKeys };

@@ -6,6 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 
 import { HEADER_HEIGHT } from '@/shared/constatns/ui';
 import { useSidebarStore } from '@/shared/model/sidebarStore';
+import { NotificationDropdown } from '@/shared/ui/section/NotificationDropdown';
 
 import { Button } from '../../component/Button';
 
@@ -36,9 +37,7 @@ export function Header() {
 
       {/* 오른쪽: 알림 + 메뉴 버튼 */}
       <div className="flex items-center gap-2 min-w-24 justify-end">
-        {/*<Button variant="ghost" size="icon">*/}
-        {/*  <Bell />*/}
-        {/*</Button>*/}
+        <NotificationDropdown />
         <Button variant="ghost" size="icon" onClick={openSidebar}>
           <Menu />
         </Button>
