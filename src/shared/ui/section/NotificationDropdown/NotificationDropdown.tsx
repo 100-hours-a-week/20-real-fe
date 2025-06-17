@@ -4,9 +4,14 @@ import { Bell, Clock, X } from 'lucide-react';
 import Link from 'next/link';
 
 import { useEffect, useRef, useState } from 'react';
+import { InfiniteData } from '@tanstack/react-query';
 
+import { CursorResponse } from '@/entities/common/base';
+import { UnreadNotice } from '@/entities/user/unreadNotice';
 import { useUnreadNoticeAsReadMutation } from '@/features/user/model/useUnreadNoticeAsReadMutation';
 import { useUnreadNoticeListInfinityQuery } from '@/features/user/model/useUnreadNoticeListInfinityQuery';
+import { queryKeys } from '@/shared/constatns/keys';
+import { queryClient } from '@/shared/lib/tanstack-query/queryClient';
 import { formatTime } from '@/shared/lib/utils/times';
 import { useInfiniteScrollObserver } from '@/shared/model/useInfiniteScrollObserver';
 import { Button } from '@/shared/ui/component/Button';
@@ -40,6 +45,25 @@ export function NotificationDropdown() {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  const handleMarkAsRead = (notificationId: number) => {
+    // 안 읽은 공지 쿼리데이터에서 해당 공지 제거
+    queryClient.setQueryData<InfiniteData<CursorResponse<UnreadNotice>>>(
+      [queryKeys.notice, queryKeys.unread],
+      (prev) => {
+        if (!prev) return prev;
+
+        return {
+          ...prev,
+          pages: prev.pages.map((page) => ({
+            ...page,
+            items: page.items.filter((item) => item.id !== notificationId),
+          })),
+        };
+      },
+    );
+    setIsOpen(false);
+  };
 
   const markAllAsRead = () => {
     markAsRead();
@@ -92,6 +116,7 @@ export function NotificationDropdown() {
                     key={notification.id}
                     href={`/notices/${notification.id}`}
                     className="inline-block px-4 py-3 hover:bg-gray-50 border-b border-gray-100 last:border-b-0 cursor-pointer transition-colors duration-200"
+                    onClick={() => handleMarkAsRead(notification.id)}
                   >
                     <div className="flex items-start space-x-3">
                       <div className="flex-1 min-w-0">
