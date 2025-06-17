@@ -34,8 +34,8 @@ export function NoticeList() {
   }
 
   return (
-    <div>
-      <div className="px-4 pb-20">
+    <div className="pb-10">
+      <div className="px-4 pb-2">
         {notices?.length === 0 && (
           <EmptyItem message="아직 작성된 공지사항이 없어요." data-testid="notice-list-empty" />
         )}

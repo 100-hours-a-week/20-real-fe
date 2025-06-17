@@ -6,15 +6,13 @@ interface UseInfiniteScrollObserverParams {
   isFetchingNextPage: boolean;
 }
 
-export function useInfiniteScrollObserver({
-  fetchNextPage,
-  hasNextPage,
-  isFetchingNextPage,
-}: UseInfiniteScrollObserverParams) {
+export function useInfiniteScrollObserver(params?: UseInfiniteScrollObserverParams) {
   const observerRef = useRef<HTMLDivElement | null>(null);
   const observerInstance = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
+    if (!params) return;
+    const { fetchNextPage, hasNextPage, isFetchingNextPage } = params;
     if (!hasNextPage || isFetchingNextPage) return;
 
     if (observerInstance.current) {
@@ -34,7 +32,7 @@ export function useInfiniteScrollObserver({
     return () => {
       observerInstance.current?.disconnect();
     };
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+  }, [params]);
 
   return observerRef;
 }

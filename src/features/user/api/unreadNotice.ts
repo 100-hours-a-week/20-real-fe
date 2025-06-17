@@ -1,6 +1,6 @@
 import { CursorParam, CursorResponse } from '@/entities/common/base';
 import { UnreadNotice } from '@/entities/user/unreadNotice';
-import { fetcher } from '@/shared/lib/fetcher';
+import { fetcher } from '@/shared/lib/utils/fetcher';
 
 // 유저의 읽지않은 공지 리스트 가져오기
 interface getUserUnreadNoticesRequest extends CursorParam {

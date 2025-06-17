@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useUnreadNoticeAsReadMutation } from '@/features/user/model/useUnreadNoticeAsReadMutation';
 import { useUnreadNoticeListInfinityQuery } from '@/features/user/model/useUnreadNoticeListInfinityQuery';
-import { formatTime } from '@/shared/lib/times';
+import { formatTime } from '@/shared/lib/utils/times';
 import { useInfiniteScrollObserver } from '@/shared/model/useInfiniteScrollObserver';
 import { Button } from '@/shared/ui/component/Button';
 import { LoadingIndicator } from '@/shared/ui/component/LoadingIndicator';
@@ -15,14 +15,20 @@ import { LoadingIndicator } from '@/shared/ui/component/LoadingIndicator';
 export function NotificationDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const { data: notifications, fetchNextPage, hasNextPage, isFetchingNextPage } = useUnreadNoticeListInfinityQuery();
-  const loadingRef = useInfiniteScrollObserver({
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  });
-  const { mutate: markAsRead } = useUnreadNoticeAsReadMutation();
+  // 드롭다운이 열렸을 때 IntersectionObserver 등록
+  const loadingRef = useInfiniteScrollObserver(
+    isOpen
+      ? {
+          fetchNextPage,
+          hasNextPage,
+          isFetchingNextPage,
+        }
+      : undefined,
+  );
 
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const { mutate: markAsRead } = useUnreadNoticeAsReadMutation();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -73,7 +79,7 @@ export function NotificationDropdown() {
           </div>
 
           {/* 안읽은 공지 리스트 */}
-          <div className="max-h-64 overflow-y-auto">
+          <div className="max-h-64 flex flex-col overflow-y-auto">
             {notifications && notifications.length === 0 ? (
               <div className="px-4 py-8 text-center text-gray-500">
                 <Bell className="w-8 h-8 mx-auto mb-2 text-gray-300" />
