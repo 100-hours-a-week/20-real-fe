@@ -53,6 +53,6 @@ function Wrapper({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function Providers({ children }: PropsWithChildren) {
-  return <QueryClientProvider client={createTestQueryClient()}>{children}</QueryClientProvider>;
-}
+// export function Providers({ children }: PropsWithChildren) {
+//   return <QueryClientProvider client={createTestQueryClient()}>{children}</QueryClientProvider>;
+// }

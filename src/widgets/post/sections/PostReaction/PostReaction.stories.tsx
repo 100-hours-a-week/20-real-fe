@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { postReactionHandler } from '@test/mocks/post/handlers/postReaction.handler';
-import { Providers } from '@test/utils/renderWithProviders';
 
+import Providers from '@/app/providers';
 import { PostTypes } from '@/entities/post/postType';
 
 import { PostReaction } from './PostReaction';

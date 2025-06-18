@@ -1,7 +1,8 @@
 import { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { globalHandlers } from '@test/mocks/global/handlers/global.handlers';
 import { newsListHandlers } from '@test/mocks/post/handlers/newsList.handlers';
-import { Providers } from '@test/utils/renderWithProviders';
+
+import Providers from '@/app/providers';
 
 import '@/app/globals.css';
 import { HotNewsList } from './HotNewsList';
