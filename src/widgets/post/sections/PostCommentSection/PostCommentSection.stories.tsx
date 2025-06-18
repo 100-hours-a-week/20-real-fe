@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { noticeListHandlers } from '@test/mocks/post/handlers/noticeList.handlers';
 import { postCommentHandler } from '@test/mocks/post/handlers/postComment.handler';
-import { Providers } from '@test/utils/renderWithProviders';
 
+import Providers from '@/app/providers';
 import { PostTypes } from '@/entities/post/postType';
 import { PostCommentSection } from '@/widgets/post/sections/PostCommentSection/PostCommentSection';
 
