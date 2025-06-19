@@ -1,7 +1,7 @@
 'use client';
 
-import { motion, useInView, useScroll, useTransform } from 'framer-motion';
-import { ArrowRight, BookOpen, Bot, MegaphoneIcon, Newspaper, Send } from 'lucide-react';
+import { motion, useInView } from 'framer-motion';
+import { ArrowRight, BookOpen, Bot, ChevronDown, MegaphoneIcon, Newspaper, Send } from 'lucide-react';
 
 import type React from 'react';
 import { useEffect, useRef, useState } from 'react';
@@ -84,8 +84,6 @@ function ChatMessage({ message, isUser, delay }: { message: string; isUser: bool
 
 export default function LandingPage() {
   const [isVisible, setIsVisible] = useState(false);
-  const { scrollYProgress } = useScroll();
-  const headerY = useTransform(scrollYProgress, [0, 0.3], [0, -30]);
 
   useEffect(() => {
     setIsVisible(true);
@@ -101,7 +99,7 @@ export default function LandingPage() {
       <div className="relative z-10 container mx-auto px-8 py-16">
         <div className="flex flex-col space-y-32">
           {/* Hero */}
-          <motion.div style={{ y: headerY }} className="flex flex-col space-y-12 min-h-screen justify-center">
+          <motion.div className="flex flex-col space-y-12 min-h-screen justify-center">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 40 }}
@@ -135,6 +133,27 @@ export default function LandingPage() {
                   </div>
                 </GlassCard>
               </motion.a>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 0.3 }}
+              className="mx-auto"
+            >
+              <motion.div
+                animate={{ y: [0, -10, 0] }}
+                transition={{
+                  duration: 1.5,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                }}
+                className="text-gray-300"
+              >
+                <ChevronDown size={32} />
+                <ChevronDown size={32} />
+                <ChevronDown size={32} />
+              </motion.div>
             </motion.div>
           </motion.div>
 
