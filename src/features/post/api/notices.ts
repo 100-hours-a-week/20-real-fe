@@ -3,6 +3,8 @@ import { Notice } from '@/entities/post/notice';
 import { NoticeDetail } from '@/entities/post/noticeDetail';
 import { PostComment } from '@/entities/post/postComment';
 import { PostLike } from '@/entities/post/postLike';
+import { postNoticeRequest } from '@/features/post/dto/postNoticeRequest';
+import { putNoticeRequest } from '@/features/post/dto/putNoticeRequest';
 import { fetcher } from '@/shared/lib/utils/fetcher';
 
 // 공지 리스트 조회
@@ -104,6 +106,35 @@ const deleteNoticeComment = async ({ noticeId, commentId }: deleteNoticeCommentR
   });
 };
 
+// 어드민 공지 생성
+const postNotice = async ({ images, files, ...notice }: postNoticeRequest) => {
+  const formData = new FormData();
+  formData.append('notice', new Blob([JSON.stringify(notice)], { type: 'application/json' }));
+  images.forEach((img) => formData.append('images', img));
+  files.forEach((file) => formData.append('files', file));
+
+  return await fetcher('/v1/notices/tmp', {
+    method: 'POST',
+    body: formData,
+    credentials: 'include',
+  });
+};
+
+// 어드민 공지 편집
+const putNotice = async ({ id, ...notice }: putNoticeRequest) => {
+  return await fetcher(`/v1/notices/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(notice),
+  });
+};
+
+// 어드민 공지 삭제
+const deleteNotice = async (id: number) => {
+  return await fetcher(`/v1/notices/${id}`, {
+    method: 'DELETE',
+  });
+};
+
 export {
   getNoticeList,
   getNoticeDetail,
@@ -111,4 +142,7 @@ export {
   toggleNoticeLike,
   postNoticeComment,
   deleteNoticeComment,
+  postNotice,
+  putNotice,
+  deleteNotice,
 };

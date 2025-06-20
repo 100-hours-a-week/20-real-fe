@@ -7,10 +7,7 @@ import { useUserPersistStore } from '@/shared/model/userPersistStore';
 function fetchWithAuth(url: string, timeout: number, options?: RequestInit) {
   return fetch(`${process.env.NEXT_PUBLIC_API_URL}${url}`, {
     ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      ...(options?.headers ?? {}),
-    },
+    headers: options?.headers,
     credentials: 'include',
     signal: AbortSignal.timeout(timeout),
   });
