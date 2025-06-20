@@ -55,7 +55,7 @@ export default function AdminNoticeForm({ type }: AdminNoticeFormProps) {
     if (type === 'edit' && id) {
       getNotice();
     }
-  }, [getNotice, id, type]);
+  }, [id, type]);
 
   return (
     <div className="bg-white min-h-screen max-w-2xl mx-auto px-6 py-10 space-y-6">
