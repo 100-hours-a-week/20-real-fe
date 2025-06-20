@@ -53,15 +53,7 @@ export const useAdminNoticeForm = (type: 'new' | 'edit', id?: string) => {
     isPending: isEditNoticePending,
   } = useEditNoticeMutation();
 
-  const [title, setTitle] = useState(defaultForm.title);
-  const [content, setContent] = useState(defaultForm.content);
-  const [originalUrl, setOriginalUrl] = useState(defaultForm.originalUrl);
-  const [createdAt, setCreatedAt] = useState(defaultForm.createdAt);
-  const [tag, setTag] = useState(defaultForm.tag);
-  const [platform, setPlatform] = useState(defaultForm.platform);
-  const [userName, setUserName] = useState(defaultForm.userName);
-  const [images, setImages] = useState<File[]>(defaultForm.images);
-  const [files, setFiles] = useState<File[]>(defaultForm.files);
+  const [form, setForm] = useState<FormState>(defaultForm);
 
   const getNotice = async () => {
     if (!id) return;
@@ -72,58 +64,43 @@ export const useAdminNoticeForm = (type: 'new' | 'edit', id?: string) => {
     }
 
     const notice = res.data;
-    setTitle(notice.title);
-    setContent(notice.content);
-    setOriginalUrl(notice.originalUrl);
-    setCreatedAt(notice.createdAt);
-    setTag(notice.tag);
-    setPlatform(notice.platform);
-    setUserName(notice.author);
-    setImages([]);
-    setFiles([]);
+    setForm({ ...notice, images: [], files: [], userName: notice.author });
   };
 
   const clearForm = () => {
-    setTitle(defaultForm.title);
-    setContent(defaultForm.content);
-    setOriginalUrl(defaultForm.originalUrl);
-    setCreatedAt(defaultForm.createdAt);
-    setTag(defaultForm.tag);
-    setPlatform(defaultForm.platform);
-    setUserName(defaultForm.userName);
-    setImages(defaultForm.images);
-    setFiles(defaultForm.files);
+    setForm({ ...defaultForm });
   };
 
   const addImages = (newImages: File[]) => {
-    setImages([...images, ...newImages].slice(0, 10));
+    setForm((prev) => ({
+      ...prev,
+      images: [...prev.images, ...newImages].slice(0, 10),
+    }));
   };
 
   const addFiles = (newFiles: File[]) => {
-    setFiles([...files, ...newFiles].slice(0, 10));
+    setForm((prev) => ({
+      ...prev,
+      files: [...prev.files, ...newFiles].slice(0, 10),
+    }));
   };
 
   const removeImage = (index: number) => {
-    setImages(images.filter((_, i) => i !== index));
+    // setImages(images.filter((_, i) => i !== index));
+    setForm((prev) => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index),
+    }));
   };
 
   const removeFile = (index: number) => {
-    setFiles(files.filter((_, i) => i !== index));
+    setForm((prev) => ({
+      ...prev,
+      files: prev.files.filter((_, i) => i !== index),
+    }));
   };
 
   const handleSubmit = async () => {
-    const form = {
-      title,
-      content,
-      originalUrl,
-      createdAt,
-      tag,
-      platform,
-      userName,
-      images,
-      files,
-    };
-
     if (type === 'new') {
       createNotice({ ...form });
     } else if (type === 'edit' && id) {
@@ -132,24 +109,8 @@ export const useAdminNoticeForm = (type: 'new' | 'edit', id?: string) => {
   };
 
   return {
-    title,
-    setTitle,
-    content,
-    setContent,
-    originalUrl,
-    setOriginalUrl,
-    createdAt,
-    setCreatedAt,
-    tag,
-    setTag,
-    platform,
-    setPlatform,
-    userName,
-    setUserName,
-    images,
-    setImages,
-    files,
-    setFiles,
+    form,
+    setForm,
     clearForm,
     addImages,
     addFiles,

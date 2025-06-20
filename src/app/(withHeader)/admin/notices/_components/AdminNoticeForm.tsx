@@ -26,22 +26,8 @@ export default function AdminNoticeForm({ type }: AdminNoticeFormProps) {
   const [isPreview, setIsPreview] = useState(false);
 
   const {
-    title,
-    setTitle,
-    content,
-    setContent,
-    originalUrl,
-    setOriginalUrl,
-    createdAt,
-    setCreatedAt,
-    tag,
-    setTag,
-    platform,
-    setPlatform,
-    userName,
-    setUserName,
-    images,
-    files,
+    form,
+    setForm,
     clearForm,
     addImages,
     addFiles,
@@ -80,8 +66,8 @@ export default function AdminNoticeForm({ type }: AdminNoticeFormProps) {
         type="text"
         placeholder="제목을 입력하세요"
         className="w-full border border-gray-300 rounded-lg px-4 py-2 text-base focus:outline-none focus:ring focus:border-blue-400"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        value={form.title}
+        onChange={(e) => setForm({ ...form, title: e.target.value })}
       />
 
       <div className="flex gap-2">
@@ -107,14 +93,14 @@ export default function AdminNoticeForm({ type }: AdminNoticeFormProps) {
 
       {isPreview ? (
         <div className="border border-gray-300 rounded-lg p-4 bg-gray-50">
-          <MarkdownViewer text={content} useHtml useSyntaxHighlight />
+          <MarkdownViewer text={form.content} useHtml useSyntaxHighlight />
         </div>
       ) : (
         <textarea
           placeholder="공지 내용을 입력하세요"
           className="w-full border border-gray-300 rounded-lg px-4 py-3 h-72 text-base resize-none focus:outline-none focus:ring focus:border-blue-400"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
+          value={form.content}
+          onChange={(e) => setForm({ ...form, content: e.target.value })}
         />
       )}
 
@@ -122,22 +108,22 @@ export default function AdminNoticeForm({ type }: AdminNoticeFormProps) {
         type="text"
         placeholder="원본 링크 (선택)"
         className="w-full border border-gray-300 rounded-lg px-4 py-2 text-base"
-        value={originalUrl}
-        onChange={(e) => setOriginalUrl(e.target.value)}
+        value={form.originalUrl}
+        onChange={(e) => setForm({ ...form, originalUrl: e.target.value })}
       />
 
       <input
         type="datetime-local"
         className="w-full border border-gray-300 rounded-lg px-4 py-2 text-base"
-        value={createdAt}
-        onChange={(e) => setCreatedAt(e.target.value)}
+        value={form.createdAt}
+        onChange={(e) => setForm({ ...form, createdAt: e.target.value })}
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <select
           className="w-full border border-gray-300 rounded-lg px-4 py-2 text-base"
-          value={tag}
-          onChange={(e) => setTag(e.target.value)}
+          value={form.tag}
+          onChange={(e) => setForm({ ...form, tag: e.target.value })}
         >
           {noticeTags.map((t) => (
             <option key={t} value={t}>
@@ -148,8 +134,8 @@ export default function AdminNoticeForm({ type }: AdminNoticeFormProps) {
 
         <select
           className="w-full border border-gray-300 rounded-lg px-4 py-2 text-base"
-          value={platform}
-          onChange={(e) => setPlatform(e.target.value)}
+          value={form.platform}
+          onChange={(e) => setForm({ ...form, platform: e.target.value })}
         >
           {noticePlatform.map((p) => (
             <option key={p} value={p}>
@@ -161,8 +147,8 @@ export default function AdminNoticeForm({ type }: AdminNoticeFormProps) {
 
       <select
         className="w-full border border-gray-300 rounded-lg px-4 py-2 text-base"
-        value={userName}
-        onChange={(e) => setUserName(e.target.value)}
+        value={form.userName}
+        onChange={(e) => setForm({ ...form, userName: e.target.value })}
       >
         {adminNames.map((u) => (
           <option key={u.value} value={u.value}>
@@ -201,7 +187,7 @@ export default function AdminNoticeForm({ type }: AdminNoticeFormProps) {
               />
             </div>
             <ul className="text-sm text-gray-600">
-              {images.map((file, idx) => (
+              {form.images.map((file, idx) => (
                 <li key={idx} className="flex justify-between items-center">
                   <span>{file.name}</span>
                   <button onClick={() => removeImage(idx)} className="text-red-500 hover:underline text-xs">
@@ -239,7 +225,7 @@ export default function AdminNoticeForm({ type }: AdminNoticeFormProps) {
               />
             </div>
             <ul className="text-sm text-gray-600">
-              {files.map((file, idx) => (
+              {form.files.map((file, idx) => (
                 <li key={idx} className="flex justify-between items-center">
                   <span>{file.name}</span>
                   <button onClick={() => removeFile(idx)} className="text-red-500 hover:underline text-xs">
