@@ -12,6 +12,7 @@ import {
 } from '@/features/post/model/hooks/useAdminNoticeForm';
 import { useToastStore } from '@/shared/model/toastStore';
 import { MarkdownViewer } from '@/shared/ui/section/MarkdownViewer';
+import { NoticeInfoSelect } from '@/widgets/post/components/NoticeInfoSelect/NoticeInfoSelect';
 
 interface AdminNoticeFormProps {
   type: 'new' | 'edit';
@@ -119,43 +120,28 @@ export default function AdminNoticeForm({ type }: AdminNoticeFormProps) {
         onChange={(e) => setForm({ ...form, createdAt: e.target.value })}
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <select
-          className="w-full border border-gray-300 rounded-lg px-4 py-2 text-base"
+      <div className="flex flex-col gap-4">
+        <NoticeInfoSelect
+          label="태그"
           value={form.tag}
-          onChange={(e) => setForm({ ...form, tag: e.target.value })}
-        >
-          {noticeTags.map((t) => (
-            <option key={t} value={t}>
-              {t}
-            </option>
-          ))}
-        </select>
+          options={noticeTags.map((t) => ({ label: t, value: t }))}
+          onChange={(val) => setForm({ ...form, tag: val })}
+        />
 
-        <select
-          className="w-full border border-gray-300 rounded-lg px-4 py-2 text-base"
+        <NoticeInfoSelect
+          label="플랫폼"
           value={form.platform}
-          onChange={(e) => setForm({ ...form, platform: e.target.value })}
-        >
-          {noticePlatform.map((p) => (
-            <option key={p} value={p}>
-              {p}
-            </option>
-          ))}
-        </select>
-      </div>
+          options={noticePlatform.map((p) => ({ label: p, value: p }))}
+          onChange={(val) => setForm({ ...form, platform: val })}
+        />
 
-      <select
-        className="w-full border border-gray-300 rounded-lg px-4 py-2 text-base"
-        value={form.userName}
-        onChange={(e) => setForm({ ...form, userName: e.target.value })}
-      >
-        {adminNames.map((u) => (
-          <option key={u.value} value={u.value}>
-            {u.value}
-          </option>
-        ))}
-      </select>
+        <NoticeInfoSelect
+          label="작성자"
+          value={form.userName}
+          options={adminNames.map((u) => ({ label: u.value, value: u.value }))}
+          onChange={(val) => setForm({ ...form, userName: val })}
+        />
+      </div>
 
       {type === 'new' && (
         <>
