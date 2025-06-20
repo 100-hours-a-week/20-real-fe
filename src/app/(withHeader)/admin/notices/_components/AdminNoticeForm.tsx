@@ -20,7 +20,7 @@ interface AdminNoticeFormProps {
 
 export default function AdminNoticeForm({ type }: AdminNoticeFormProps) {
   const params = useParams();
-  const id = params?.id;
+  const id = params?.id as string;
   const router = useRouter();
   const { showToast } = useToastStore();
 
@@ -39,7 +39,7 @@ export default function AdminNoticeForm({ type }: AdminNoticeFormProps) {
     isCreateNoticeSuccess,
     isEditNoticeSuccess,
     isPending,
-  } = useAdminNoticeForm(type);
+  } = useAdminNoticeForm(type, id);
 
   useEffect(() => {
     clearForm();
