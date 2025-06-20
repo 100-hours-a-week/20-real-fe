@@ -40,11 +40,7 @@ export function Sidebar() {
     { label: '위키', href: '/wiki', icon: <NotebookPen size={18} /> },
   ];
 
-  const adminMenuItems = [
-    { label: '공지 작성', href: '/admin/notices/new' },
-    { label: '공지 편집', href: '/admin/notices' },
-    { label: '메시지 전송', href: '/admin/message' },
-  ];
+  const adminMenuItems = [{ label: '공지 작성', href: '/admin/notices/new' }];
 
   // open 상태라면 overflow hidden하여 스크롤 차단
   useEffect(() => {
