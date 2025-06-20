@@ -1,9 +1,12 @@
 'use client';
 
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 import { PostTypes } from '@/entities/post/postType';
+import { useDeleteNoticeMutation } from '@/features/post/model/notices/useDeleteNoticeMutation';
 import { useNoticeDetailQuery } from '@/features/post/model/notices/useNoticeDetailQuery';
+import { useUserInfo } from '@/features/user/model/useUserInfoQuery';
+import { useModal } from '@/shared/model/modalStore';
 import { ErrorPage } from '@/shared/ui/component/ErrorPage';
 import { NotFoundPage } from '@/shared/ui/component/NotFoundPage';
 import { ImageCarousel } from '@/shared/ui/section/ImageCarousel';
@@ -19,6 +22,28 @@ export default function NoticeDetailPage() {
   const params = useParams();
   const id: string = params?.id as string;
   const { data: notice, isLoading, isError, error } = useNoticeDetailQuery(id);
+  const { data: user } = useUserInfo();
+  const router = useRouter();
+  const { openModal, closeModal } = useModal();
+  const { mutate: deleteNotice } = useDeleteNoticeMutation();
+
+  const handleDelete = () => {
+    openModal({
+      title: '공지를 삭제하시겠어요?',
+      actions: [
+        { label: '취소', variant: 'ghost', autoClose: true },
+        {
+          label: '삭제',
+          variant: 'destructive',
+          onClick: () => {
+            closeModal();
+            router.replace('/notices');
+            deleteNotice(Number(id));
+          },
+        },
+      ],
+    });
+  };
 
   if (isLoading) return null;
   if (isError) {
@@ -43,6 +68,9 @@ export default function NoticeDetailPage() {
           createdAt={notice.createdAt}
           platform={notice.platform}
           originalUrl={notice.originalUrl}
+          showAdminButton={user?.data.role === 'STAFF'}
+          onClickEdit={() => router.push(`/admin/notices/edit/${id}`)}
+          onClickDelete={handleDelete}
         />
 
         <PostSummary summary={notice.summary} />
