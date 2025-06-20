@@ -84,7 +84,7 @@ async function handleError<T>(
   // 기타 에러
   toast.showToast(Errors.UNKNOWN.message, 'error');
   throw AppError.create('UNKNOWN', {
-    messageOverride: 'Unhandled API Error: ${res.status}',
+    messageOverride: `Unhandled API Error: ${res.status}, ${responseBody?.message}`,
     extra: { status: res.status, url: res.url, responseBody },
     capture: true,
   });
