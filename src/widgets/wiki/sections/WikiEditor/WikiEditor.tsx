@@ -7,6 +7,7 @@ import * as Y from 'yjs';
 import * as React from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Collaboration from '@tiptap/extension-collaboration';
+import { CollaborationCursor } from '@tiptap/extension-collaboration-cursor';
 import { Image } from '@tiptap/extension-image';
 import { TaskItem } from '@tiptap/extension-task-item';
 import { TaskList } from '@tiptap/extension-task-list';
@@ -19,7 +20,9 @@ import { StarterKit } from '@tiptap/starter-kit';
 import { WikiDetail } from '@/entities/wiki/wikiDetail';
 import { MAX_FILE_SIZE, uploadImageToS3 } from '@/features/s3/lib/s3';
 import { useUpdateWikiMutation } from '@/features/wiki/model/useUpdateWikiMutation';
+import { stringToColor } from '@/shared/lib/utils/stringToColor';
 import { useToastStore } from '@/shared/model/toastStore';
+import { useUserPersistStore } from '@/shared/model/userPersistStore';
 import { LoginButton } from '@/shared/ui/section/LoginButton';
 import { Link } from '@/widgets/tiptap-editor/tiptap-extension/link-extension';
 import { Selection } from '@/widgets/tiptap-editor/tiptap-extension/selection-extension';
@@ -43,12 +46,19 @@ export function WikiEditor({ wiki }: WikiEditorProps) {
   const { showToast } = useToastStore();
   const [socketConnected, setSocketConnected] = useState(false);
   const [hasUserEdited, setHasUserEdited] = useState(false);
+  const { user } = useUserPersistStore();
 
   const doc = useMemo(() => new Y.Doc(), []);
 
   const handleImageUploadError = () => {
     showToast('이미지 업로드에 실패했습니다.', 'error');
   };
+
+  const provider = useMemo(() => {
+    return new WebsocketProvider(`${process.env.NEXT_PUBLIC_WS_ADDRESS}`, wiki.id.toString(), doc, {
+      connect: false,
+    });
+  }, []);
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -71,7 +81,13 @@ export function WikiEditor({ wiki }: WikiEditorProps) {
       Collaboration.configure({
         document: doc,
       }),
-
+      CollaborationCursor.configure({
+        provider: provider,
+        user: {
+          name: user?.nickname ?? '',
+          color: stringToColor(user?.nickname ?? ''),
+        },
+      }),
       Selection,
       ImageUploadNode.configure({
         accept: 'image/*',
@@ -86,42 +102,23 @@ export function WikiEditor({ wiki }: WikiEditorProps) {
     ],
   });
 
-  const providerRef = useRef<WebsocketProvider | null>(null);
+  provider.on('sync', (isSynced: boolean) => {
+    setSocketConnected(isSynced);
+    if (!isSynced) return;
+
+    const isEmpty = editor?.getText().trim().length === 0;
+
+    if (isEmpty) {
+      if (wiki.html) {
+        editor?.commands.setContent(wiki.html);
+      }
+    }
+  });
 
   // socket 연결
   useEffect(() => {
-    if (!editor) return;
-    const provider = new WebsocketProvider(`${process.env.NEXT_PUBLIC_WS_ADDRESS}`, wiki.id.toString(), doc, {
-      connect: false,
-    });
-
-    provider.on('sync', (isSynced: boolean) => {
-      setSocketConnected(isSynced);
-      if (!isSynced) return;
-
-      const isEmpty = editor?.getText().trim().length === 0;
-
-      if (isEmpty) {
-        // if (wiki.ydoc) {
-        //   Y.applyUpdate(doc, Uint8Array.from(atob(wiki.ydoc), c => c.charCodeAt(0)));
-        // }
-        if (wiki.html) {
-          editor?.commands.setContent(wiki.html);
-        }
-      }
-    });
-
     provider.connect();
-    providerRef.current = provider;
-
-    // unmount 시 연결 해제
-    return () => {
-      providerRef.current?.disconnect();
-      providerRef.current?.destroy();
-      providerRef.current = null;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editor]);
+  }, [provider]);
 
   // 편집을 시작한 경우에만 서버로 업데이트 요청 전송
   useEffect(() => {
