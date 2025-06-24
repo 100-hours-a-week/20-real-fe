@@ -74,5 +74,9 @@ interface postWikiRequest {
 }
 
 export const postWiki = async ({ title }: postWikiRequest) => {
-  return await fetcher(`/v1/wikis`, { method: 'POST', body: JSON.stringify({ title }) });
+  return await fetcher(`/v1/wikis`, {
+    method: 'POST',
+    body: JSON.stringify({ title }),
+    headers: { 'Content-Type': 'application/json' },
+  });
 };
