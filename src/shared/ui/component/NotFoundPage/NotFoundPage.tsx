@@ -20,7 +20,7 @@ export function NotFoundPage() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="/public"
+              href="/"
               className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center"
             >
               <Home className="mr-2" size={20} />
