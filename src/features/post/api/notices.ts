@@ -113,7 +113,7 @@ const postNotice = async ({ images, files, ...notice }: postNoticeRequest) => {
   images.forEach((img) => formData.append('images', img));
   files.forEach((file) => formData.append('files', file));
 
-  return await fetcher('/v1/notices/tmp', {
+  return await fetcher('/v1/notices', {
     method: 'POST',
     body: formData,
     credentials: 'include',
