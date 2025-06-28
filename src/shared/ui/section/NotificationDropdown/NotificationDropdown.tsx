@@ -19,7 +19,14 @@ import { LoadingIndicator } from '@/shared/ui/component/LoadingIndicator';
 
 export function NotificationDropdown() {
   const [isOpen, setIsOpen] = useState(false);
-  const { data: notifications, fetchNextPage, hasNextPage, isFetchingNextPage } = useUnreadNoticeListInfinityQuery();
+  const {
+    data: notifications,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isPending,
+    isError,
+  } = useUnreadNoticeListInfinityQuery();
   // 드롭다운이 열렸을 때 IntersectionObserver 등록
   const loadingRef = useInfiniteScrollObserver(
     isOpen
@@ -104,7 +111,21 @@ export function NotificationDropdown() {
 
           {/* 안읽은 공지 리스트 */}
           <div className="max-h-64 flex flex-col overflow-y-auto">
-            {notifications && notifications.length === 0 ? (
+            {isPending ? (
+              <div className="px-4 py-8 text-center text-gray-500 animate-pulse">
+                <Bell className="w-8 h-8 mx-auto mb-2 text-gray-300" />
+                <p>알림을 불러오는 중입니다...</p>
+              </div>
+            ) : isError ? (
+              <div className="px-4 py-8 text-center text-red-500">
+                <Bell className="w-8 h-8 mx-auto mb-2 text-red-300" />
+                <p>
+                  알림을 불러오지 못했습니다.
+                  <br />
+                  다시 시도해주세요.
+                </p>
+              </div>
+            ) : notifications.length === 0 ? (
               <div className="px-4 py-8 text-center text-gray-500">
                 <Bell className="w-8 h-8 mx-auto mb-2 text-gray-300" />
                 <p>모든 알림을 확인했습니다</p>
