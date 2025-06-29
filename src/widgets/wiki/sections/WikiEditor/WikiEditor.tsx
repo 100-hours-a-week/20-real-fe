@@ -1,11 +1,10 @@
 'use client';
 
-import { CircleAlert } from 'lucide-react';
 import { WebsocketProvider } from 'y-websocket';
 import * as Y from 'yjs';
 
 import * as React from 'react';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import Collaboration from '@tiptap/extension-collaboration';
 import { CollaborationCursor } from '@tiptap/extension-collaboration-cursor';
 import { Image } from '@tiptap/extension-image';
@@ -19,11 +18,9 @@ import { StarterKit } from '@tiptap/starter-kit';
 
 import { WikiDetail } from '@/entities/wiki/wikiDetail';
 import { MAX_FILE_SIZE, uploadImageToS3 } from '@/features/s3/lib/s3';
-import { useUpdateWikiMutation } from '@/features/wiki/model/useUpdateWikiMutation';
 import { stringToColor } from '@/shared/lib/utils/stringToColor';
 import { useToastStore } from '@/shared/model/toastStore';
 import { useUserPersistStore } from '@/shared/model/userPersistStore';
-import { LoginButton } from '@/shared/ui/section/LoginButton';
 import { Link } from '@/widgets/tiptap-editor/tiptap-extension/link-extension';
 import { Selection } from '@/widgets/tiptap-editor/tiptap-extension/selection-extension';
 import { ImageUploadNode } from '@/widgets/tiptap-editor/tiptap-node/image-upload-node/image-upload-node-extension';
@@ -41,11 +38,8 @@ interface WikiEditorProps {
 }
 
 export function WikiEditor({ wiki }: WikiEditorProps) {
-  const { mutate: updateWiki, error } = useUpdateWikiMutation();
   const toolbarRef = useRef<HTMLDivElement>(null);
   const { showToast } = useToastStore();
-  const [socketConnected, setSocketConnected] = useState(false);
-  const [hasUserEdited, setHasUserEdited] = useState(false);
   const { user } = useUserPersistStore();
 
   const doc = useMemo(() => new Y.Doc(), []);
@@ -84,6 +78,7 @@ export function WikiEditor({ wiki }: WikiEditorProps) {
       CollaborationCursor.configure({
         provider: provider,
         user: {
+          id: user?.id,
           name: user?.nickname ?? '',
           color: stringToColor(user?.nickname ?? ''),
         },
@@ -102,78 +97,31 @@ export function WikiEditor({ wiki }: WikiEditorProps) {
     ],
   });
 
-  provider.on('sync', (isSynced: boolean) => {
-    setSocketConnected(isSynced);
-    if (!isSynced) return;
-
-    const isEmpty = editor?.getText().trim().length === 0;
-
-    if (isEmpty) {
-      if (wiki.html) {
-        editor?.commands.setContent(wiki.html);
-      }
-    }
-  });
-
   // socket 연결
   useEffect(() => {
     provider.connect();
   }, [provider]);
 
-  // 편집을 시작한 경우에만 서버로 업데이트 요청 전송
-  useEffect(() => {
-    if (!editor || hasUserEdited || !socketConnected) return;
-
-    const handler = () => {
-      if (!hasUserEdited && socketConnected) {
-        setHasUserEdited(true);
-      }
-    };
-
-    editor.on('update', handler);
-
-    return () => {
-      editor.off('update', handler);
-    };
-  }, [editor, hasUserEdited, socketConnected]);
-
-  // 위키 수정 배치 작업
-  useEffect(() => {
-    if (!socketConnected || !hasUserEdited) return;
-
-    const interval = setInterval(() => {
-      if (!editor) return;
-
-      updateWiki({
-        id: wiki.id,
-        html: editor.getHTML(),
-        ydoc: btoa(String.fromCharCode(...Y.encodeStateAsUpdate(doc))),
-      });
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [socketConnected, hasUserEdited, editor, updateWiki, doc, wiki.id]);
-
-  if (error?.code === 'UNAUTHORIZED' || error?.code === 'TOKEN_EXPIRED') {
-    return (
-      <div className="p-6 text-center space-y-4">
-        <CircleAlert className="mx-auto text-gray-500" size={40} />
-        <p className="text-gray-700 font-medium">로그인 후 이용 가능해요.</p>
-        <LoginButton className="h-9 px-4 text-sm inline-flex items-center justify-center gap-2 rounded cursor-pointer bg-primary-500 hover:bg-primary-600 text-white">
-          로그인 하러 가기
-        </LoginButton>
-      </div>
-    );
-  }
-
-  if (error?.code === 'FORBIDDEN') {
-    return (
-      <div className="p-6 text-center space-y-4">
-        <CircleAlert className="mx-auto text-gray-500" size={40} />
-        <p className="text-gray-700 font-medium">인증 받은 사용자만 확인할 수 있어요.</p>
-      </div>
-    );
-  }
+  // if (error?.code === 'UNAUTHORIZED' || error?.code === 'TOKEN_EXPIRED') {
+  //   return (
+  //     <div className="p-6 text-center space-y-4">
+  //       <CircleAlert className="mx-auto text-gray-500" size={40} />
+  //       <p className="text-gray-700 font-medium">로그인 후 이용 가능해요.</p>
+  //       <LoginButton className="h-9 px-4 text-sm inline-flex items-center justify-center gap-2 rounded cursor-pointer bg-primary-500 hover:bg-primary-600 text-white">
+  //         로그인 하러 가기
+  //       </LoginButton>
+  //     </div>
+  //   );
+  // }
+  //
+  // if (error?.code === 'FORBIDDEN') {
+  //   return (
+  //     <div className="p-6 text-center space-y-4">
+  //       <CircleAlert className="mx-auto text-gray-500" size={40} />
+  //       <p className="text-gray-700 font-medium">인증 받은 사용자만 확인할 수 있어요.</p>
+  //     </div>
+  //   );
+  // }
 
   return (
     <EditorContext.Provider value={{ editor }}>
