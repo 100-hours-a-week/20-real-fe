@@ -1,10 +1,11 @@
 'use client';
 
+import { CircleAlert } from 'lucide-react';
 import { WebsocketProvider } from 'y-websocket';
 import * as Y from 'yjs';
 
 import * as React from 'react';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Collaboration from '@tiptap/extension-collaboration';
 import { CollaborationCursor } from '@tiptap/extension-collaboration-cursor';
 import { Image } from '@tiptap/extension-image';
@@ -21,6 +22,7 @@ import { MAX_FILE_SIZE, uploadImageToS3 } from '@/features/s3/lib/s3';
 import { stringToColor } from '@/shared/lib/utils/stringToColor';
 import { useToastStore } from '@/shared/model/toastStore';
 import { useUserPersistStore } from '@/shared/model/userPersistStore';
+import { Button } from '@/shared/ui/component/Button';
 import { Link } from '@/widgets/tiptap-editor/tiptap-extension/link-extension';
 import { Selection } from '@/widgets/tiptap-editor/tiptap-extension/selection-extension';
 import { ImageUploadNode } from '@/widgets/tiptap-editor/tiptap-node/image-upload-node/image-upload-node-extension';
@@ -41,6 +43,7 @@ export function WikiEditor({ wiki }: WikiEditorProps) {
   const toolbarRef = useRef<HTMLDivElement>(null);
   const { showToast } = useToastStore();
   const { user } = useUserPersistStore();
+  const [isError, setIsError] = useState(false);
 
   const doc = useMemo(() => new Y.Doc(), []);
 
@@ -102,26 +105,29 @@ export function WikiEditor({ wiki }: WikiEditorProps) {
     provider.connect();
   }, [provider]);
 
-  // if (error?.code === 'UNAUTHORIZED' || error?.code === 'TOKEN_EXPIRED') {
-  //   return (
-  //     <div className="p-6 text-center space-y-4">
-  //       <CircleAlert className="mx-auto text-gray-500" size={40} />
-  //       <p className="text-gray-700 font-medium">로그인 후 이용 가능해요.</p>
-  //       <LoginButton className="h-9 px-4 text-sm inline-flex items-center justify-center gap-2 rounded cursor-pointer bg-primary-500 hover:bg-primary-600 text-white">
-  //         로그인 하러 가기
-  //       </LoginButton>
-  //     </div>
-  //   );
-  // }
-  //
-  // if (error?.code === 'FORBIDDEN') {
-  //   return (
-  //     <div className="p-6 text-center space-y-4">
-  //       <CircleAlert className="mx-auto text-gray-500" size={40} />
-  //       <p className="text-gray-700 font-medium">인증 받은 사용자만 확인할 수 있어요.</p>
-  //     </div>
-  //   );
-  // }
+  provider.ws?.addEventListener('error', (err) => {
+    console.error(err);
+    setIsError(true);
+  });
+
+  if (isError) {
+    return (
+      <div className="p-6 text-center space-y-4">
+        <CircleAlert className="mx-auto text-gray-500" size={40} />
+        <p className="text-gray-700 font-medium">
+          알 수 없는 오류가 발생했어요.
+          <br />
+          잠시 뒤 다시 시도해주세요.
+        </p>
+        <Button
+          className="h-9 px-4 text-sm inline-flex items-center justify-center gap-2 rounded cursor-pointer bg-primary-500 hover:bg-primary-600 text-white"
+          onClick={() => window.location.reload()}
+        >
+          새로고침
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <EditorContext.Provider value={{ editor }}>
