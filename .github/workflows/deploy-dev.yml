@@ -138,7 +138,7 @@ jobs:
       - name: Trigger CodeDeploy
         run: |
           aws deploy create-deployment \
-            --application-name ${{ secrets.APPLICATION_NAME }} \
+            --application-name ${{ secrets.APPLICATION_NAME_DEV }} \
             --deployment-group-name $DEPLOYMENT_GROUP \
             --s3-location bucket=${{ secrets.S3_BUCKET }},bundleType=zip,key=$S3_KEY \
             --file-exists-behavior OVERWRITE
