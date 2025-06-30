@@ -130,7 +130,7 @@ jobs:
           chmod +x scripts/deploy-dev.sh
 
       - name: Zip files
-        run: zip -r $S3_KEY appspec.yml scripts/deploy-dev.sh
+        run: zip -r $S3_KEY appspec.yml scripts/deploy-dev.sh scripts/stop.sh
 
       - name: Upload to S3
         run: aws s3 cp --region ${{ secrets.AWS_REGION }} --acl private $S3_KEY s3://${{ secrets.S3_BUCKET }}/$S3_KEY
