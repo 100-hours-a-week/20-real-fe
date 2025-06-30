@@ -81,7 +81,7 @@ export function WikiEditor({ wiki }: WikiEditorProps) {
       CollaborationCursor.configure({
         provider: provider,
         user: {
-          id: user?.id,
+          id: user?.userId,
           name: user?.nickname ?? '',
           color: stringToColor(user?.nickname ?? ''),
         },

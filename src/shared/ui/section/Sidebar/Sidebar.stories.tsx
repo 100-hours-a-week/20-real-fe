@@ -50,7 +50,12 @@ const SidebarDemoPage = () => {
   const { setUser, cleanUser } = useUserPersistStore();
 
   const simulateLogin = () => {
-    setUser({ id: 1, nickname: 'kevin.joung(정현우)/풀스택', role: 'TRAINEE', profileUrl: 'https://placehold.co/36' });
+    setUser({
+      userId: 1,
+      nickname: 'kevin.joung(정현우)/풀스택',
+      role: 'TRAINEE',
+      profileUrl: 'https://placehold.co/36',
+    });
     showToast('로그인 성공', 'success');
   };
 
