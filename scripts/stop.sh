@@ -1,2 +1,2 @@
 #!/bin/bash
-docker rm -f next-app
+docker rm -f next-app ysocket || true
