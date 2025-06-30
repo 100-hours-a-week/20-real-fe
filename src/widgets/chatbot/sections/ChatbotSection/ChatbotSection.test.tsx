@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { chunks } from '@test/mocks/chatbot/data/success';
 import { MockEventSource, mockEventSource } from '@test/utils/mockEventSource';
 import { mockScrollIntoView } from '@test/utils/mockScrollIntoView';
-import { renderWithProviders } from '@test/utils/renderWithProviders';
+import { renderWithProviders } from '@test/utils/RenderWithProviders';
 import { screen } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 
