@@ -52,10 +52,15 @@ export function WikiEditor({ wiki }: WikiEditorProps) {
   };
 
   const provider = useMemo(() => {
-    return new WebsocketProvider(`${process.env.NEXT_PUBLIC_WS_ADDRESS}`, wiki.id.toString(), doc, {
-      connect: false,
-    });
-  }, []);
+    return new WebsocketProvider(
+      `${process.env.NEXT_PUBLIC_WS_ADDRESS}/ws?roomId=${wiki.id}`,
+      '', // room 부분을 비워야 경로 중복 방지
+      doc,
+      {
+        connect: false,
+      },
+    );
+  }, [wiki.id]);
 
   const editor = useEditor({
     immediatelyRender: false,
