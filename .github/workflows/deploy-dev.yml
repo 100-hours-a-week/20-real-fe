@@ -115,22 +115,22 @@ jobs:
                   timeout: 60
                   runas: ec2-user
               AfterInstall:
-                  - location: scripts/deploy.sh
+                  - location: scripts/deploy-dev.sh
                     timeout: 150
                     runas: ec2-user
           EOF
 
       - name: Inject variables into deploy.sh
         run: |
-          sed -i "s|<IMAGE_TAG>|$IMAGE_TAG|g" scripts/deploy.sh
-          sed -i "s|<ENV>|$ENV|g" scripts/deploy.sh
-          sed -i "s|<AWS_ACCOUNT_ID>|${{ secrets.AWS_ACCOUNT_ID }}|g" scripts/deploy.sh
-          sed -i "s|<AWS_REGION>|${{ secrets.AWS_REGION }}|g" scripts/deploy.sh
-          sed -i "s|<ECR_REPOSITORY>|${{ secrets.ECR_REPOSITORY }}|g" scripts/deploy.sh
-          chmod +x scripts/deploy.sh
+          sed -i "s|<IMAGE_TAG>|$IMAGE_TAG|g" scripts/deploy-dev.sh
+          sed -i "s|<ENV>|$ENV|g" scripts/deploy-dev.sh
+          sed -i "s|<AWS_ACCOUNT_ID>|${{ secrets.AWS_ACCOUNT_ID }}|g" scripts/deploy-dev.sh
+          sed -i "s|<AWS_REGION>|${{ secrets.AWS_REGION }}|g" scripts/deploy-dev.sh
+          sed -i "s|<ECR_REPOSITORY>|${{ secrets.ECR_REPOSITORY }}|g" scripts/deploy-dev.sh
+          chmod +x scripts/deploy-dev.sh
 
       - name: Zip files
-        run: zip -r $S3_KEY appspec.yml scripts/
+        run: zip -r $S3_KEY appspec.yml scripts/deploy-dev.sh scripts/stop.sh
 
       - name: Upload to S3
         run: aws s3 cp --region ${{ secrets.AWS_REGION }} --acl private $S3_KEY s3://${{ secrets.S3_BUCKET }}/$S3_KEY
@@ -138,7 +138,7 @@ jobs:
       - name: Trigger CodeDeploy
         run: |
           aws deploy create-deployment \
-            --application-name ${{ secrets.APPLICATION_NAME }} \
+            --application-name ${{ secrets.APPLICATION_NAME_DEV }} \
             --deployment-group-name $DEPLOYMENT_GROUP \
             --s3-location bucket=${{ secrets.S3_BUCKET }},bundleType=zip,key=$S3_KEY \
             --file-exists-behavior OVERWRITE

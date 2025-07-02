@@ -1,7 +1,7 @@
 import { ChevronRight } from 'lucide-react';
 
 import { Notice } from '@/entities/post/notice';
-import { formatTime, isRecent } from '@/shared/lib/times';
+import { formatTime, isRecent } from '@/shared/lib/utils/times';
 
 import helperRyan from '../../../../assets/helper-ryan.png';
 import { SafeImage } from '../../../../shared/ui/component/SafeImage';
@@ -24,6 +24,7 @@ export function NoticeListItem({ notice }: NoticeItemProps) {
       className={`bg-white rounded-xl shadow-sm mb-4 overflow-hidden transition-all hover:shadow-md ${
         isRecent(notice.createdAt) ? 'border-l-4 border-primary-300' : ''
       }`}
+      data-testid="notice-list-item"
     >
       <div className="p-5">
         <div className="flex justify-between items-start mb-2">

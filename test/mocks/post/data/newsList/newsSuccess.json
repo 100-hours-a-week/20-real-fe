@@ -1,0 +1,35 @@
+{
+    "data": {
+        "items": [
+            {
+                "id": 6,
+                "title": "제목6",
+                "commentCount": 6,
+                "todayViewCount": 100,
+                "imageUrl": null,
+                "createdAt": "2025.04.30 21:21:07"
+            },
+            {
+                "id": 4,
+                "title": "제목4",
+                "commentCount": 4,
+                "todayViewCount": 50,
+                "imageUrl": null,
+                "createdAt": "2025.04.30 21:21:07"
+            },
+            {
+                "id": 10,
+                "title": "제목10",
+                "commentCount": 10,
+                "todayViewCount": 10,
+                "imageUrl": null,
+                "createdAt": "2025.04.30 21:21:07"
+            }
+        ],
+        "nextCursorStandard": "10",
+        "nextCursorId": 10,
+        "hasNext": true
+    },
+    "code": 200,
+    "message": "OK"
+}

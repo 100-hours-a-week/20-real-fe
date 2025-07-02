@@ -6,6 +6,8 @@ import { usePathname, useRouter } from 'next/navigation';
 
 import { HEADER_HEIGHT } from '@/shared/constatns/ui';
 import { useSidebarStore } from '@/shared/model/sidebarStore';
+import { useUserPersistStore } from '@/shared/model/userPersistStore';
+import { NotificationDropdown } from '@/shared/ui/section/NotificationDropdown';
 
 import { Button } from '../../component/Button';
 
@@ -14,6 +16,7 @@ export function Header() {
   const openSidebar = useSidebarStore((state) => state.open);
   const pathname = usePathname();
   const hideBackButton = ['/chatbot', '/notices', '/news', '/wiki', '/home'].includes(pathname);
+  const { isLoggedIn, isApproved } = useUserPersistStore();
 
   return (
     <header
@@ -36,9 +39,7 @@ export function Header() {
 
       {/* 오른쪽: 알림 + 메뉴 버튼 */}
       <div className="flex items-center gap-2 min-w-24 justify-end">
-        {/*<Button variant="ghost" size="icon">*/}
-        {/*  <Bell />*/}
-        {/*</Button>*/}
+        {isLoggedIn && isApproved && <NotificationDropdown />}
         <Button variant="ghost" size="icon" onClick={openSidebar}>
           <Menu />
         </Button>

@@ -1,7 +1,7 @@
 import { CursorParam, CursorResponse } from '@/entities/common/base';
 import { Wiki } from '@/entities/wiki/wiki';
 import { WikiDetail } from '@/entities/wiki/wikiDetail';
-import { fetcher } from '@/shared/lib/fetcher';
+import { fetcher } from '@/shared/lib/utils/fetcher';
 
 // 위키 검색 목록
 interface getWikiSearchRequest extends CursorParam {
@@ -74,5 +74,9 @@ interface postWikiRequest {
 }
 
 export const postWiki = async ({ title }: postWikiRequest) => {
-  return await fetcher(`/v1/wikis`, { method: 'POST', body: JSON.stringify({ title }) });
+  return await fetcher(`/v1/wikis`, {
+    method: 'POST',
+    body: JSON.stringify({ title }),
+    headers: { 'Content-Type': 'application/json' },
+  });
 };

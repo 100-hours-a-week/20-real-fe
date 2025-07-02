@@ -5,12 +5,16 @@ import { useToastStore } from '@/shared/model/toastStore';
 import { useUserPersistStore } from '@/shared/model/userPersistStore';
 
 function fetchWithAuth(url: string, timeout: number, options?: RequestInit) {
+  // form data가 아닐 경우 Content-Type 지정
+  const isFormData = options?.body instanceof FormData;
+  const headers = {
+    ...(options?.headers ?? {}),
+    ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
+  };
+
   return fetch(`${process.env.NEXT_PUBLIC_API_URL}${url}`, {
     ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      ...(options?.headers ?? {}),
-    },
+    headers,
     credentials: 'include',
     signal: AbortSignal.timeout(timeout),
   });
@@ -87,7 +91,7 @@ async function handleError<T>(
   // 기타 에러
   toast.showToast(Errors.UNKNOWN.message, 'error');
   throw AppError.create('UNKNOWN', {
-    messageOverride: 'Unhandled API Error: ${res.status}',
+    messageOverride: `Unhandled API Error: ${res.status}, ${responseBody?.message}`,
     extra: { status: res.status, url: res.url, responseBody },
     capture: true,
   });

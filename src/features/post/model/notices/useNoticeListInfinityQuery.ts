@@ -4,6 +4,7 @@ import { CursorParam, CursorResponse } from '@/entities/common/base';
 import { Notice } from '@/entities/post/notice';
 import { getNoticeList } from '@/features/post/api/notices';
 import { queryKeys } from '@/shared/constatns/keys';
+import { AppError } from '@/shared/errors/appError';
 import { useInfiniteCursorQuery } from '@/shared/lib/tanstack-query/useInfiniteCursorQuery';
 
 interface UseNoticeListInfinityQueryParams {
@@ -11,7 +12,7 @@ interface UseNoticeListInfinityQueryParams {
   options?: Omit<
     UseInfiniteQueryOptions<
       CursorResponse<Notice>, // queryFn으로 가져오는 데이터
-      Error,
+      AppError,
       Notice[], // select 후 반환하는 데이터
       CursorResponse<Notice>, // getNextPageParam의 lastPage 타입
       string[], // query key 타입

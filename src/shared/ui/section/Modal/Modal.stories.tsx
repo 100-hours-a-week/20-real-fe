@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
 import { useModal } from '@/shared/model/modalStore';
 import { Modal } from '@/shared/ui/section/Modal/index';

@@ -1,9 +1,19 @@
 'use client';
 
-import { Bell, ChevronRight, LogOut, MessageCircle, Newspaper, NotebookPen, X } from 'lucide-react';
+import {
+  Bell,
+  ChevronDown,
+  ChevronRight,
+  LogOut,
+  MessageCircle,
+  Newspaper,
+  NotebookPen,
+  ShieldUser,
+  X,
+} from 'lucide-react';
 import Link from 'next/link';
 
-import { Suspense, useEffect } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 
 import { logout } from '@/features/user/api/auth';
 import { APP_WIDTH } from '@/shared/constatns/ui';
@@ -21,6 +31,7 @@ export function Sidebar() {
   const { isOpen, close } = useSidebarStore();
   const { user, isLoggedIn, cleanUser } = useUserPersistStore();
   const { showToast } = useToastStore();
+  const [isAdminMenuOpen, setIsAdminMenuOpen] = useState(false);
 
   const menuItems = [
     { label: '춘비서', href: '/chatbot', icon: <MessageCircle size={18} /> },
@@ -28,6 +39,8 @@ export function Sidebar() {
     { label: '카테부 뉴스', href: '/news', icon: <Newspaper size={18} /> },
     { label: '위키', href: '/wiki', icon: <NotebookPen size={18} /> },
   ];
+
+  const adminMenuItems = [{ label: '공지 작성', href: '/admin/notices/new' }];
 
   // open 상태라면 overflow hidden하여 스크롤 차단
   useEffect(() => {
@@ -128,6 +141,42 @@ export function Sidebar() {
                 <ChevronRight size={16} className="text-gray-400 group-hover:text-black" />
               </Link>
             ))}
+
+            {/* 어드민 메뉴 */}
+            {user?.role === 'STAFF' && (
+              <div className="cursor-pointer group">
+                <div
+                  className="flex items-center justify-between text-black/80 mb-1 py-3 px-4 rounded-xl transition-all duration-200 group hover:bg-black/5 active:bg-black/10"
+                  onClick={() => setIsAdminMenuOpen(!isAdminMenuOpen)}
+                >
+                  <div className="flex items-center">
+                    <span className="mr-3 text-gray-600 group-hover:text-black">
+                      <ShieldUser size={18} />
+                    </span>
+                    <span className="font-medium">어드민 메뉴</span>
+                  </div>
+                  <ChevronDown
+                    size={16}
+                    className={`text-gray-400 transition-transform duration-200 ${isAdminMenuOpen ? 'rotate-180' : ''}`}
+                  />
+                </div>
+
+                {isAdminMenuOpen &&
+                  adminMenuItems.map(({ label, href }) => (
+                    <Link
+                      key={href}
+                      href={href}
+                      onClick={close}
+                      className="flex items-center justify-between text-black/80 mb-1 py-3 px-4 rounded-xl transition-all duration-200 group hover:bg-black/5 active:bg-black/10"
+                    >
+                      <div className="pl-7 flex items-center">
+                        <span className="font-medium">{label}</span>
+                      </div>
+                      <ChevronRight size={16} className="text-gray-400 group-hover:text-black" />
+                    </Link>
+                  ))}
+              </div>
+            )}
           </nav>
 
           {isLoggedIn && (

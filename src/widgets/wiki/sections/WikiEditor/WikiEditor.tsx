@@ -7,6 +7,7 @@ import * as Y from 'yjs';
 import * as React from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Collaboration from '@tiptap/extension-collaboration';
+import { CollaborationCursor } from '@tiptap/extension-collaboration-cursor';
 import { Image } from '@tiptap/extension-image';
 import { TaskItem } from '@tiptap/extension-task-item';
 import { TaskList } from '@tiptap/extension-task-list';
@@ -18,9 +19,10 @@ import { StarterKit } from '@tiptap/starter-kit';
 
 import { WikiDetail } from '@/entities/wiki/wikiDetail';
 import { MAX_FILE_SIZE, uploadImageToS3 } from '@/features/s3/lib/s3';
-import { useUpdateWikiMutation } from '@/features/wiki/model/useUpdateWikiMutation';
+import { stringToColor } from '@/shared/lib/utils/stringToColor';
 import { useToastStore } from '@/shared/model/toastStore';
-import { LoginButton } from '@/shared/ui/section/LoginButton';
+import { useUserPersistStore } from '@/shared/model/userPersistStore';
+import { Button } from '@/shared/ui/component/Button';
 import { Link } from '@/widgets/tiptap-editor/tiptap-extension/link-extension';
 import { Selection } from '@/widgets/tiptap-editor/tiptap-extension/selection-extension';
 import { ImageUploadNode } from '@/widgets/tiptap-editor/tiptap-node/image-upload-node/image-upload-node-extension';
@@ -38,17 +40,22 @@ interface WikiEditorProps {
 }
 
 export function WikiEditor({ wiki }: WikiEditorProps) {
-  const { mutate: updateWiki, error } = useUpdateWikiMutation();
   const toolbarRef = useRef<HTMLDivElement>(null);
   const { showToast } = useToastStore();
-  const [socketConnected, setSocketConnected] = useState(false);
-  const [hasUserEdited, setHasUserEdited] = useState(false);
+  const { user } = useUserPersistStore();
+  const [isError, setIsError] = useState(false);
 
   const doc = useMemo(() => new Y.Doc(), []);
 
   const handleImageUploadError = () => {
     showToast('이미지 업로드에 실패했습니다.', 'error');
   };
+
+  const provider = useMemo(() => {
+    return new WebsocketProvider(`${process.env.NEXT_PUBLIC_WS_ADDRESS}`, wiki.id.toString(), doc, {
+      connect: false,
+    });
+  }, []);
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -71,7 +78,14 @@ export function WikiEditor({ wiki }: WikiEditorProps) {
       Collaboration.configure({
         document: doc,
       }),
-
+      CollaborationCursor.configure({
+        provider: provider,
+        user: {
+          id: user?.userId,
+          name: user?.nickname ?? '',
+          color: stringToColor(user?.nickname ?? ''),
+        },
+      }),
       Selection,
       ImageUploadNode.configure({
         accept: 'image/*',
@@ -86,94 +100,31 @@ export function WikiEditor({ wiki }: WikiEditorProps) {
     ],
   });
 
-  const providerRef = useRef<WebsocketProvider | null>(null);
-
   // socket 연결
   useEffect(() => {
-    if (!editor) return;
-    const provider = new WebsocketProvider(`${process.env.NEXT_PUBLIC_WS_ADDRESS}`, wiki.id.toString(), doc, {
-      connect: false,
-    });
-
-    provider.on('sync', (isSynced: boolean) => {
-      setSocketConnected(isSynced);
-      if (!isSynced) return;
-
-      const isEmpty = editor?.getText().trim().length === 0;
-
-      if (isEmpty) {
-        // if (wiki.ydoc) {
-        //   Y.applyUpdate(doc, Uint8Array.from(atob(wiki.ydoc), c => c.charCodeAt(0)));
-        // }
-        if (wiki.html) {
-          editor?.commands.setContent(wiki.html);
-        }
-      }
-    });
-
     provider.connect();
-    providerRef.current = provider;
+  }, [provider]);
 
-    // unmount 시 연결 해제
-    return () => {
-      providerRef.current?.disconnect();
-      providerRef.current?.destroy();
-      providerRef.current = null;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editor]);
+  provider.ws?.addEventListener('error', (err) => {
+    console.error(err);
+    setIsError(true);
+  });
 
-  // 편집을 시작한 경우에만 서버로 업데이트 요청 전송
-  useEffect(() => {
-    if (!editor || hasUserEdited || !socketConnected) return;
-
-    const handler = () => {
-      if (!hasUserEdited && socketConnected) {
-        setHasUserEdited(true);
-      }
-    };
-
-    editor.on('update', handler);
-
-    return () => {
-      editor.off('update', handler);
-    };
-  }, [editor, hasUserEdited, socketConnected]);
-
-  // 위키 수정 배치 작업
-  useEffect(() => {
-    if (!socketConnected || !hasUserEdited) return;
-
-    const interval = setInterval(() => {
-      if (!editor) return;
-
-      updateWiki({
-        id: wiki.id,
-        html: editor.getHTML(),
-        ydoc: btoa(String.fromCharCode(...Y.encodeStateAsUpdate(doc))),
-      });
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [socketConnected, hasUserEdited, editor, updateWiki, doc, wiki.id]);
-
-  if (error?.code === 'UNAUTHORIZED' || error?.code === 'TOKEN_EXPIRED') {
+  if (isError) {
     return (
       <div className="p-6 text-center space-y-4">
         <CircleAlert className="mx-auto text-gray-500" size={40} />
-        <p className="text-gray-700 font-medium">로그인 후 이용 가능해요.</p>
-        <LoginButton className="h-9 px-4 text-sm inline-flex items-center justify-center gap-2 rounded cursor-pointer bg-primary-500 hover:bg-primary-600 text-white">
-          로그인 하러 가기
-        </LoginButton>
-      </div>
-    );
-  }
-
-  if (error?.code === 'FORBIDDEN') {
-    return (
-      <div className="p-6 text-center space-y-4">
-        <CircleAlert className="mx-auto text-gray-500" size={40} />
-        <p className="text-gray-700 font-medium">인증 받은 사용자만 확인할 수 있어요.</p>
+        <p className="text-gray-700 font-medium">
+          알 수 없는 오류가 발생했어요.
+          <br />
+          잠시 뒤 다시 시도해주세요.
+        </p>
+        <Button
+          className="h-9 px-4 text-sm inline-flex items-center justify-center gap-2 rounded cursor-pointer bg-primary-500 hover:bg-primary-600 text-white"
+          onClick={() => window.location.reload()}
+        >
+          새로고침
+        </Button>
       </div>
     );
   }

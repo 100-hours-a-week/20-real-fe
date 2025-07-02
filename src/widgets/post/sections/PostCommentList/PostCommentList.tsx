@@ -49,6 +49,7 @@ export function PostCommentList({ type, postId, onDeleteCompleteAction }: PostCo
         {
           label: '삭제',
           variant: 'destructive',
+          testid: 'modal-delete-button',
           onClick: () => {
             firebaseLogging(EventName.POST_COMMENT_DELETE_CLICK, {
               description: `${type}-${postId}`,

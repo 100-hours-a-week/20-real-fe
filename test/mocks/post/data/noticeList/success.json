@@ -1,0 +1,101 @@
+{
+  "data": {
+    "items": [
+      {
+        "id": 135,
+        "title": "\uD83C\uDF81 4단위기간 만족도조사 구름조각 지급 \uD83C\uDF81",
+        "author": "helper.ryan(헬퍼라이언)",
+        "tag": "공지",
+        "platform": "디스코드",
+        "userRead": false,
+        "createdAt": "2025.06.10 10:19:00"
+      },
+      {
+        "id": 134,
+        "title": "\uD83D\uDE08 공지봇 탄생 안내",
+        "author": "helper.ryan(헬퍼라이언)",
+        "tag": "공지",
+        "platform": "디스코드",
+        "userRead": false,
+        "createdAt": "2025.06.09 17:41:00"
+      },
+      {
+        "id": 133,
+        "title": "\uD83C\uDF81구름 EXP 상점 오픈 예정 안내 \uD83C\uDF81",
+        "author": "helper.ryan(헬퍼라이언)",
+        "tag": "공지",
+        "platform": "디스코드",
+        "userRead": false,
+        "createdAt": "2025.06.09 15:44:00"
+      },
+      {
+        "id": 132,
+        "title": "카카오테크 부트캠프 특강 공지 \uD83D\uDD14",
+        "author": "helper.ryan(헬퍼라이언)",
+        "tag": "공지",
+        "platform": "디스코드",
+        "userRead": false,
+        "createdAt": "2025.06.09 13:07:00"
+      },
+      {
+        "id": 131,
+        "title": "\uD83C\uDF34 휴가 사용 독려 안내 \uD83C\uDF34",
+        "author": "helper.ryan(헬퍼라이언)",
+        "tag": "공지",
+        "platform": "디스코드",
+        "userRead": false,
+        "createdAt": "2025.06.09 10:25:00"
+      },
+      {
+        "id": 130,
+        "title": "카카오테크 부트캠프 판교 2기 후기 이벤트",
+        "author": "helper.ryan(헬퍼라이언)",
+        "tag": "공지",
+        "platform": "디스코드",
+        "userRead": false,
+        "createdAt": "2025.06.04 09:58:29"
+      },
+      {
+        "id": 129,
+        "title": "6월 6일 (금) 현충일 휴강 안내",
+        "author": "helper.ryan(헬퍼라이언)",
+        "tag": "공지",
+        "platform": "디스코드",
+        "userRead": false,
+        "createdAt": "2025.06.04 09:56:48"
+      },
+      {
+        "id": 128,
+        "title": "[1차 동료평가 참여 안내]",
+        "author": "helper.ryan(헬퍼라이언)",
+        "tag": "공지",
+        "platform": "디스코드",
+        "userRead": false,
+        "createdAt": "2025.06.04 09:55:36"
+      },
+      {
+        "id": 127,
+        "title": "1차 동료평가 참여 안내",
+        "author": "helper.ryan(헬퍼라이언)",
+        "tag": "공지",
+        "platform": "디스코드",
+        "userRead": false,
+        "createdAt": "2025.06.02 10:11:31"
+      },
+      {
+        "id": 126,
+        "title": "조간 상호 피드백",
+        "author": "void.yeon(연시완)/강사",
+        "tag": "공지",
+        "platform": "노션",
+        "userRead": false,
+        "createdAt": "2025.06.02 10:10:44"
+      }
+    ],
+    "nextCursorStandard": "2025-06-02 10:10:44",
+    "nextCursorId": 126,
+    "hasNext": true
+  },
+  "code": 200,
+  "message": "OK"
+}

@@ -12,6 +12,7 @@ export function SuggestedQuestions({ onSelect }: SuggestedQuestionsProps) {
           key={text}
           onClick={() => onSelect(text)}
           className="bg-white border border-gray-100 p-3 rounded-xl text-sm text-gray-700 hover:bg-gray-100 cursor-pointer shadow-sm"
+          data-testid="suggest-question"
         >
           {text}
         </div>
