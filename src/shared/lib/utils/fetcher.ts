@@ -1,4 +1,5 @@
 import { BaseResponse } from '@/entities/common/base';
+import { getUserInfo } from '@/features/user/api/user';
 import { AppError } from '@/shared/errors/appError';
 import { Errors } from '@/shared/errors/errors';
 import { useToastStore } from '@/shared/model/toastStore';
@@ -52,7 +53,10 @@ async function handleTokenRefresh<T>(fetchFn: () => Promise<Response>): Promise<
     });
   }
 
-  // 리프레시 성공 시 원 요청 재호출
+  // 리프레시 성공 시 유저 정보를 저장하고 원 요청 재호출
+  const userInfoRes = await getUserInfo();
+  userStore.setUser(userInfoRes.data);
+
   const retriedRes = await fetchFn();
   return await parseJSON<T>(retriedRes);
 }

@@ -26,7 +26,7 @@ export const useUserPersistStore = create<UserStore>()(
         set({ isApproved });
       },
       setUser: (user: User) => {
-        set({ user, isLoggedIn: true });
+        set({ user, isLoggedIn: true, isApproved: user.role === 'STAFF' });
       },
       cleanUser: () => {
         set({ user: null, isLoggedIn: false, isApproved: false });
