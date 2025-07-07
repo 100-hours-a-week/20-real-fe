@@ -45,7 +45,7 @@ export default function WikiDetailPage() {
           <div className="p-6 text-center space-y-4">
             <BookText className="mx-auto text-gray-500" size={40} />
             <p className="text-gray-700 font-medium">해당 문서를 찾을 수 없어요.</p>
-            <Button variant="primary" onClick={handleCreateWiki}>
+            <Button variant="primary" onClick={handleCreateWiki} data-testid={'create-wiki-button'}>
               문서 생성하기
             </Button>
           </div>
