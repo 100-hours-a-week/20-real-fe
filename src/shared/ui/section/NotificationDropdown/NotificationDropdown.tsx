@@ -82,19 +82,28 @@ export function NotificationDropdown() {
     setIsReceivedNotification(false);
   };
 
-  const eventSource = new EventSource(`${process.env.NEXT_PUBLIC_API_URL}/v1/connect/notification`, {
-    withCredentials: true,
-  });
-
-  eventSource.onmessage = (event) => {
-    console.log('hi ' + event);
-    queryClient.invalidateQueries({
-      queryKey: [queryKeys.notice, queryKeys.unread],
+  useEffect(() => {
+    const eventSource = new EventSource(`${process.env.NEXT_PUBLIC_API_URL}/v1/connect/notification`, {
+      withCredentials: true,
     });
-    setIsReceivedNotification(true);
-  };
 
-  eventSource.addEventListener('connect', () => {});
+    eventSource.onmessage = (event) => {
+      if (event.data.includes('SSE 연결 성공') || event.data.includes('heartbeat')) return;
+      queryClient.invalidateQueries({
+        queryKey: [queryKeys.notice, queryKeys.unread],
+      });
+      setIsReceivedNotification(true);
+    };
+
+    eventSource.onerror = (err) => {
+      console.error('SSE error:', err);
+      eventSource.close();
+    };
+
+    return () => {
+      eventSource.close(); // 언마운트 시 연결 종료
+    };
+  }, []);
 
   return (
     <div className="relative" ref={dropdownRef}>
