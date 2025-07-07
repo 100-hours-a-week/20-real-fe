@@ -52,10 +52,10 @@ export function WikiEditor({ wiki }: WikiEditorProps) {
   };
 
   const provider = useMemo(() => {
-    return new WebsocketProvider(`${process.env.NEXT_PUBLIC_WS_ADDRESS}`, wiki.id.toString(), doc, {
+    return new WebsocketProvider(process.env.NEXT_PUBLIC_WS_ADDRESS + '/ws', wiki.id.toString(), doc, {
       connect: false,
     });
-  }, []);
+  }, [wiki.id]);
 
   const editor = useEditor({
     immediatelyRender: false,
