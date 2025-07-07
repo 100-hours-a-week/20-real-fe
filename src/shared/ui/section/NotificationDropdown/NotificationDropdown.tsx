@@ -37,6 +37,7 @@ export function NotificationDropdown() {
         }
       : undefined,
   );
+  const [isReceivedNotification, setIsReceivedNotification] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -76,12 +77,31 @@ export function NotificationDropdown() {
     markAsRead();
   };
 
+  const handleNotificationButtonClick = () => {
+    setIsOpen(!isOpen);
+    setIsReceivedNotification(false);
+  };
+
+  const eventSource = new EventSource(`${process.env.NEXT_PUBLIC_API_URL}/v1/connect/notification`, {
+    withCredentials: true,
+  });
+
+  eventSource.onmessage = (event) => {
+    console.log('hi ' + event);
+    queryClient.invalidateQueries({
+      queryKey: [queryKeys.notice, queryKeys.unread],
+    });
+    setIsReceivedNotification(true);
+  };
+
+  eventSource.addEventListener('connect', () => {});
+
   return (
     <div className="relative" ref={dropdownRef}>
       {/* 알림 버튼 */}
-      <Button variant={'plain'} size={'icon'} onClick={() => setIsOpen(!isOpen)} className="relative ">
+      <Button variant={'plain'} size={'icon'} onClick={handleNotificationButtonClick} className="relative ">
         <Bell className="w-6 h-6" />
-        {notifications && notifications.length > 0 && (
+        {((notifications && notifications.length > 0) || isReceivedNotification) && (
           <span className="absolute -top-1 right-1 bg-red-500 text-white text-xs rounded-full w-3 h-3"></span>
         )}
       </Button>
