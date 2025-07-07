@@ -82,26 +82,29 @@ export function NotificationDropdown() {
     setIsReceivedNotification(false);
   };
 
-  useEffect(() => {
-    const eventSource = new EventSource(`${process.env.NEXT_PUBLIC_API_URL}/v1/connect/notification`, {
+  let eventSource: EventSource | null = null;
+
+  const connectSSE = () => {
+    eventSource = new EventSource(`${process.env.NEXT_PUBLIC_API_URL}/v1/connect/notification`, {
       withCredentials: true,
     });
 
     eventSource.onmessage = (event) => {
+      // connect, heartbeat 메시지 필터링
       if (event.data.includes('SSE 연결 성공') || event.data.includes('heartbeat')) return;
+
+      // 안 읽은 공지 캐시 무효화
       queryClient.invalidateQueries({
         queryKey: [queryKeys.notice, queryKeys.unread],
       });
       setIsReceivedNotification(true);
     };
+  };
 
-    eventSource.onerror = (err) => {
-      console.error('SSE error:', err);
-      eventSource.close();
-    };
-
+  useEffect(() => {
+    connectSSE();
     return () => {
-      eventSource.close(); // 언마운트 시 연결 종료
+      eventSource?.close();
     };
   }, []);
 
