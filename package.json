@@ -11,7 +11,8 @@
     "build-storybook": "storybook build",
     "prepare": "husky",
     "vitest-coverage": "vitest run --coverage",
-    "playwright": "npx playwright test"
+    "playwright:prod": "NODE_ENV=production npx playwright test",
+    "playwright:dev": "npx playwright test"
   },
   "dependencies": {
     "@floating-ui/react": "0.27.9",
