@@ -111,7 +111,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: E2E Playwright Test (prod)
-        run: pnpm playwright
+        run: pnpm playwright:prod
         env:
           PLAYWRIGHT_BROWSER_URL: ${{ secrets.PLAYWRIGHT_BROWSER_URL }}
           PLAYWRIGHT_BASE_URL: ${{ secrets.PLAYWRIGHT_BASE_URL }}
