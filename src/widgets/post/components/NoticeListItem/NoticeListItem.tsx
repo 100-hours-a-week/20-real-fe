@@ -1,5 +1,7 @@
 import { ChevronRight } from 'lucide-react';
 
+import { memo } from 'react';
+
 import { Notice } from '@/entities/post/notice';
 import { formatTime, isRecent } from '@/shared/lib/utils/times';
 
@@ -10,7 +12,7 @@ type NoticeItemProps = {
   notice: Notice;
 };
 
-export function NoticeListItem({ notice }: NoticeItemProps) {
+export function NoticeListItemComponent({ notice }: NoticeItemProps) {
   const renderAvatar = () => {
     if (notice.author.includes('helper.ryan')) {
       return <SafeImage src={helperRyan} alt="helper.ryan(헬퍼라이언)" width={64} height={64} />;
@@ -56,3 +58,5 @@ export function NoticeListItem({ notice }: NoticeItemProps) {
     </div>
   );
 }
+
+export const NoticeListItem = memo(NoticeListItemComponent);

@@ -139,3 +139,6 @@
     margin-top: 60px;
 }
 
+.virtualized-item {
+    will-change: transform;
+}
