@@ -163,7 +163,7 @@ jobs:
           sed -i "s|<SENTRY_DSN>|$SENTRY_DSN|g" .env.production
           sed -i "s|<NEXT_PUBLIC_WS_ADDRESS>|$NEXT_PUBLIC_WS_ADDRESS|g" .env.production
           sed -i "s|<SENTRY_AUTH_TOKEN>|$SENTRY_AUTH_TOKEN|g" .env.production
-          sed -i "s|<NODE_ENV>|production|g" .env.production
+          sed -i "s|<OTEL_EXPORTER_ENV>|production|g" .env.production
           
       - name: Build & Push image
         run: |

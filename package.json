@@ -123,22 +123,5 @@
     "workerDirectory": [
       "public"
     ]
-  },
-  "description": "20조(ㄹㅇ조) fe 레포지토리",
-  "main": "index.js",
-  "directories": {
-    "test": "test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/100-hours-a-week/20-real-fe.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/100-hours-a-week/20-real-fe/issues"
-  },
-  "homepage": "https://github.com/100-hours-a-week/20-real-fe#readme"
+  }
 }

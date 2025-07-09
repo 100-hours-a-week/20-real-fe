@@ -4,7 +4,7 @@ import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
 import { NodeSDK } from '@opentelemetry/sdk-node';
 
-const ENV = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
+const ENV = process.env.OTEL_EXPORTER_ENV === 'production' ? 'prod' : 'dev';
 const SERVICE_NAME = `nextjs-${ENV}`;
 const OTEL_COLLECTOR_URL = process.env.OTEL_EXPORTER_OTLP_ENDPOINT || 'http://localhost:4318';
 
