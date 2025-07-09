@@ -13,6 +13,7 @@ process.env.OTEL_SERVICE_NAME = SERVICE_NAME;
 process.env.OTEL_RESOURCE_ATTRIBUTES = `service.name=${SERVICE_NAME},deployment.environment=${ENV}`;
 
 const sdk = new NodeSDK({
+  serviceName: SERVICE_NAME,
   traceExporter: new OTLPTraceExporter({
     url: `${OTEL_COLLECTOR_URL}/v1/traces`,
   }),
