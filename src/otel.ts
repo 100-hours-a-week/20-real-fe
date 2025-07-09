@@ -10,11 +10,11 @@ const OTEL_COLLECTOR_URL = process.env.OTEL_EXPORTER_OTLP_ENDPOINT || 'http://lo
 
 const sdk = new NodeSDK({
   traceExporter: new OTLPTraceExporter({
-    url: `${OTEL_COLLECTOR_URL}`,
+    url: `${OTEL_COLLECTOR_URL}/v1/traces`,
   }),
   metricReader: new PeriodicExportingMetricReader({
     exporter: new OTLPMetricExporter({
-      url: `${OTEL_COLLECTOR_URL}`,
+      url: `${OTEL_COLLECTOR_URL}/v1/metrics`,
     }),
     exportIntervalMillis: 30000, // 30초 간격
   }),
