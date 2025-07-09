@@ -9,6 +9,10 @@ import { RouteChangeLogger } from '@/app/RouteChangeLogger';
 import './globals.css';
 import { ToastContainer } from '../shared/ui/section/ToastContainer';
 
+if (process.env.NODE_ENV === 'production' && typeof window === 'undefined') {
+  import('../otel').catch(console.error);
+}
+
 const pretendard = localFont({
   src: '../../public/fonts/PretendardVariable.woff2',
   display: 'swap',
