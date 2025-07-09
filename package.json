@@ -16,6 +16,13 @@
   },
   "dependencies": {
     "@floating-ui/react": "0.27.9",
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/auto-instrumentations-node": "^0.61.0",
+    "@opentelemetry/exporter-metrics-otlp-http": "^0.202.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.202.0",
+    "@opentelemetry/resources": "^2.0.1",
+    "@opentelemetry/sdk-metrics": "^2.0.1",
+    "@opentelemetry/sdk-node": "^0.202.0",
     "@sentry/nextjs": "9.19.0",
     "@tailwindcss/typography": "0.5.16",
     "@tanstack/react-query": "5.74.7",
@@ -116,5 +123,22 @@
     "workerDirectory": [
       "public"
     ]
-  }
+  },
+  "description": "20조(ㄹㅇ조) fe 레포지토리",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/100-hours-a-week/20-real-fe.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/100-hours-a-week/20-real-fe/issues"
+  },
+  "homepage": "https://github.com/100-hours-a-week/20-real-fe#readme"
 }
