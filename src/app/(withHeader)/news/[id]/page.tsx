@@ -1,26 +1,25 @@
-'use client';
-
-import { useParams } from 'next/navigation';
-
+import { NewsDetail } from '@/entities/post/newsDetail';
 import { PostTypes } from '@/entities/post/postType';
-import { useNewsDetailQuery } from '@/features/post/model/news/useNewsDetailQuery';
+import { getApiData } from '@/shared/lib/utils/getApiData';
 import { ErrorPage } from '@/shared/ui/component/ErrorPage';
 import { NotFoundPage } from '@/shared/ui/component/NotFoundPage';
 import { ImageViewer } from '@/shared/ui/section/ImageViewer';
-import { MarkdownViewer } from '@/shared/ui/section/MarkdownViewer';
+import MarkdownViewerServer from '@/shared/ui/section/MarkdownViewerServer/MarkdownViewerServer';
 import { RedirectWithLoginModalPage } from '@/shared/ui/section/RedirectWithLoginModalPage';
 import { PostHeader } from '@/widgets/post/components/PostHeader';
 import { PostSummary } from '@/widgets/post/components/PostSummary';
 import { PostCommentSection } from '@/widgets/post/sections/PostCommentSection';
 import { PostReaction } from '@/widgets/post/sections/PostReaction/PostReaction';
 
-export default function NewsDetailPage() {
-  const params = useParams();
-  const id: string = params?.id as string;
-  const { data: news, isLoading, isError, error } = useNewsDetailQuery(id);
+interface NewsDetailPageProps {
+  params: Promise<{ id: string }>;
+}
 
-  if (isLoading) return null;
-  if (isError) {
+export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
+  const { id } = await params;
+  const { data: news, error } = await getApiData<NewsDetail>(`/v1/news/${id}`, { withAuth: true });
+
+  if (error) {
     switch (error?.code) {
       case 'UNAUTHORIZED':
         return <RedirectWithLoginModalPage />;
@@ -40,11 +39,10 @@ export default function NewsDetailPage() {
         <PostSummary summary={news.summary} />
 
         <div className="px-4 pb-3">
-          <MarkdownViewer text={news.content} useHtml={true} useSyntaxHighlight={true} />
+          <MarkdownViewerServer text={news.content} />
 
           {news.imageUrl && <ImageViewer imageUrl={news.imageUrl} />}
         </div>
-
         <PostReaction type={PostTypes.News} postId={news.id} userLike={news.userLike} likeCount={news.likeCount} />
 
         <PostCommentSection type={PostTypes.News} postId={news.id} commentCount={news.commentCount} />
