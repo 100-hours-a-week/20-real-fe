@@ -12,7 +12,8 @@
     "prepare": "husky",
     "vitest-coverage": "vitest run --coverage",
     "playwright:prod": "NODE_ENV=production npx playwright test",
-    "playwright:dev": "npx playwright test"
+    "playwright:dev": "npx playwright test",
+    "build:analyze": "ANALYZE=true next build"
   },
   "dependencies": {
     "@floating-ui/react": "0.27.9",
