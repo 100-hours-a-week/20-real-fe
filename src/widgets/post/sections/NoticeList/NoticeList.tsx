@@ -2,6 +2,9 @@
 
 import Link from 'next/link';
 
+import { useRef } from 'react';
+import { useWindowVirtualizer } from '@tanstack/react-virtual';
+
 import { useNoticeListInfinityQuery } from '@/features/post/model/notices/useNoticeListInfinityQuery';
 import { useInfiniteScrollObserver } from '@/shared/model/useInfiniteScrollObserver';
 import { EmptyItem } from '@/shared/ui/component/EmptyItem';
@@ -25,6 +28,15 @@ export function NoticeList() {
     isFetchingNextPage,
   });
 
+  const listRef = useRef<HTMLDivElement | null>(null);
+
+  const virtualizer = useWindowVirtualizer({
+    count: notices?.length ?? 0,
+    estimateSize: () => 170,
+    overscan: 5,
+    scrollMargin: listRef.current?.offsetTop ?? 0,
+  });
+
   if (isLoading) {
     return <LoadingIndicator isLoading={isLoading} data-testid="loading-indicator" />;
   }
@@ -34,17 +46,39 @@ export function NoticeList() {
   }
 
   return (
-    <div className="pb-10">
-      <div className="px-4 pb-2">
+    <div ref={listRef} className="pb-10 px-4">
+      <div
+        className="pb-2"
+        style={{
+          height: `${virtualizer.getTotalSize()}px`,
+          width: '100%',
+          position: 'relative',
+        }}
+      >
         {notices?.length === 0 && (
           <EmptyItem message="아직 작성된 공지사항이 없어요." data-testid="notice-list-empty" />
         )}
         {notices &&
-          notices.map((notice) => (
-            <Link key={notice.id} href={`/notices/${notice.id}`}>
-              <NoticeListItem notice={notice} />
-            </Link>
-          ))}
+          virtualizer.getVirtualItems().map((item) => {
+            const notice = notices[item.index];
+            return (
+              <Link
+                key={notice.id}
+                href={`/notices/${notice.id}`}
+                className="virtualized-item"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: `${item.size}px`,
+                  transform: `translateY(${item.start - virtualizer.options.scrollMargin}px)`,
+                }}
+              >
+                <NoticeListItem notice={notice} />
+              </Link>
+            );
+          })}
       </div>
 
       <LoadingIndicator
