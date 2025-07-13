@@ -5,6 +5,11 @@
     --font-pretendard: var(--font-pretendard);
 }
 
+html {
+    --font-pretendard: 'Pretendard Variable';
+    font-family: "Pretendard Variable", system-ui, sans-serif;
+}
+
 @theme {
     /* Primary Colors*/
     --color-primary-50: oklch(0.97 0.015 240);
