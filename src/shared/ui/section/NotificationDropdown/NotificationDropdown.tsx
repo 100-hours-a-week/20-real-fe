@@ -89,16 +89,16 @@ export function NotificationDropdown() {
       withCredentials: true,
     });
 
-    eventSource.onmessage = (event) => {
-      // connect, heartbeat 메시지 필터링
-      if (event.data.includes('SSE 연결 성공') || event.data.includes('heartbeat')) return;
-
-      // 안 읽은 공지 캐시 무효화
-      queryClient.invalidateQueries({
-        queryKey: [queryKeys.notice, queryKeys.unread],
+    const events = ['notice', 'notification'];
+    events.forEach((event) => {
+      eventSource?.addEventListener(event, () => {
+        // 안 읽은 공지 캐시 무효화
+        queryClient.invalidateQueries({
+          queryKey: [queryKeys.notice, queryKeys.unread],
+        });
+        setIsReceivedNotification(true);
       });
-      setIsReceivedNotification(true);
-    };
+    });
   };
 
   useEffect(() => {
