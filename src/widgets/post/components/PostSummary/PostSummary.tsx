@@ -1,4 +1,4 @@
-import { MarkdownViewer } from '../../../../shared/ui/section/MarkdownViewer';
+import MarkdownViewerServer from '@/shared/ui/section/MarkdownViewerServer/MarkdownViewerServer';
 
 interface PostSummaryProps {
   summary: string;
@@ -14,7 +14,7 @@ export function PostSummary({ summary }: PostSummaryProps) {
           </svg>
         </div>
         <div className="flex-1 text-sm text-gray-700">
-          <MarkdownViewer text={summary} />
+          <MarkdownViewerServer text={summary} />
         </div>
       </div>
     </div>

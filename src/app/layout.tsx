@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import localFont from 'next/font/local';
 
 import { ReactNode } from 'react';
 
@@ -8,13 +7,6 @@ import { RouteChangeLogger } from '@/app/RouteChangeLogger';
 
 import './globals.css';
 import { ToastContainer } from '../shared/ui/section/ToastContainer';
-
-const pretendard = localFont({
-  src: '../../public/fonts/PretendardVariable.woff2',
-  display: 'swap',
-  weight: '100 900',
-  variable: '--font-pretendard',
-});
 
 export const metadata: Metadata = {
   title: '춘이네 비서실',
@@ -30,7 +22,16 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <html lang="ko" className={`${pretendard.className}`}>
+    <html lang="ko" className={`font-pretendard`}>
+      <head>
+        <title>춘이네 비서실</title>
+        <link
+          rel="stylesheet"
+          as="style"
+          crossOrigin={''}
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+        />
+      </head>
       <body className="flex justify-center bg-gradient-to-br min-h-screen">
         <RouteChangeLogger />
         <Background>
