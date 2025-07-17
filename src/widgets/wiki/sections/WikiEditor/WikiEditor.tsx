@@ -14,6 +14,7 @@ import { TaskList } from '@tiptap/extension-task-list';
 import { TextAlign } from '@tiptap/extension-text-align';
 import { Typography } from '@tiptap/extension-typography';
 import { Underline } from '@tiptap/extension-underline';
+import { CharacterCount } from '@tiptap/extensions';
 import { EditorContent, EditorContext, useEditor } from '@tiptap/react';
 import { StarterKit } from '@tiptap/starter-kit';
 
@@ -75,6 +76,9 @@ export function WikiEditor({ wiki }: WikiEditorProps) {
       TaskItem.configure({ nested: true }),
       Image,
       Typography,
+      CharacterCount.configure({
+        limit: 15000,
+      }),
       Collaboration.configure({
         document: doc,
       }),
