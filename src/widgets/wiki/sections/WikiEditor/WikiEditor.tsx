@@ -77,7 +77,7 @@ export function WikiEditor({ wiki }: WikiEditorProps) {
       Image,
       Typography,
       CharacterCount.configure({
-        limit: 15000,
+        limit: 5000,
       }),
       Collaboration.configure({
         document: doc,
