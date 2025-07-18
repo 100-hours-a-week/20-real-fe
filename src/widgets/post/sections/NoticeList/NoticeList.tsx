@@ -46,7 +46,7 @@ export function NoticeList() {
   }
 
   return (
-    <div ref={listRef} className="pb-10 px-4">
+    <div ref={listRef} className="pb-10">
       <div
         className="pb-2"
         style={{
