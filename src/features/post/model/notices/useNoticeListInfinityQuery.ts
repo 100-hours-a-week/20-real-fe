@@ -9,6 +9,7 @@ import { useInfiniteCursorQuery } from '@/shared/lib/tanstack-query/useInfiniteC
 
 interface UseNoticeListInfinityQueryParams {
   limit?: number;
+  keyword?: string;
   options?: Omit<
     UseInfiniteQueryOptions<
       CursorResponse<Notice>, // queryFn으로 가져오는 데이터
@@ -22,13 +23,18 @@ interface UseNoticeListInfinityQueryParams {
   >;
 }
 
-const useNoticeListInfinityQuery = ({ limit = 10, options }: UseNoticeListInfinityQueryParams = {}) => {
+const useNoticeListInfinityQuery = ({
+  limit = 10,
+  keyword = undefined,
+  options,
+}: UseNoticeListInfinityQueryParams = {}) => {
   return useInfiniteCursorQuery<Notice>({
-    queryKey: [queryKeys.notice],
+    queryKey: [queryKeys.notice, ...(keyword ? [keyword] : [])],
     queryFn: (pageParam) =>
       getNoticeList({
         ...pageParam,
         limit,
+        keyword,
       }),
     options: options,
   });

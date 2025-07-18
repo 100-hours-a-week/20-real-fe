@@ -10,20 +10,23 @@ import { fetcher } from '@/shared/lib/utils/fetcher';
 // 공지 리스트 조회
 interface getNoticeListRequest extends CursorParam {
   limit: number;
+  keyword?: string;
 }
 
 const getNoticeList = async ({
   cursorId = null,
   cursorStandard = null,
   limit = 10,
+  keyword,
 }: getNoticeListRequest): Promise<CursorResponse<Notice>> => {
   const params = new URLSearchParams({
     ...(cursorId && { cursorId: cursorId.toString() }),
     ...(cursorStandard && { cursorStandard }),
+    ...(keyword && { keyword }),
     limit: limit.toString(),
   }).toString();
 
-  const res = await fetcher<CursorResponse<Notice>>(`/v1/notices?${params}`, { method: 'GET' });
+  const res = await fetcher<CursorResponse<Notice>>(`/v2/notices?${params}`, { method: 'GET' });
 
   if (!res || !res?.data) {
     return {
