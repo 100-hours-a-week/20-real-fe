@@ -2,7 +2,7 @@ import { CircleAlert } from 'lucide-react';
 
 import { AppError } from '@/shared/errors/appError';
 
-import choon from '../../../../assets/choon.png';
+import choon from '../../../../assets/favicon.png';
 import { SafeImage } from '../../../../shared/ui/component/SafeImage';
 import { MarkdownViewer } from '../../../../shared/ui/section/MarkdownViewer';
 
@@ -27,7 +27,7 @@ function BotProfile() {
       alt="프로필 이미지"
       width={32}
       height={32}
-      className="rounded-full object-cover border-gray-400 border-1"
+      className="rounded-full object-cover border-gray-400 bg-white p-0.5"
     />
   );
 }

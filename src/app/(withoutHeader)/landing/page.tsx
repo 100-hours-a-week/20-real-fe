@@ -6,7 +6,7 @@ import { ArrowRight, BookOpen, Bot, ChevronDown, MegaphoneIcon, Newspaper, Send 
 import type React from 'react';
 import { useEffect, useRef, useState } from 'react';
 
-import choon from '@/assets/choon.png';
+import choon_favicon from '@/assets/favicon.png';
 import { SafeImage } from '@/shared/ui/component/SafeImage';
 
 function GlassCard({
@@ -55,7 +55,7 @@ function ChatMessage({ message, isUser, delay }: { message: string; isUser: bool
           {!isUser && (
             <div className="min-w-10 max-w-10 border-white/30">
               <SafeImage
-                src={choon}
+                src={choon_favicon}
                 alt="프로필 이미지"
                 width={32}
                 height={32}
@@ -93,11 +93,11 @@ export default function LandingPage() {
     <div className="min-h-screen max-w-app relative overflow-hidden">
       {/* 배경 */}
       <div className=" inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-700 via-purple-800 to-slate-700" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-slate-700 to-slate-500" />
       </div>
 
       <div className="relative z-10 container mx-auto px-8 py-16">
-        <div className="flex flex-col space-y-32">
+        <div className="flex flex-col space-y-20">
           {/* Hero */}
           <motion.div className="flex flex-col space-y-12 min-h-screen justify-center">
             <motion.div
@@ -106,15 +106,22 @@ export default function LandingPage() {
               transition={{ duration: 1, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
               className="text-center space-y-8"
             >
-              <h1 className="text-6xl font-bold text-white leading-tight">
+              <h1 className="text-6xl font-bold text-white leading-tight flex flex-col items-center">
                 <span className="block mb-4">카테부 정보는</span>
-                <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
+                <div className="relative z-20 -mt-20 mb-1">
+                  {' '}
+                  {/* 여기서 -mt-8로 위로 올림 */}
+                  {/* 이미지 넣는 부분 */}
+                  <SafeImage src={choon_favicon} alt="메인 이미지" width={256} height={256} />
+                </div>
+                <span className="bg-gradient-to-r from-yellow-200 via-sky-300 to-blue-400 bg-clip-text text-transparent -mt-12 z-30">
                   춘비서에게!
                 </span>
               </h1>
+
               <p className="text-xl text-white leading-relaxed">
                 카카오테크 부트캠프의 모든 정보와 일정, 공지사항을
-                <span className="font-semibold text-emerald-300"> 스마트한 AI 챗봇</span>이 알려드립니다.
+                <span className="font-semibold text-yellow-100"> 스마트한 AI 챗봇</span>이 알려드립니다.
               </p>
             </motion.div>
 
@@ -125,7 +132,7 @@ export default function LandingPage() {
               className="flex flex-col gap-6 items-center"
             >
               <motion.a href="/home" className="relative group" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <GlassCard className="px-12 py-4 rounded-full bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 transition-all duration-300">
+                <GlassCard className="px-12 py-4 rounded-full bg-gradient-to-r from-yellow-200 via-sky-300 to-blue-400 transition-all duration-300">
                   <div className="flex items-center gap-3 text-black text-lg font-semibold">
                     <Send className="w-5 h-5" />
                     지금 바로 시작하기
@@ -316,7 +323,7 @@ export default function LandingPage() {
 
             <div className="flex flex-col gap-6 items-center">
               <motion.a href="/home" className="relative group" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <GlassCard className="px-12 py-4 rounded-full bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 transition-all duration-300">
+                <GlassCard className="px-12 py-4 rounded-full bg-gradient-to-r from-yellow-200 via-sky-300 to-blue-400 transition-all duration-300">
                   <div className="flex items-center gap-3 text-black text-xl font-semibold">
                     <Send className="w-6 h-6" />
                     서비스 이용하러 가기
