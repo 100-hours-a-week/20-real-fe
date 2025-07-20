@@ -29,7 +29,7 @@ export function AiQuestionForm() {
       <Button
         type="submit"
         size="icon"
-        className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-purple-500 to-pink-500 text-white p-2 rounded-xl hover:shadow-lg transition-all duration-200"
+        className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-sky-300 to-blue-400 text-white p-2 rounded-xl hover:shadow-lg transition-all duration-200"
       >
         <ChevronRight className="w-5 h-5" />
       </Button>

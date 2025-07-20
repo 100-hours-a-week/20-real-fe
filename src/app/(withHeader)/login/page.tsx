@@ -1,7 +1,7 @@
 'use client';
 
+import logo from '@/assets/favicon.png';
 import kakaoLogin from '@/assets/kakao-login.png';
-import logo from '@/assets/logo.png';
 import { oauthLogin } from '@/features/user/api/auth';
 import { EventName } from '@/shared/lib/firebase/eventNames';
 import { firebaseLogging } from '@/shared/lib/firebase/logEvent';
@@ -22,7 +22,7 @@ export default function LoginPage() {
           {/* 로고 */}
           <div className="mb-6 w-64 h-48 flex items-center justify-center">
             {logo ? (
-              <SafeImage src={logo} alt="춘이네 비서실" width={300} height={200} className="object-cover" />
+              <SafeImage src={logo} alt="춘이네 비서실" width={200} height={200} className="object-cover" />
             ) : (
               <div className="text-2xl font-bold text-gray-400">로고</div>
             )}
@@ -31,7 +31,7 @@ export default function LoginPage() {
           {/* 카카오 로그인 버튼 */}
           <Button
             variant="plain"
-            className="w-full py-3 rounded-xl hover:opacity-90 transition-opacity mt-2 mb-4"
+            className="w-full py-3 rounded-xl hover:opacity-90 transition-opacity mb-4"
             onClick={() => handleLogin('kakao')}
           >
             {kakaoLogin ? (

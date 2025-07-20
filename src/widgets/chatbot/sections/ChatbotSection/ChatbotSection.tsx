@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 
 import { useEffect, useRef } from 'react';
 
-import logo from '@/assets/logo.png';
+import logo from '@/assets/favicon.png';
 import { useChatController } from '@/features/chatbot/model/useChatController';
 import useAutoScroll from '@/shared/model/useAutoScroll';
 import { SafeImage } from '@/shared/ui/component/SafeImage';
@@ -44,7 +44,7 @@ export function ChatbotSection() {
         {chats.length === 0 && (
           <div className="flex-1 flex flex-col items-center justify-center gap-4">
             <div className="mb-2 transform hover:scale-105 transition-transform duration-300 px-3">
-              <SafeImage src={logo} alt="logo" width={400} height={50} priority className="drop-shadow-md" />
+              <SafeImage src={logo} alt="logo" width={200} height={50} priority className="drop-shadow-md" />
             </div>
 
             <SuggestedQuestions onSelect={loadAnswer} />

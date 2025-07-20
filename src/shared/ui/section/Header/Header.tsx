@@ -4,9 +4,11 @@ import { ArrowLeft, Menu } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
+import logo from '@/assets/logo_black.png';
 import { HEADER_HEIGHT } from '@/shared/constatns/ui';
 import { useSidebarStore } from '@/shared/model/sidebarStore';
 import { useUserPersistStore } from '@/shared/model/userPersistStore';
+import { SafeImage } from '@/shared/ui/component/SafeImage';
 import { NotificationDropdown } from '@/shared/ui/section/NotificationDropdown';
 
 import { Button } from '../../component/Button';
@@ -34,7 +36,7 @@ export function Header() {
 
       {/* 가운데: 타이틀 */}
       <Link href="/home" className="flex-1 flex justify-center items-center cursor-pointer">
-        <h1 className="text-base font-bold text-gray-900">춘이네 비서실</h1>
+        <SafeImage src={logo} alt="춘이네 비서실 로고" width={100} height={50} className="object-contain" />
       </Link>
 
       {/* 오른쪽: 알림 + 메뉴 버튼 */}
