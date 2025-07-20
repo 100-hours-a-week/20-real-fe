@@ -49,7 +49,7 @@ export default function RootLayout({
   );
 }
 
-function Background({ children }) {
+function Background({ children }: { children: ReactNode }) {
   return (
     <div className="w-full min-h-screen flex justify-center items-center overflow-hidden bg-neutral-50 relative">
       <Image
