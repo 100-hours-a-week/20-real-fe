@@ -24,31 +24,32 @@ html {
     --color-primary-900: oklch(0.36 0.09 262);
     --color-primary-950: oklch(0.28 0.07 265);
 
-    /* Secondary Colors */
-    --color-secondary-50: oklch(0.97 0.015 358);
-    --color-secondary-100: oklch(0.94 0.03 356);
-    --color-secondary-200: oklch(0.89 0.06 352);
-    --color-secondary-300: oklch(0.83 0.09 348);
-    --color-secondary-400: oklch(0.76 0.13 346);
-    --color-secondary-500: oklch(0.68 0.15 344);
-    --color-secondary-600: oklch(0.60 0.16 342);
-    --color-secondary-700: oklch(0.52 0.14 340);
-    --color-secondary-800: oklch(0.44 0.12 338);
-    --color-secondary-900: oklch(0.36 0.10 335);
-    --color-secondary-950: oklch(0.28 0.08 332);
+/* Secondary Colors - 노란색 계열 */
+    --color-secondary-50:  oklch(0.97 0.04 105);   /* 아주 밝은 노랑 */
+    --color-secondary-100: oklch(0.94 0.06 105);   /* 밝은 노랑 */
+    --color-secondary-200: oklch(0.89 0.10 105);   /* 연노랑 */
+    --color-secondary-300: oklch(0.83 0.14 105);   /* 중간 노랑 */
+    --color-secondary-400: oklch(0.76 0.17 105);   /* 선명한 노랑 */
+    --color-secondary-500: oklch(0.68 0.20 105);   /* 채도 높음 */
+    --color-secondary-600: oklch(0.60 0.18 105);   /* 약간 어두운 노랑 */
+    --color-secondary-700: oklch(0.52 0.15 105);   /* 더 어두운 노랑 */
+    --color-secondary-800: oklch(0.44 0.12 105);   /* 브라운 가까움 */
+    --color-secondary-900: oklch(0.36 0.09 105);   /* 더 어두운 브라운 */
+    --color-secondary-950: oklch(0.28 0.07 105);   /* 거의 갈색 */
 
-    /* Accent Colors */
-    --color-accent-50: oklch(0.96 0.015 300);
-    --color-accent-100: oklch(0.93 0.03 300);
-    --color-accent-200: oklch(0.88 0.06 300);
-    --color-accent-300: oklch(0.82 0.09 300);
-    --color-accent-400: oklch(0.75 0.12 300);
-    --color-accent-500: oklch(0.67 0.14 300);
-    --color-accent-600: oklch(0.59 0.15 300);
-    --color-accent-700: oklch(0.51 0.13 300);
-    --color-accent-800: oklch(0.43 0.11 300);
-    --color-accent-900: oklch(0.35 0.09 300);
-    --color-accent-950: oklch(0.27 0.07 300);
+    /* Accent Colors - Pink 계열 */
+    --color-accent-50:  oklch(0.96 0.03 355);
+    --color-accent-100: oklch(0.93 0.06 355);
+    --color-accent-200: oklch(0.88 0.10 355);
+    --color-accent-300: oklch(0.82 0.14 355);
+    --color-accent-400: oklch(0.75 0.17 355);
+    --color-accent-500: oklch(0.67 0.19 355);
+    --color-accent-600: oklch(0.59 0.17 355);
+    --color-accent-700: oklch(0.51 0.14 355);
+    --color-accent-800: oklch(0.43 0.12 355);
+    --color-accent-900: oklch(0.35 0.09 355);
+    --color-accent-950: oklch(0.27 0.07 355);
+
 
     /* 그레이 컬러 */
     --color-neutral-50: oklch(0.98 0.003 260);
@@ -125,7 +126,7 @@ html {
 }
 
 .gradient-xs {
-    background: linear-gradient(135deg, var(--color-primary-50) 0%, var(--color-secondary-50) 50%, var(--color-accent-50) 100%);
+    background: linear-gradient(135deg, var(--color-primary-50) 0%, white 50%, var(--color-secondary-50) 100%);
 }
 
 .animate-slideInFade {

@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 
 import { ReactNode } from 'react';
 
 import Providers from '@/app/providers';
 import { RouteChangeLogger } from '@/app/RouteChangeLogger';
+import bg from '@/assets/background.png';
 
 import './globals.css';
 import { ToastContainer } from '../shared/ui/section/ToastContainer';
@@ -49,10 +51,15 @@ export default function RootLayout({
 
 function Background({ children }: { children: ReactNode }) {
   return (
-    <div className="w-full min-h-screen flex justify-center items-center overflow-hidden bg-neutral-50">
-      <div className="fixed top-10 left-10 h-64 w-64 rounded-full bg-secondary-50 opacity-40 blur-xl" />
-      <div className="fixed bottom-20 right-20 h-80 w-80 rounded-full bg-primary-50 opacity-30 blur-xl" />
-
+    <div className="w-full min-h-screen flex justify-center items-center overflow-hidden bg-neutral-50 relative">
+      <Image
+        src={bg}
+        alt="전체 배경"
+        fill
+        className="object-cover z-0 pointer-events-none select-none"
+        draggable={false}
+        priority
+      />
       <div className="relative z-10 mx-auto">{children}</div>
     </div>
   );
