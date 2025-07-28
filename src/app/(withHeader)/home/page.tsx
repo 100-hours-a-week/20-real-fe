@@ -2,7 +2,6 @@ import { ChevronRight, Megaphone, Newspaper } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import ChoonQuiz from '@/assets/choon-quiz.png';
 import ChoonStudy from '@/assets/choon-study.png';
 import { AiQuestionForm } from '@/widgets/home/sections/HomeChatbotForm';
 import { NewsPanel } from '@/widgets/home/sections/NewsPanel';
@@ -18,69 +17,66 @@ export default function HomePage() {
           <AiQuestionForm />
         </div>
 
-        {/* 바로가기 - 퀴즈와 위키 */}
-        <div className="mt-8 grid grid-cols-2 gap-4">
-          <Link
-            href={'/quiz'}
-            className="relative bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200 cursor-pointer group"
-          >
-            <h3 className="font-semibold text-xl text-gray-800">
-              오늘의
-              <br />
-              퀴즈
-            </h3>
-            <Image
-              src={ChoonQuiz}
-              alt={'오늘의 퀴즈'}
-              className="absolute right-0 bottom-0 w-24 h-24 group-hover:scale-110 transition-transform duration-200"
-            />
-          </Link>
+        {/* 최신 뉴스 */}
+        <NewsSection />
 
+        {/* 공지사항 */}
+        <NoticeSection />
+
+        {/* 바로가기 - 퀴즈와 위키 */}
+        <div className="mt-10">
           <Link
             href={'/wiki'}
-            className="relative bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200 cursor-pointer group"
+            className="block relative bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200 cursor-pointer group"
           >
             <h3 className="font-semibold text-xl text-gray-800">위키</h3>
+            <p className="text-gray-600 font-medium text-sm mt-1">카테부 지식 저장소</p>
             <Image
               src={ChoonStudy}
               alt={'위키'}
-              className="absolute right-0 bottom-0 w-24 h-24 group-hover:scale-110 transition-transform duration-200"
+              className="absolute right-4 top-1 w-24 h-24 group-hover:scale-110 transition-transform duration-200"
             />
           </Link>
         </div>
-
-        {/* 최신 뉴스 */}
-        <div className="mt-10">
-          <div className="flex items-center justify-between mb-5">
-            <div className="flex items-center gap-2">
-              <Newspaper size={20} />
-              <h2 className="text-lg font-bold text-gray-900">최신 뉴스</h2>
-            </div>
-            <Link href="/news" className="text-gray-500 text-sm flex items-center">
-              더보기
-              <ChevronRight className="w-4 h-4 ml-1" />
-            </Link>
-          </div>
-
-          <NewsPanel />
-        </div>
-
-        {/* 공지사항 */}
-        <div className="mt-10">
-          <div className="flex items-center justify-between mb-5">
-            <div className="flex flex-row gap-2 items-center">
-              <Megaphone size={20} />
-              <h2 className="text-lg font-bold text-gray-900">공지사항</h2>
-            </div>
-            <Link href="/notices" className="text-gray-500 text-sm flex items-center">
-              더보기
-              <ChevronRight className="w-4 h-4 ml-1" />
-            </Link>
-          </div>
-
-          <NoticesPanel />
-        </div>
       </div>
+    </div>
+  );
+}
+
+function NewsSection() {
+  return (
+    <div className="mt-10">
+      <div className="flex items-center justify-between mb-5">
+        <div className="flex items-center gap-2">
+          <Newspaper size={20} />
+          <h2 className="text-lg font-bold text-gray-900">최신 뉴스</h2>
+        </div>
+        <Link href="/news" className="text-gray-500 text-sm flex items-center">
+          더보기
+          <ChevronRight className="w-4 h-4 ml-1" />
+        </Link>
+      </div>
+
+      <NewsPanel />
+    </div>
+  );
+}
+
+function NoticeSection() {
+  return (
+    <div className="mt-10">
+      <div className="flex items-center justify-between mb-5">
+        <div className="flex flex-row gap-2 ite ms-center">
+          <Megaphone size={20} />
+          <h2 className="text-lg font-bold text-gray-900">공지사항</h2>
+        </div>
+        <Link href="/notices" className="text-gray-500 text-sm flex items-center">
+          더보기
+          <ChevronRight className="w-4 h-4 ml-1" />
+        </Link>
+      </div>
+
+      <NoticesPanel />
     </div>
   );
 }
