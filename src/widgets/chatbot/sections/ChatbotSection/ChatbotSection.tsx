@@ -77,6 +77,7 @@ export function ChatbotSection() {
           isLoading={isStreaming}
           onChange={handleInputChange}
           onSend={() => loadAnswer(currentInput)}
+          showDescription={chats.length === 0}
         />
       </div>
     </div>

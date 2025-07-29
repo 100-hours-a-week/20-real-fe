@@ -8,9 +8,10 @@ interface ChatInputProps {
   isLoading: boolean;
   onChange: (value: string) => void;
   onSend: () => void;
+  showDescription: boolean;
 }
 
-export function ChatInput({ value, isLoading, onChange, onSend }: ChatInputProps) {
+export function ChatInput({ value, isLoading, onChange, onSend, showDescription }: ChatInputProps) {
   return (
     <form
       className="relative bottom-0 w-full max-w-app"
@@ -40,6 +41,11 @@ export function ChatInput({ value, isLoading, onChange, onSend }: ChatInputProps
             <Send size={18} />
           </Button>
         </div>
+        {showDescription && (
+          <p className="w-full text-gray-400 text-sm text-center pt-2">
+            2025.07.26까지의 데이터를 기반으로 학습되었어요.
+          </p>
+        )}
       </div>
     </form>
   );
